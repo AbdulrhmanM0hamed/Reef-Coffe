@@ -26,6 +26,7 @@ class TAppTheme {
     inputDecorationTheme: TTextFormFieldTheme.lightInputDecorationTheme,
     outlinedButtonTheme: OutlinedButtonThemeData(
         style: TOutlinedButtonTheme.lightOutlinedButtonTheme),
+       
   );
 
   static ThemeData darkTheme = ThemeData(

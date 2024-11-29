@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hyper_market/core/utils/constants/colors.dart';
 import 'package:hyper_market/feature/onBoarding/presentation/view/widgets/on_boarding_view_body.dart';
 
 class OnBordaingView extends StatelessWidget {
@@ -9,7 +10,7 @@ class OnBordaingView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-      body: OnBoardingViewBody(),
+      body: SafeArea(child: OnBoardingViewBody()),
     );
   }
 }
