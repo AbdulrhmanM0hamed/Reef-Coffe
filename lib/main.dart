@@ -32,6 +32,7 @@ class MyApp extends StatelessWidget {
         onGenerateRoute: onGenratedRoutes,
         initialRoute: SplashView.routeName,
         
+        
         );
   }
 }

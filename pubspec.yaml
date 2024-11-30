@@ -28,8 +28,9 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
-  bottom_navy_bar: ^6.1.0
   animations: ^2.0.11
+  bottom_navy_bar: ^6.1.0
+  carousel_slider: ^5.0.0
   cupertino_icons: ^1.0.8
   flutter:
     sdk: flutter
@@ -58,7 +59,7 @@ flutter:
     - assets/images/
     - assets/images/vuesax/outline/
     - assets/images/vuesax/bold/
-   
+
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
   # For details regarding adding assets from package dependencies, see

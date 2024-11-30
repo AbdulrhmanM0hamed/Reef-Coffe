@@ -42,8 +42,8 @@ class _CustomBottomNavBarState extends State<CustomBottomNavBar> {
                   child: SvgPicture.asset(
                     'assets/images/vuesax/bold/home2.svg',
                    
-                    width: 25,
-                    height: 25,
+                    width: 23,
+                    height: 23,
                   ),
                 )
               : SvgPicture.asset(
