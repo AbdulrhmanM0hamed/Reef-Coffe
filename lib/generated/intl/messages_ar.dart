@@ -21,6 +21,31 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static _notInlinedMessages(_) => <String, Function> {
-    "password" : MessageLookupByLibrary.simpleMessage("كلمة المرور")
+    "Subtitle1" : MessageLookupByLibrary.simpleMessage("اكتشف تجربة تسوق فريدة مع FruitHUB, استكشف مجموعتنا الواسعة من الفواكه الطازجة الممتازة واحصل على افضل العروض والجودة العالية"),
+    "Subtitle2" : MessageLookupByLibrary.simpleMessage(" نقدم لك أفضل الفواكه المختارة بعناية, اطلع على التفاصيل والصور والتقييمات لتتأكد من اختيار الفاكهة المثالية"),
+    "about" : MessageLookupByLibrary.simpleMessage("عن التطبيق"),
+    "contact" : MessageLookupByLibrary.simpleMessage("اتصل بنا"),
+    "email" : MessageLookupByLibrary.simpleMessage("البريد الالكتروني"),
+    "forgotPassword" : MessageLookupByLibrary.simpleMessage("هل نسيت كلمة المرور ؟"),
+    "fullName" : MessageLookupByLibrary.simpleMessage("الاسم الكامل"),
+    "home" : MessageLookupByLibrary.simpleMessage("الرئيسية"),
+    "language" : MessageLookupByLibrary.simpleMessage("اللغة"),
+    "login" : MessageLookupByLibrary.simpleMessage("تسجيل الدخول"),
+    "loginTitle" : MessageLookupByLibrary.simpleMessage("تسجيل الدخول"),
+    "loginWithApple" : MessageLookupByLibrary.simpleMessage("تسجيل بواسطة Apple"),
+    "loginWithFacebook" : MessageLookupByLibrary.simpleMessage("تسجيل بواسطة Facebook"),
+    "loginWithGoogle" : MessageLookupByLibrary.simpleMessage("تسجيل بواسطة Google"),
+    "logout" : MessageLookupByLibrary.simpleMessage("تسجيل خروج"),
+    "noAccount" : MessageLookupByLibrary.simpleMessage("لا تمتلك حساب ؟"),
+    "or" : MessageLookupByLibrary.simpleMessage("أو"),
+    "password" : MessageLookupByLibrary.simpleMessage("كلمة المرور"),
+    "profile" : MessageLookupByLibrary.simpleMessage("الملف الشخصي"),
+    "search" : MessageLookupByLibrary.simpleMessage("البحث"),
+    "searchMarketing" : MessageLookupByLibrary.simpleMessage("ابحث وتسوق بسهولة"),
+    "settings" : MessageLookupByLibrary.simpleMessage("الاعدادات"),
+    "signUpNow" : MessageLookupByLibrary.simpleMessage("سجل الان"),
+    "signup" : MessageLookupByLibrary.simpleMessage("تسجيل جديد"),
+    "start" : MessageLookupByLibrary.simpleMessage("start"),
+    "welcome" : MessageLookupByLibrary.simpleMessage("مرحبا بك في ")
   };
 }

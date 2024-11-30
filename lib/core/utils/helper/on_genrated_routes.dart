@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:hyper_market/feature/auth/presentation/view/signin_view.dart';
+import 'package:hyper_market/feature/auth/presentation/view/signup_view.dart';
+import 'package:hyper_market/feature/home/presentation/view/home_view.dart';
 import 'package:hyper_market/feature/onBoarding/presentation/view/on_bordaing_view.dart';
 import 'package:hyper_market/feature/splash/view/splash_view.dart';
 
 Route<dynamic> onGenratedRoutes(RouteSettings settings) {
-  // Define the route based on the settings name
 
   switch (settings.name) {
     case SplashView.routeName:
@@ -13,6 +15,18 @@ Route<dynamic> onGenratedRoutes(RouteSettings settings) {
     case OnBordaingView.routeName:
       return MaterialPageRoute(
         builder: (context) => const OnBordaingView(),
+      );
+      case SigninView.routeName:
+      return MaterialPageRoute(
+        builder: (context) => const SigninView(),
+      );
+      case SignupView.routeName:
+      return MaterialPageRoute(
+        builder: (context) => const SignupView(),
+      );
+      case HomeView.routeName:
+      return MaterialPageRoute(
+        builder: (context) => const HomeView(),
       );
     default:
       return MaterialPageRoute(

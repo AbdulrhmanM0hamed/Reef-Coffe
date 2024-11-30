@@ -3,7 +3,9 @@ import 'package:hyper_market/core/utils/common/elvated_button.dart';
 import 'package:hyper_market/core/utils/constants/assets.dart';
 import 'package:hyper_market/core/utils/constants/colors.dart';
 import 'package:hyper_market/core/utils/constants/font_manger.dart';
+import 'package:hyper_market/core/utils/constants/string.dart';
 import 'package:hyper_market/core/utils/constants/styles_manger.dart';
+import 'package:hyper_market/feature/auth/presentation/view/signin_view.dart';
 import 'package:hyper_market/feature/onBoarding/presentation/view/widgets/logo_with_app_name.dart';
 import 'package:hyper_market/feature/onBoarding/presentation/view/widgets/outline.dart';
 
@@ -12,65 +14,64 @@ class OnBoardingViewBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var sizeWidth = MediaQuery.of(context).size.width;
-    var sizeheight = MediaQuery.of(context).size.height;
+    var size = MediaQuery.of(context).size;
 
     return Padding(
       padding: EdgeInsets.symmetric(
-          horizontal: sizeWidth / 20, vertical: sizeheight / 29),
+          horizontal: size.width * 0.05, vertical: size.height * 0.035),
       child: Column(
         children: [
           Container(
             width: double.infinity,
-            height: MediaQuery.of(context).size.height * .53,
+            height: size.height * 0.53,
             decoration: BoxDecoration(
                 border: Border.all(color: TColors.darkGrey),
                 color: Theme.of(context).brightness == Brightness.dark
-                    ? Color.fromARGB(255, 19, 19, 19)
+                    ? const Color.fromARGB(255, 19, 19, 19)
                     : TColors.white,
                 borderRadius: BorderRadius.circular(16)),
             child: Column(
               children: [
                 Padding(
                   padding: EdgeInsets.symmetric(
-                      horizontal: sizeWidth / 10, vertical: sizeheight / 25),
+                      horizontal: size.width * 0.1, vertical: size.height * 0.04),
                   child: const LogoWithAppName(),
                 ),
-                SizedBox(height: sizeheight / 50),
+                SizedBox(height: size.height * 0.02),
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: sizeWidth / 10),
+                  padding: EdgeInsets.symmetric(horizontal: size.width * 0.1),
                   child: const Column(
                     children: [
                       OutlineWidget(
                         image: AssetsManager.organicFood,
-                        title: "منتجات طبيعية",
+                        title: StringManger.organicFood,
                       ),
                       Divider(
                         indent: 10,
                       ),
                       OutlineWidget(
                           image: AssetsManager.foodTurkey,
-                          title: "الأطعمة الكاملة والخضروات"),
+                          title: StringManger.fullFoods),
                       Divider(
                         indent: 10,
                       ),
                       OutlineWidget(
                         image: AssetsManager.deliveryTruck,
-                        title: " تسليم سريع",
+                        title: StringManger.deliveryTruck,
                       ),
                       Divider(
                         indent: 10,
                       ),
                       OutlineWidget(
                         image: AssetsManager.solarMoney,
-                        title: " الإسترجاع والإسترداد",
+                        title: StringManger.refund,
                       ),
                       Divider(
                         indent: 10,
                       ),
                       OutlineWidget(
                         image: AssetsManager.safeLock,
-                        title: " سليم وآمن",
+                        title: StringManger.safe,
                       ),
                     ],
                   ),
@@ -79,52 +80,54 @@ class OnBoardingViewBody extends StatelessWidget {
             ),
           ),
           SizedBox(
-            height: sizeheight / 20,
+            height: size.height * 0.04,
           ),
           RichText(
             text: TextSpan(
               children: [
                 TextSpan(
-                  text: "مرحبا بك فى ", // النص الأول
+                  text: StringManger.welcome, // النص الأول
                   style: getBoldStyle(
                       fontFamily: FontConstant.cairo,
-                      fontSize: FontSize.size22,
+                      fontSize: size.height * 0.025,
                       color: TColors.primary),
                 ),
                 TextSpan(
-                  text: "هايير", // النص الأول
+                  text: StringManger.hyper, // النص الأول
                   style: getBoldStyle(
                       fontFamily: FontConstant.cairo,
-                      fontSize: FontSize.size22,
+                      fontSize: size.height * 0.025,
                       color: TColors.primary),
                 ),
                 TextSpan(
-                  text: "  ماركت", // النص الثاني
+                  text: StringManger.market, // النص الثاني
                   style: getBoldStyle(
                       fontFamily: FontConstant.cairo,
-                      fontSize: FontSize.size22,
+                      fontSize: size.height * 0.025,
                       color: TColors.secondary),
                 ),
               ],
             ),
           ),
           SizedBox(
-            height: sizeheight / 100,
+            height: size.height * 0.01,
           ),
           Text(
-            "اكتشف تجربة تسوق فريدة مع هايبر ماركت , استكشف مجموعتنا الواسعة من الفواكه الطازجة الممتازة واحصل على افضل العروض والجودة العالية",
+            StringManger.supTitleFOrWelcom,
             textAlign: TextAlign.center,
             style: getSemiBoldStyle(
                 fontFamily: FontConstant.cairo,
-                fontSize: FontSize.size14,
+                fontSize: size.height * 0.016,
                 color: TColors.darkGrey),
           ),
           SizedBox(
-            height: sizeheight / 15,
+            height: size.height * 0.06,
           ),
           CustomElevatedButton(
-            buttonText: "ابدأ الان",
-            onPressed: () {},
+            buttonText: StringManger.start,
+            onPressed: () {
+              Navigator.pushReplacementNamed(context, SigninView.routeName);
+            },
           )
         ],
       ),

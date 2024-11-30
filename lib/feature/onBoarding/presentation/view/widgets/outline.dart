@@ -16,18 +16,20 @@ class OutlineWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var size = MediaQuery.of(context).size;
+
     return Row(
       children: [
-        SvgPicture.asset(image ,  ),
+        SvgPicture.asset(image, height: size.height * 0.04, width: size.height * 0.04),
         SizedBox(
-          width: MediaQuery.of(context).size.width / 25,
+          width: size.width * 0.04,
         ),
         Text(
           title,
           style: getBoldStyle(
               fontFamily: FontConstant.cairo,
               color: TColors.darkGrey,
-              fontSize: FontSize.size16),
+              fontSize: size.height * 0.02),
         ),
       ],
     );

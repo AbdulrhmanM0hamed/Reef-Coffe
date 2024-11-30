@@ -31,6 +31,7 @@ class MyApp extends StatelessWidget {
         locale: Locale('ar'),
         onGenerateRoute: onGenratedRoutes,
         initialRoute: SplashView.routeName,
-        home: const SplashView());
+        
+        );
   }
 }
