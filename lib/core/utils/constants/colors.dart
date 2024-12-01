@@ -7,7 +7,7 @@ TColors._();
 static const Color primary = Color(0xff019934);
 static const Color primaryDark = Color.fromARGB(255, 55, 112, 51);
 
-static const Color secondary = Color (0xFFF6921E);
+static const Color secondary = Color (0xFFF4A91F);
 static const Color pound = Color.fromARGB(255, 238, 185, 10);
 static const Color kilo = Color.fromARGB(255, 216, 188, 97);
 

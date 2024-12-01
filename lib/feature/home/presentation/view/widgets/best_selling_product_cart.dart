@@ -58,7 +58,7 @@ class BestSellingProducts extends StatelessWidget {
               SizedBox(height: sizeHeight * 0.005),
               Text(
                 "1 كيلو, سعر",
-                style: getSemiBoldStyle(
+                style: getBoldStyle(
                   fontFamily: FontConstant.cairo,
                   fontSize: FontSize.size14,
                   color: TColors.secondary,
@@ -85,8 +85,8 @@ class BestSellingProducts extends StatelessWidget {
                       // أكشن الزر
                     },
                     child: Container(
-                      width: sizeWidth * 0.07,
-                      height: sizeWidth * 0.07,
+                      width: sizeWidth * 0.08,
+                      height: sizeWidth * 0.08,
                       decoration: BoxDecoration(
                         color: TColors.primary,
                         borderRadius: BorderRadius.circular(12),

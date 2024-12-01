@@ -30,7 +30,7 @@ class _HomeViewState extends State<HomeView> {
           },
           children: [
             HomeViewBody(),
-      
+         
            
           ],
         ),
@@ -40,7 +40,6 @@ class _HomeViewState extends State<HomeView> {
 
   @override
   void dispose() {
-    // تأكد من إغلاق الـ PageController عندما لا تحتاجه
     _pageController.dispose();
     super.dispose();
   }

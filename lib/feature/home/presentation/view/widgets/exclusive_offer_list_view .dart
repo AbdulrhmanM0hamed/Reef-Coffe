@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hyper_market/feature/details/presentation/view/details_view.dart';
 
 import 'package:hyper_market/feature/home/presentation/view/widgets/exclusive_product_cart.dart';
 
@@ -19,7 +20,12 @@ class ExclusiveOfferSection extends StatelessWidget {
             scrollDirection: Axis.horizontal,
             itemCount: 5,
             itemBuilder: (context, index) {
-              return ExclusiveProductCart(sizeWidth: sizeWidth, sizeHeight: sizeHeight);
+              return GestureDetector(
+                  onTap: () {
+                    Navigator.pushNamed(context, DetailsView.routeName);
+                  },
+                  child: ExclusiveProductCart(
+                      sizeWidth: sizeWidth, sizeHeight: sizeHeight));
             },
           ),
         ),
@@ -27,4 +33,3 @@ class ExclusiveOfferSection extends StatelessWidget {
     );
   }
 }
-
