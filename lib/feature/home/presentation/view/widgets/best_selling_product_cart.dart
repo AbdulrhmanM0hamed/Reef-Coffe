@@ -44,6 +44,8 @@ class BestSellingProducts extends StatelessWidget {
                   child: Image.asset(
                     "assets/images/Apple.png",
                     fit: BoxFit.contain,
+                    height: sizeHeight * 0.17,
+                    width: sizeWidth * 0.30,
                   ),
                 ),
               ),
