@@ -26,7 +26,9 @@ class CategoriesViewBody extends StatelessWidget {
                 return Container(
                   decoration: BoxDecoration(
                     color: categories[index]['color'],
-                    border: Border.all(color: categories[index]['borderColor'], width: 2), // ضبط لون الحدود
+                    border: Border.all(
+                        color: categories[index]['borderColor'],
+                        width: 1), // ضبط لون الحدود
                     borderRadius: BorderRadius.circular(16),
                   ),
                   child: Column(
@@ -57,37 +59,35 @@ class CategoriesViewBody extends StatelessWidget {
   }
 }
 
-// قائمة بالفئات مع النصوص والألوان والصور
 final List<Map<String, dynamic>> categories = [
   {
-    'title': ' Fruits & Vegetables',
-    'color': Colors.greenAccent.withOpacity(0.15), // لون الخلفية
-    'borderColor': Colors.greenAccent.withOpacity(0.25), // لون الحدود
-    'image': 'assets/images/1.png', // استخدم مسار الصورة الخاص بك
+    'title': ' الخضروات والفواكه',
+    'color': Colors.greenAccent.withOpacity(0.15),
+    'borderColor': Colors.greenAccent.withOpacity(0.25),
+    'image': 'assets/images/1.png',
   },
   {
-    'title': 'Cooking Oil & Ghee',
-    'color': Colors.amberAccent.withOpacity(0.15), 
+    'title': 'المخبوزات والحلويات',
+    'color': Colors.amberAccent.withOpacity(0.15),
     'borderColor': Colors.amberAccent.withOpacity(0.25),
     'image': 'assets/images/2.png',
   },
   {
-    'title': 'Meat & Fish',
+    'title': 'اللحوم والاسماك',
     'color': Colors.redAccent.withOpacity(0.15),
     'borderColor': Colors.redAccent.withOpacity(0.25),
     'image': 'assets/images/3.png',
   },
   {
-    'title': 'Bakery & Snacks',
+    'title': 'المقرمشات',
     'color': Colors.brown.withOpacity(0.15),
     'borderColor': Colors.brown.withOpacity(0.25),
     'image': 'assets/images/4.png',
   },
   {
-    'title': 'Dairy & Eggs',
+    'title': 'الالبان والبيض',
     'color': Colors.blueAccent.withOpacity(0.15),
     'borderColor': Colors.blueAccent.withOpacity(0.25),
     'image': 'assets/images/5.png',
   },
-
 ];

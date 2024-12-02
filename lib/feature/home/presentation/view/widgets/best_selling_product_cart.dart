@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hyper_market/core/utils/constants/colors.dart';
 import 'package:hyper_market/core/utils/constants/font_manger.dart';
 import 'package:hyper_market/core/utils/constants/styles_manger.dart';
+import 'package:hyper_market/feature/cart/data/models/cart_item_model.dart';
+import 'package:hyper_market/feature/cart/presentation/cubit/cart_cubit.dart';
 
 class BestSellingProducts extends StatelessWidget {
   const BestSellingProducts({
@@ -84,7 +87,21 @@ class BestSellingProducts extends StatelessWidget {
                   ),
                   GestureDetector(
                     onTap: () {
-                      // أكشن الزر
+                      final cartItem = CartItem(
+                        id: DateTime.now().toString(), // يمكن استبدالها بID حقيقي
+                        productId: "apple_1", // يمكن استبدالها بID حقيقي
+                        name: "تفاح أحمر",
+                        price: 6,
+                        image: "assets/images/Apple.png",
+                      );
+                      context.read<CartCubit>().addItem(cartItem);
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          backgroundColor: TColors.primary,
+                          content: Text('تم إضافة المنتج إلى سلة التسوق'),
+                          duration: Duration(seconds: 1),
+                        ),
+                      );
                     },
                     child: Container(
                       width: sizeWidth * 0.08,
