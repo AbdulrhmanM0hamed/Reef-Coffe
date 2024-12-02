@@ -9,10 +9,8 @@ class ExclusiveProductCart extends StatelessWidget {
     required this.sizeWidth,
     required this.sizeHeight,
   });
-
   final double sizeWidth;
   final double sizeHeight;
-
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -21,7 +19,7 @@ class ExclusiveProductCart extends StatelessWidget {
         right: sizeWidth * 0.02,
       ),
       child: Container(
-        width: sizeWidth * 0.35, // عرض الكارت
+        width: sizeWidth * 0.35, 
         decoration: BoxDecoration(
           border: Border.all(color: Colors.grey[500]!),
           borderRadius: BorderRadius.circular(16),
@@ -92,7 +90,7 @@ class ExclusiveProductCart extends StatelessWidget {
                   ),
                   GestureDetector(
                     onTap: () {
-                      // أكشن الزر
+                  
                     },
                     child: Container(
                       width: sizeWidth * 0.08,

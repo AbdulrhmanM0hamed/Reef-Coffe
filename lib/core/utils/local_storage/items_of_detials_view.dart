@@ -3,10 +3,10 @@
         "icon": "assets/images/calener.svg",
         "mainText": "عام",
         "subText": "الصلاحية",
-        "badge": "1", // الرقم الديناميكي للأيقونة
+        "badge": "1", 
       },
       {
-        "icon": "assets/images/lotus.svg", // المسار إلى أيقونة SVG
+        "icon": "assets/images/lotus.svg", 
         "mainText": "100%",
         "subText": "أورجانيك",
       },

@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:hyper_market/feature/categories/presentation/view/categories_view.dart';
 import 'package:hyper_market/feature/home/presentation/view/widgets/bottom_nav_bar.dart';
 import 'package:hyper_market/feature/home/presentation/view/widgets/home_view_body.dart';
 
@@ -30,7 +31,9 @@ class _HomeViewState extends State<HomeView> {
           },
           children: [
             HomeViewBody(),
-         
+            CategoriesView()
+
+             
            
           ],
         ),
