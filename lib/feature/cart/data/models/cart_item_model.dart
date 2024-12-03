@@ -15,7 +15,9 @@ class CartItem {
     this.quantity = 1,
   });
 
-  double get total => price * quantity;
+  double getTotal() {
+    return price * quantity;
+  }
 
   CartItem copyWith({
     String? id,

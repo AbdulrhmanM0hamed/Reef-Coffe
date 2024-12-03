@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hyper_market/core/utils/constants/font_manger.dart';
 import 'package:hyper_market/core/utils/constants/styles_manger.dart';
+import 'package:hyper_market/core/utils/constants/strings_manager.dart';
 import 'package:hyper_market/feature/categories/presentation/view/widgets/categories_view_body.dart';
 
 class CategoriesView extends StatelessWidget {
@@ -11,8 +12,8 @@ class CategoriesView extends StatelessWidget {
     return Scaffold(
         appBar: AppBar(
           centerTitle: true,
-          title:  Text('المنتجات' , style: getBoldStyle(fontFamily: FontConstant.cairo , fontSize: FontSize.size22),),
+          title:  Text(StringManager.products , style: getBoldStyle(fontFamily: FontConstant.cairo , fontSize: FontSize.size20),),
         ),
-        body: CategoriesViewBody());
+        body:const CategoriesViewBody());
   }
 }

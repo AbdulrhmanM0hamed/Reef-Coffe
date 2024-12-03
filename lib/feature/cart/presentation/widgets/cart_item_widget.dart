@@ -77,55 +77,14 @@ class CartItemWidget extends StatelessWidget {
              IconButton(
                icon: const Icon(
                  Icons.delete_outline,
-                 color: Colors.red,
+                 color: Colors.grey,
                ),
                onPressed: () {
                  context.read<CartCubit>().removeItem(item.productId);
                },
              ),
 
-        //     Row(
-        //       children: [
-        //         IconButton(
-        //           icon: const Icon(Icons.add_circle_outline),
-        //           onPressed: () {
-        //             context.read<CartCubit>().updateQuantity(
-        //                   item.productId,
-        //                   item.quantity + 1,
-        //                 );
-        //           },
-        //         ),
-        //         Text(
-        //           '${item.quantity}',
-        //           style: const TextStyle(
-        //             fontSize: 16,
-        //             fontWeight: FontWeight.bold,
-        //           ),
-        //         ),
-        //         IconButton(
-        //           icon: const Icon(Icons.remove_circle_outline),
-        //           onPressed: () {
-        //             if (item.quantity > 1) {
-        //               context.read<CartCubit>().updateQuantity(
-        //                     item.productId,
-        //                     item.quantity - 1,
-        //                   );
-        //             } else {
-        //               context.read<CartCubit>().removeItem(item.productId);
-        //             }
-        //           },
-        //         ),
-        //       ],
-        //     ),
-        //     IconButton(
-        //       icon: const Icon(
-        //         Icons.delete_outline,
-        //         color: Colors.red,
-        //       ),
-        //       onPressed: () {
-        //         context.read<CartCubit>().removeItem(item.productId);
-        //       },
-        //     ),
+ 
           ],
         ),
       ),

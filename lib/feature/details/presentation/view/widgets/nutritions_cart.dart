@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:hyper_market/core/utils/constants/colors.dart';
+import 'package:hyper_market/core/utils/constants/font_manger.dart';
+import 'package:hyper_market/core/utils/constants/styles_manger.dart';
 
 class NutritionsCart extends StatelessWidget {
   const NutritionsCart({
@@ -39,53 +41,44 @@ class NutritionsCart extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(
-                  item["mainText"],
-                  style: TextStyle(
-                    fontSize: size.width * 0.044,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.green,
-                  ),
-                ),
-                if (item["extraText"] != null) // النص الإضافي مثل (256)
-                  Text(
-                    item["extraText"],
-                    style: TextStyle(
-                      fontSize: size.width * 0.027,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.grey[600],
-                    ),
-                  ),
-                const SizedBox(height: 4),
+                Text(item["mainText"],
+                    style: getBoldStyle(
+                        fontFamily: FontConstant.cairo,
+                        fontSize: size.width * 0.044,
+                        color: TColors.primary)),
+                if (item["extraText"] != null)
+                  Text(item["extraText"],
+                      style: getSemiBoldStyle(
+                          fontFamily: FontConstant.cairo,
+                          fontSize: size.width * 0.030,
+                          color: TColors.darkGrey)),
+                const SizedBox(height: 2),
                 Text(
                   item["subText"],
-                  style: TextStyle(
-                    fontSize: size.width * 0.033,
-                    color: TColors.darkGrey,
-                    fontWeight: FontWeight.w700,
-                  ),
+                  style: getBoldStyle(
+                      fontFamily: FontConstant.cairo,
+                      fontSize: size.width * 0.029,
+                      color: TColors.darkGrey),
                 ),
               ],
             ),
-            // الأيقونة
             Stack(
-              clipBehavior: Clip.none,
+              alignment: Alignment.center,
               children: [
                 SvgPicture.asset(
                   item["icon"],
                   width: size.width * 0.07,
                   height: size.height * 0.065,
                 ),
-                if (item["badge"] != null) // الرقم الديناميكي
-                  Positioned(
-                    top: size.height * 0.020,
-                    right: size.width * 0.050,
+                if (item["badge"] != null) 
+                  Transform.translate(
+                    offset: const Offset(0, 5),
                     child: Text(
                       item["badge"],
-                      style: TextStyle(
-                        fontSize: size.width * 0.06,
+                      style: getBoldStyle(
+                        fontFamily: FontConstant.cairo,
+                        fontSize: size.width * 0.060,
                         color: TColors.darkerGrey,
-                        fontWeight: FontWeight.bold,
                       ),
                     ),
                   ),

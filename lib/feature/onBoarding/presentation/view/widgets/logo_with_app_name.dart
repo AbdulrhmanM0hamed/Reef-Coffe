@@ -3,7 +3,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:hyper_market/core/utils/constants/assets.dart';
 import 'package:hyper_market/core/utils/constants/colors.dart';
 import 'package:hyper_market/core/utils/constants/font_manger.dart';
-import 'package:hyper_market/core/utils/constants/string.dart';
+import 'package:hyper_market/core/utils/constants/strings_manager.dart';
 import 'package:hyper_market/core/utils/constants/styles_manger.dart';
 
 class LogoWithAppName extends StatelessWidget {
@@ -28,14 +28,14 @@ class LogoWithAppName extends StatelessWidget {
               text: TextSpan(
                 children: [
                   TextSpan(
-                    text: StringManger.hyper, // النص الأول
+                    text: StringManager.hyper, // النص الأول
                     style: getBoldStyle(
                         fontFamily: FontConstant.cairo,
                         fontSize: size.height * 0.035,
                         color: TColors.primary),
                   ),
                   TextSpan(
-                    text: StringManger.market, // النص الثاني
+                    text: StringManager.market, // النص الثاني
                     style: getBoldStyle(
                         fontFamily: FontConstant.cairo,
                         fontSize: size.height * 0.035,
@@ -45,7 +45,7 @@ class LogoWithAppName extends StatelessWidget {
               ),
             ),
             Text(
-              StringManger.startShopping,
+              StringManager.startShopping,
               style: getBoldStyle(
                   fontFamily: FontConstant.cairo,
                   color: TColors.darkGrey,

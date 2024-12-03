@@ -3,7 +3,7 @@ import 'package:hyper_market/core/utils/common/elvated_button.dart';
 import 'package:hyper_market/core/utils/constants/assets.dart';
 import 'package:hyper_market/core/utils/constants/colors.dart';
 import 'package:hyper_market/core/utils/constants/font_manger.dart';
-import 'package:hyper_market/core/utils/constants/string.dart';
+import 'package:hyper_market/core/utils/constants/strings_manager.dart';
 import 'package:hyper_market/core/utils/constants/styles_manger.dart';
 import 'package:hyper_market/feature/auth/presentation/view/signin_view.dart';
 import 'package:hyper_market/feature/onBoarding/presentation/view/widgets/logo_with_app_name.dart';
@@ -44,34 +44,34 @@ class OnBoardingViewBody extends StatelessWidget {
                     children: [
                       OutlineWidget(
                         image: AssetsManager.organicFood,
-                        title: StringManger.organicFood,
+                        title: StringManager.organicFood,
                       ),
                       Divider(
                         indent: 10,
                       ),
                       OutlineWidget(
                           image: AssetsManager.foodTurkey,
-                          title: StringManger.fullFoods),
+                          title: StringManager.fullFoods),
                       Divider(
                         indent: 10,
                       ),
                       OutlineWidget(
                         image: AssetsManager.deliveryTruck,
-                        title: StringManger.deliveryTruck,
+                        title: StringManager.deliveryTruck,
                       ),
                       Divider(
                         indent: 10,
                       ),
                       OutlineWidget(
                         image: AssetsManager.solarMoney,
-                        title: StringManger.refund,
+                        title: StringManager.refund,
                       ),
                       Divider(
                         indent: 10,
                       ),
                       OutlineWidget(
                         image: AssetsManager.safeLock,
-                        title: StringManger.safe,
+                        title: StringManager.safe,
                       ),
                     ],
                   ),
@@ -86,21 +86,21 @@ class OnBoardingViewBody extends StatelessWidget {
             text: TextSpan(
               children: [
                 TextSpan(
-                  text: StringManger.welcome, // النص الأول
+                  text: StringManager.welcome, // النص الأول
                   style: getBoldStyle(
                       fontFamily: FontConstant.cairo,
                       fontSize: size.height * 0.025,
                       color: TColors.primary),
                 ),
                 TextSpan(
-                  text: StringManger.hyper, // النص الأول
+                  text: StringManager.hyper, // النص الأول
                   style: getBoldStyle(
                       fontFamily: FontConstant.cairo,
                       fontSize: size.height * 0.025,
                       color: TColors.primary),
                 ),
                 TextSpan(
-                  text: StringManger.market, // النص الثاني
+                  text: StringManager.market, // النص الثاني
                   style: getBoldStyle(
                       fontFamily: FontConstant.cairo,
                       fontSize: size.height * 0.025,
@@ -113,7 +113,7 @@ class OnBoardingViewBody extends StatelessWidget {
             height: size.height * 0.01,
           ),
           Text(
-            StringManger.supTitleFOrWelcom,
+            StringManager.supTitleFOrWelcom,
             textAlign: TextAlign.center,
             style: getSemiBoldStyle(
                 fontFamily: FontConstant.cairo,
@@ -124,7 +124,7 @@ class OnBoardingViewBody extends StatelessWidget {
             height: size.height * 0.06,
           ),
           CustomElevatedButton(
-            buttonText: StringManger.start,
+            buttonText: StringManager.start,
             onPressed: () {
               Navigator.pushReplacementNamed(context, SigninView.routeName);
             },

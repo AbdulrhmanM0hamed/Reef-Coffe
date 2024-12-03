@@ -21,32 +21,35 @@ class _HomeViewState extends State<HomeView> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      bottomNavigationBar: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 6),
-        child: CustomBottomNavBar(
-          pageController: _pageController,
-          currentIndex: _currentIndex, 
-          onIndexChanged: (index) {
-            setState(() {
-              _currentIndex = index; 
-            });
-          },
+    return BlocProvider(
+      create: (context) => CartCubit(),
+      child: Scaffold(
+        bottomNavigationBar: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 6),
+          child: CustomBottomNavBar(
+            pageController: _pageController,
+            currentIndex: _currentIndex,
+            onIndexChanged: (index) {
+              setState(() {
+                _currentIndex = index;
+              });
+            },
+          ),
         ),
-      ),
-      body: SafeArea(
-        child: PageView(
-          controller: _pageController,
-          onPageChanged: (index) {
-            setState(() {
-              _currentIndex = index; 
-            });
-          },
-          children: [
-            HomeViewBody(),
-            CategoriesView(),
-            CartPage(),
-          ],
+        body: SafeArea(
+          child: PageView(
+            controller: _pageController,
+            onPageChanged: (index) {
+              setState(() {
+                _currentIndex = index;
+              });
+            },
+            children: [
+              HomeViewBody(),
+              CategoriesView(),
+              CartPage(),
+            ],
+          ),
         ),
       ),
     );

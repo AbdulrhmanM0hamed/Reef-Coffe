@@ -50,7 +50,7 @@ class DetailsViewBody extends StatelessWidget {
             ),
             SizedBox(height: sizeHeight * 0.025),
             InfoSection(),
-            SizedBox(height: sizeHeight * 0.025),
+            SizedBox(height: sizeHeight * 0.018),
             CustomElevatedButton(
               onPressed: () {},
               buttonText: "اضف الى السلة",

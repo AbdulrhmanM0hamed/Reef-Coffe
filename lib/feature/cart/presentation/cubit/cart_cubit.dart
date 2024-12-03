@@ -10,7 +10,7 @@ class CartCubit extends Cubit<CartState> {
 
   List<CartItem> get items => List.unmodifiable(_items);
 
-  double get total => _items.fold(0, (sum, item) => sum + item.total);
+  double get total => _items.fold(0, (sum, item) => sum + item.getTotal());
 
   void addItem(CartItem item) {
     final existingIndex = _items.indexWhere((i) => i.productId == item.productId);
