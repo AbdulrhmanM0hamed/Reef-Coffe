@@ -37,7 +37,7 @@ class CartPage extends StatelessWidget {
       body: BlocBuilder<CartCubit, CartState>(
         builder: (context, state) {
           final cartCubit = context.read<CartCubit>();
-          final items = cartCubit.items;
+          final items = cartCubit.getItems();
           if (items.isEmpty) {
             return Center(
               child: Row(
@@ -103,7 +103,7 @@ class CartPage extends StatelessWidget {
                               color: TColors.darkGrey),
                         ),
                         Text(
-                          '${cartCubit.total} ج.م',
+                          '${cartCubit.getTotal()} ج.م',
                           style: getBoldStyle(
                               fontFamily: FontConstant.cairo,
                               fontSize: MediaQuery.of(context).size.width * 0.047,

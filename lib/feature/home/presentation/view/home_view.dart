@@ -5,6 +5,7 @@ import 'package:hyper_market/feature/cart/presentation/pages/cart_page.dart';
 import 'package:hyper_market/feature/categories/presentation/view/categories_view.dart';
 import 'package:hyper_market/feature/home/presentation/view/widgets/bottom_nav_bar.dart';
 import 'package:hyper_market/feature/home/presentation/view/widgets/home_view_body.dart';
+import 'package:hyper_market/feature/profile/presentation/view/profile_view.dart';
 
 class HomeView extends StatefulWidget {
   static const String routeName = "home";
@@ -48,6 +49,7 @@ class _HomeViewState extends State<HomeView> {
               HomeViewBody(),
               CategoriesView(),
               CartPage(),
+              ProfileView()
             ],
           ),
         ),

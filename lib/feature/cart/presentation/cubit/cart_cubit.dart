@@ -8,12 +8,17 @@ class CartCubit extends Cubit<CartState> {
 
   final List<CartItem> _items = [];
 
-  List<CartItem> get items => List.unmodifiable(_items);
+  List<CartItem> getItems() {
+    return List.unmodifiable(_items);
+  }
 
-  double get total => _items.fold(0, (sum, item) => sum + item.getTotal());
+  double getTotal() {
+    return _items.fold(0, (sum, item) => sum + item.getTotal());
+  }
 
   void addItem(CartItem item) {
-    final existingIndex = _items.indexWhere((i) => i.productId == item.productId);
+    final existingIndex =
+        _items.indexWhere((i) => i.productId == item.productId);
     if (existingIndex >= 0) {
       _items[existingIndex].quantity += 1;
     } else {
