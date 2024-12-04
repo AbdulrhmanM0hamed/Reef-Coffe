@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:hyper_market/core/utils/constants/colors.dart';
 import 'package:hyper_market/core/utils/constants/font_manger.dart';
 import 'package:hyper_market/core/utils/constants/styles_manger.dart';
+import 'package:hyper_market/feature/profile/presentation/view/widgets/profiel_menu_switch.dart';
+import 'package:hyper_market/feature/profile/presentation/view/widgets/profile_header.dart';
+import 'package:hyper_market/feature/profile/presentation/view/widgets/profile_menu_item.dart';
 
 class ProfileViewBody extends StatelessWidget {
   const ProfileViewBody({Key? key}) : super(key: key);
@@ -78,13 +81,13 @@ class ProfileViewBody extends StatelessWidget {
                 onPressed: () {
                   // Handle logout
                 },
-                icon: const Icon(Icons.logout, color: Colors.red),
+                icon: const Icon(Icons.logout, color: TColors.darkGrey,),
                 label: Text(
                   'تسجيل الخروج',
                   style: getSemiBoldStyle(
                     fontFamily: FontConstant.cairo,
                     fontSize: 16,
-                    color: Colors.red,
+                    color: TColors.darkGrey,
                   ),
                 ),
                 style: ElevatedButton.styleFrom(
@@ -103,124 +106,6 @@ class ProfileViewBody extends StatelessWidget {
   }
 }
 
-class ProfileHeader extends StatelessWidget {
-  const ProfileHeader({Key? key}) : super(key: key);
 
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Container(
-          width: 100,
-          height: 100,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            border: Border.all(
-              color: TColors.secondary,
-              width: 2,
-            ),
-          ),
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(50),
-            child: Image.asset(
-              'assets/images/profile_image.png',
-              fit: BoxFit.cover,
-            ),
-          ),
-        ),
-        const SizedBox(height: 16),
-        Text(
-          'عبدالرحمن محمد',
-          style: getBoldStyle(
-            fontFamily: FontConstant.cairo,
-            fontSize: 20,
-            color: Theme.of(context).brightness == Brightness.dark 
-              ? TColors.white 
-              : TColors.black,
-          ),
-        ),
-        Text(
-          'abdo@gmail.com',
-          style: getMediumStyle(
-            fontFamily: FontConstant.cairo,
-            fontSize: 14,
-            color: TColors.darkGrey,
-          ),
-        ),
-      ],
-    );
-  }
-}
 
-class ProfileMenuItem extends StatelessWidget {
-  final IconData icon;
-  final String title;
-  final VoidCallback onTap;
 
-  const ProfileMenuItem({
-    Key? key,
-    required this.icon,
-    required this.title,
-    required this.onTap,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return ListTile(
-      leading: Icon(icon, color: TColors.primary),
-      title: Text(
-        title,
-        style: getSemiBoldStyle(
-          fontFamily: FontConstant.cairo,
-          fontSize: 16,
-          color: Theme.of(context).brightness == Brightness.dark 
-            ? TColors.white 
-            : TColors.black,
-        ),
-      ),
-      trailing: Icon(
-        Icons.arrow_forward_ios,
-        size: 16,
-        color: TColors.darkGrey,
-      ),
-      onTap: onTap,
-    );
-  }
-}
-
-class ProfileMenuSwitch extends StatelessWidget {
-  final IconData icon;
-  final String title;
-  final bool value;
-  final ValueChanged<bool> onChanged;
-
-  const ProfileMenuSwitch({
-    Key? key,
-    required this.icon,
-    required this.title,
-    required this.value,
-    required this.onChanged,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return ListTile(
-      leading: Icon(icon, color: TColors.primary),
-      title: Text(
-        title,
-        style: getSemiBoldStyle(
-          fontFamily: FontConstant.cairo,
-          fontSize: 16,
-          color: Theme.of(context).brightness == Brightness.dark 
-            ? TColors.white 
-            : TColors.black,
-        ),
-      ),
-      trailing: Switch(
-        value: value,
-        onChanged: onChanged,
-        activeColor: TColors.primary,
-      ),
-    );
-  }
-}
