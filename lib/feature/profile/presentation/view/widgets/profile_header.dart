@@ -10,12 +10,13 @@ class ProfileHeader extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           CircleAvatar(
+            radius: size.width * 0.10,
             child:  Image.asset(
               'assets/images/profile_image.png',
               fit: BoxFit.contain,
             ),
           ),
-          const SizedBox(height: 10),
+          const SizedBox(height: 10), 
           Text(
             'عبدالرحمن محمد',
             style: TextStyle(

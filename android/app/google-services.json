@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "875207782870",
+    "project_id": "hypermarket-b59d9",
+    "storage_bucket": "hypermarket-b59d9.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:875207782870:android:9f118c1f3c7ed9476d7477",
+        "android_client_info": {
+          "package_name": "com.example.hyper_market"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC2vvRA5EDbrJjp9bCYCmktzp2RZEFb8i4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

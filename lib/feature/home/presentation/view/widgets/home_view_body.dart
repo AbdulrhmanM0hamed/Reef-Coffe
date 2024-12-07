@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hyper_market/core/utils/animations/custom_animations.dart';
 import 'package:hyper_market/feature/home/presentation/view/widgets/best_selling_products_list_view.dart';
 import 'package:hyper_market/feature/home/presentation/view/widgets/custom_home_app_bar.dart';
 import 'package:hyper_market/feature/home/presentation/view/widgets/custom_text_field.dart';
@@ -7,8 +8,25 @@ import 'package:hyper_market/feature/home/presentation/view/widgets/groceries.da
 import 'package:hyper_market/feature/home/presentation/view/widgets/home_top_slider.dart';
 import 'package:hyper_market/feature/home/presentation/view/widgets/outline_of_products.dart';
 
-class HomeViewBody extends StatelessWidget {
+class HomeViewBody extends StatefulWidget {
   HomeViewBody({super.key});
+
+  @override
+  State<HomeViewBody> createState() => _HomeViewBodyState();
+}
+
+class _HomeViewBodyState extends State<HomeViewBody> {
+  bool _isVisible = false;
+
+  @override
+  void initState() {
+    super.initState();
+    Future.delayed(Duration(milliseconds: 100), () {
+      setState(() {
+        _isVisible = true;
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -17,39 +35,50 @@ class HomeViewBody extends StatelessWidget {
       child: SingleChildScrollView(
         child: Column(
           children: [
-            const CustomHomeAppBar(),
-            const SizedBox(
-              height: 20,
+            CustomAnimations.fadeIn(
+              duration: Duration(milliseconds: 800),
+              child: const CustomHomeAppBar(),
             ),
-            const CustomSearchTextField(),
-            const SizedBox(
-              height: 20,
+            const SizedBox(height: 20),
+            CustomAnimations.slideFromTop(
+              duration: Duration(milliseconds: 900),
+              child: const CustomSearchTextField(),
             ),
-            HomeTopSlider(),
-            const SizedBox(
-              height: 4,
+            const SizedBox(height: 20),
+            CustomAnimations.slideFromTop(
+              duration: Duration(milliseconds: 1000),
+              child: HomeTopSlider(),
             ),
-            const OutLineOfProducts(title: "عروض حصرية"),
-            const SizedBox(
-              height: 16,
+            const SizedBox(height: 4),
+            CustomAnimations.slideFromTop(
+              duration: Duration(milliseconds: 1100),
+              child: const OutLineOfProducts(title: "عروض حصرية"),
             ),
-            ExclusiveOfferSection(),
-            const SizedBox(
-              height: 16,
+            const SizedBox(height: 16),
+            CustomAnimations.slideFromRight(
+              duration: Duration(milliseconds: 1200),
+              child: ExclusiveOfferSection(),
             ),
-            const OutLineOfProducts(title: "الأكثر مبيعا"),
-            const SizedBox(
-              height: 16,
+            const SizedBox(height: 16),
+            CustomAnimations.slideFromLeft(
+              duration: Duration(milliseconds: 1300),
+              child: const OutLineOfProducts(title: "الأكثر مبيعا"),
             ),
-            BestSellingProductsListView(),
-            const SizedBox(
-              height: 16,
+            const SizedBox(height: 16),
+            CustomAnimations.slideFromRight(
+              duration: Duration(milliseconds: 1400),
+              child: BestSellingProductsListView(),
             ),
-            const OutLineOfProducts(title: " البقالة"),
-            Groceries(),
-            const SizedBox(
-              height: 16,
+            const SizedBox(height: 16),
+            CustomAnimations.slideFromLeft(
+              duration: Duration(milliseconds: 1500),
+              child: const OutLineOfProducts(title: " البقالة"),
             ),
+            CustomAnimations.slideFromRight(
+              duration: Duration(milliseconds: 1600),
+              child: Groceries(),
+            ),
+            const SizedBox(height: 16),
           ],
         ),
       ),

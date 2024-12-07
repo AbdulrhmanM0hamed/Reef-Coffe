@@ -4,8 +4,8 @@ import 'package:hyper_market/core/utils/local_storage/categories_list.dart';
 import 'package:hyper_market/feature/categories/presentation/view/widgets/category_cart.dart';
 import 'package:hyper_market/feature/home/presentation/view/widgets/custom_text_field.dart';
 
-class CategoriesViewBody extends StatelessWidget {
-  const CategoriesViewBody({super.key});
+class CategoriesViewBodyApp extends StatelessWidget {
+  const CategoriesViewBodyApp({super.key});
 
   @override
   Widget build(BuildContext context) {

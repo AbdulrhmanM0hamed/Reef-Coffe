@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hyper_market/feature/cart/presentation/cubit/cart_cubit.dart';
 import 'package:hyper_market/feature/cart/presentation/pages/cart_page.dart';
 import 'package:hyper_market/feature/categories/presentation/view/categories_view.dart';
+import 'package:hyper_market/feature/categories/presentation/view/widgets/categories_view_body.dart';
 import 'package:hyper_market/feature/home/presentation/view/widgets/bottom_nav_bar.dart';
 import 'package:hyper_market/feature/home/presentation/view/widgets/home_view_body.dart';
 import 'package:hyper_market/feature/profile/presentation/view/profile_view.dart';
@@ -47,7 +48,7 @@ class _HomeViewState extends State<HomeView> {
             },
             children: [
               HomeViewBody(),
-              CategoriesView(),
+              CategoriesViewApp(),
               CartPage(),
               ProfileView()
             ],

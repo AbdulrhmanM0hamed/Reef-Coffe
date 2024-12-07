@@ -4,8 +4,8 @@ import 'package:hyper_market/core/utils/constants/styles_manger.dart';
 import 'package:hyper_market/core/utils/constants/strings_manager.dart';
 import 'package:hyper_market/feature/categories/presentation/view/widgets/categories_view_body.dart';
 
-class CategoriesView extends StatelessWidget {
-  const CategoriesView({super.key});
+class CategoriesViewApp extends StatelessWidget {
+  const CategoriesViewApp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -14,6 +14,6 @@ class CategoriesView extends StatelessWidget {
           centerTitle: true,
           title:  Text(StringManager.products , style: getBoldStyle(fontFamily: FontConstant.cairo , fontSize: FontSize.size20),),
         ),
-        body:const CategoriesViewBody());
+        body:const CategoriesViewBodyApp());
   }
 }
