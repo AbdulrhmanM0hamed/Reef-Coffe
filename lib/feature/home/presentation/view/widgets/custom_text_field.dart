@@ -10,8 +10,7 @@ class CustomSearchTextField extends StatelessWidget {
       decoration: InputDecoration(
         hintText: "ابحث عن المنتج الذي تريده",
         prefixIcon: SizedBox(width: 20 , child: Center(child: SvgPicture.asset("assets/images/search_icon.svg"  , width: 25,))),
-     
-      suffixIcon: SizedBox(width: 20 , child: Center(child: SvgPicture.asset("assets/images/filter.svg" , width: 25,)))
+        suffixIcon: SizedBox(width: 20 , child: Center(child: SvgPicture.asset("assets/images/filter.svg" , width: 25,)))
       ),
     );
   }

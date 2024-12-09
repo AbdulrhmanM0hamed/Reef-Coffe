@@ -1,15 +1,16 @@
-
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hyper_market/core/utils/common/custom_text_form_field.dart';
 import 'package:hyper_market/core/utils/common/elvated_button.dart';
 import 'package:hyper_market/core/utils/common/password_field.dart';
+import 'package:hyper_market/feature/auth/presentation/view/controller/signup/signup_cubit.dart';
 import 'package:hyper_market/feature/auth/presentation/view/widgets/custom_check_box.dart';
 import 'package:hyper_market/feature/auth/presentation/view/widgets/hava_an_account.dart';
 import 'package:hyper_market/feature/auth/presentation/view/widgets/terms_and_condition.dart';
+import 'package:hyper_market/feature/home/presentation/view/home_view.dart';
 import 'package:hyper_market/generated/l10n.dart';
 
-
-class SignupViewBody extends StatefulWidget{
+class SignupViewBody extends StatefulWidget {
   const SignupViewBody({super.key});
 
   @override
@@ -20,7 +21,7 @@ class _SignupViewBodyState extends State<SignupViewBody> {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   AutovalidateMode autovalidateMode = AutovalidateMode.disabled;
   late String email, password, userName;
-  bool isAgreed = false; 
+  bool isAgreed = false;
 
   @override
   Widget build(BuildContext context) {
@@ -57,25 +58,27 @@ class _SignupViewBodyState extends State<SignupViewBody> {
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                 CustomCheckBox(
+                  CustomCheckBox(
                     initialValue: isAgreed,
                     onChanged: (value) {
                       setState(() {
-                        isAgreed = value ;
+                        isAgreed = value;
                       });
                     },
                   ),
-              const    TermsAndConditons(),
+                  const TermsAndConditons(),
                 ],
               ),
               SizedBox(height: screenHeight * 0.03),
               CustomElevatedButton(
                 onPressed: () {
-             //    Prefs.setBool(KIsloginSuccess, true);
+                  //    Prefs.setBool(KIsloginSuccess, true);
                   if (isAgreed) {
                     if (formKey.currentState!.validate()) {
                       formKey.currentState!.save();
-                     
+                      context
+                          .read<SignUpCubit>()
+                          .signUpWithEmail(email, password, userName);
                     } else {
                       setState(() {
                         autovalidateMode = AutovalidateMode.always;
@@ -84,8 +87,9 @@ class _SignupViewBodyState extends State<SignupViewBody> {
                   } else {
                     // عرض Snackbar إذا لم يقم المستخدم بالموافقة
                     ScaffoldMessenger.of(context).showSnackBar(
-                   const   SnackBar(
-                        content: Text('يرجى الموافقة على الشروط والأحكام قبل المتابعة.'),
+                      const SnackBar(
+                        content: Text(
+                            'يرجى الموافقة على الشروط والأحكام قبل المتابعة.'),
                         backgroundColor: Colors.red,
                       ),
                     );
@@ -93,7 +97,7 @@ class _SignupViewBodyState extends State<SignupViewBody> {
                 },
                 buttonText: "إنشاء حساب جديد",
               ),
-            const  HavaAnAccount(),
+              const HavaAnAccount(),
             ],
           ),
         ),
@@ -101,4 +105,3 @@ class _SignupViewBodyState extends State<SignupViewBody> {
     );
   }
 }
-

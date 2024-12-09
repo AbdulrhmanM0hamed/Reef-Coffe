@@ -1,9 +1,13 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hyper_market/feature/home/presentation/cubit/special_offers_cubit.dart';
+import 'package:hyper_market/feature/home/presentation/cubit/special_offers_state.dart';
 
 import 'package:hyper_market/feature/home/presentation/view/widgets/content_carsoul_cart.dart';
 import 'package:hyper_market/feature/home/presentation/view/widgets/dots_carsoul.dart';
+import 'package:hyper_market/feature/home/presentation/view/widgets/content_carsoul_cart_shimmer.dart';
 
 class HomeTopSlider extends StatefulWidget {
   HomeTopSlider({Key? key}) : super(key: key);
@@ -17,7 +21,6 @@ class _HomeTopSliderState extends State<HomeTopSlider> {
       CarouselSliderController();
   final ValueNotifier<int> _currentPageNotifier = ValueNotifier<int>(0);
 
-  // دالة لتوليد تدرج ألوان بسيطة ولكنها أكثر جاذبية
   List<Color> generateSimpleGradient() {
     final random = Random();
     return [
@@ -40,53 +43,67 @@ class _HomeTopSliderState extends State<HomeTopSlider> {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
 
-    return Column(
-      children: [
-        CarouselSlider.builder(
-          carouselController: _carouselController,
-          options: CarouselOptions(
-            height: size.height * 0.18,
-            autoPlay: true,
-            autoPlayInterval: Duration(seconds: 5),
-            autoPlayAnimationDuration: Duration(milliseconds: 900),
-            autoPlayCurve: Curves.fastOutSlowIn,
-            pauseAutoPlayOnTouch: true,
-            aspectRatio: 16 / 9,
-            viewportFraction: 1.02,
-            enlargeCenterPage: true,
-            onPageChanged: (index, reason) {
-              _currentPageNotifier.value = index; // تحديث الصفحة الحالية
-            },
-          ),
-          itemCount: 3,
-          itemBuilder: (context, index, realIndex) {
-            final gradient = generateSimpleGradient();
-            return Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8),
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(16),
-                  gradient: LinearGradient(
-                    colors: gradient,
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                  ),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.05),
-                      blurRadius: 10,
-                      spreadRadius: 2,
-                      offset: const Offset(0, 4),
-                    ),
-                  ],
+    return BlocBuilder<SpecialOffersCubit, SpecialOffersState>(
+      builder: (context, state) {
+        if (state is SpecialOffersLoaded) {
+          return Column(
+            children: [
+              CarouselSlider.builder(
+                carouselController: _carouselController,
+                options: CarouselOptions(
+                  height: size.height * 0.18,
+                  autoPlay: true,
+                  autoPlayInterval: const Duration(seconds: 5),
+                  autoPlayAnimationDuration: const Duration(milliseconds: 900),
+                  autoPlayCurve: Curves.fastOutSlowIn,
+                  pauseAutoPlayOnTouch: true,
+                  viewportFraction: 0.80,
+                  enlargeCenterPage: true,
+                  onPageChanged: (index, reason) {
+                    _currentPageNotifier.value = index; // تحديث الصفحة الحالية
+                  },
                 ),
-                child: ContentOfCarsoulCart(size: size),
+                itemCount: state.offers.length,
+                itemBuilder: (context, index, realIndex) {
+                  final gradient = generateSimpleGradient();
+                  return Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(16),
+                      gradient: LinearGradient(
+                        colors: gradient,
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                      ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.05),
+                          blurRadius: 10,
+                          spreadRadius: 2,
+                          offset: const Offset(0, 4),
+                        ),
+                      ],
+                    ),
+                    child: ContentOfCarsoulCart(
+                      size: size,
+                      offer: state.offers[index],
+                      gradientColors: generateSimpleGradient(),
+                    ),
+                  );
+                },
               ),
-            );
-          },
-        ),
-        DotOfCorsoul(currentPageNotifier: _currentPageNotifier, size: size),
-      ],
+              DotOfCorsoul(
+                currentPageNotifier: _currentPageNotifier,
+                size: size,
+                count: state.offers.length,
+              ),
+            ],
+          );
+        } else if (state is SpecialOffersError) {
+          return Center(child: Text(state.message));
+        } else {
+          return OfferCardShimmer(size: size);
+        }
+      },
     );
   }
 }

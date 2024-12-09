@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hyper_market/core/utils/common/custom_text_form_field.dart';
 import 'package:hyper_market/core/utils/common/elvated_button.dart';
 import 'package:hyper_market/core/utils/common/password_field.dart';
@@ -6,6 +7,7 @@ import 'package:hyper_market/core/utils/constants/assets.dart';
 import 'package:hyper_market/core/utils/constants/colors.dart';
 import 'package:hyper_market/core/utils/constants/font_manger.dart';
 import 'package:hyper_market/core/utils/constants/styles_manger.dart';
+import 'package:hyper_market/feature/auth/presentation/view/controller/signin/signin_cubit.dart';
 import 'package:hyper_market/feature/auth/presentation/view/widgets/custom_divider.dart';
 import 'package:hyper_market/feature/auth/presentation/view/widgets/dont_have_account.dart';
 import 'package:hyper_market/feature/auth/presentation/view/widgets/socail_button.dart';
@@ -91,8 +93,10 @@ class _SigninViewBodyState extends State<SigninViewBody> {
                   onPressed: () {
                     if (formKey.currentState!.validate()) {
                       formKey.currentState!.save();
-                      Navigator.pushReplacementNamed(
-                          context, HomeView.routeName);
+                      context.read<SignInCubit>().signInWithEmail(
+                            email,
+                            password,
+                          );
                     } else {
                       autovalidateMode = AutovalidateMode.always;
                       setState(() {});

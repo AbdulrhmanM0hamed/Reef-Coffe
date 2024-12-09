@@ -13,6 +13,8 @@ class FontWeightManger {
 }
 
 class FontSize {
+    static const double size10 = 10.0;
+
   static const double size12 = 12.0;
   static const double size13 = 13.0;
   static const double size14 = 14.0;

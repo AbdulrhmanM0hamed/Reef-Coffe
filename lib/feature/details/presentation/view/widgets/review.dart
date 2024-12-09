@@ -2,17 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:hyper_market/core/utils/constants/colors.dart';
 import 'package:hyper_market/core/utils/constants/font_manger.dart';
 import 'package:hyper_market/core/utils/constants/styles_manger.dart';
+import 'package:hyper_market/feature/products/domain/entities/product.dart';
 
 class ReviewsWidget extends StatelessWidget {
+  final Product product;
+
   const ReviewsWidget({
     super.key,
-    required this.sizeWidth,
+    required this.product,
   });
-
-  final double sizeWidth;
 
   @override
   Widget build(BuildContext context) {
+    final sizeWidth = MediaQuery.of(context).size.width;
     return Row(
       children: [
         Icon(
@@ -23,7 +25,7 @@ class ReviewsWidget extends StatelessWidget {
         SizedBox(
             width: sizeWidth * 0.025), // استخدام 2.5% من عرض الشاشة
         Text(
-          "4.5",
+          product.rating.toString(),
           style: getSemiBoldStyle(
               fontFamily: FontConstant.cairo,
               fontSize: sizeWidth * 0.04),
@@ -31,7 +33,7 @@ class ReviewsWidget extends StatelessWidget {
         SizedBox(
             width: sizeWidth * 0.025), // استخدام 2.5% من عرض الشاشة
         Text(
-          "(+30)",
+          "(${product.ratingCount})",
           style: getRegularStyle(
               fontFamily: FontConstant.cairo,
               fontSize: sizeWidth * 0.04,

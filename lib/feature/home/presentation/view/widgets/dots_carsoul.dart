@@ -7,10 +7,12 @@ class DotOfCorsoul extends StatelessWidget {
     super.key,
     required ValueNotifier<int> currentPageNotifier,
     required this.size,
+    required this.count,
   }) : _currentPageNotifier = currentPageNotifier;
 
   final ValueNotifier<int> _currentPageNotifier;
   final Size size;
+  final int count;
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +23,7 @@ class DotOfCorsoul extends StatelessWidget {
           padding: EdgeInsets.only(top: size.height * 0.01),
           child: SmoothPageIndicator(
             controller: PageController(initialPage: currentPage),
-            count: 3,
+            count: count,
             effect: const WormEffect(
               activeDotColor: TColors.secondary,
               dotHeight: 8,

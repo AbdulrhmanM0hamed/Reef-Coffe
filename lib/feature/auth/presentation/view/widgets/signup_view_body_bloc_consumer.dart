@@ -1,40 +1,35 @@
-// import 'package:e_commerce/core/helpers_functions/build_error_method.dart';
-// import 'package:e_commerce/core/utils/constants/colors.dart';
-// import 'package:e_commerce/features/home/presentation/view/home_view.dart';
-// import 'package:flutter/material.dart';
-// import 'package:flutter_bloc/flutter_bloc.dart';
-// import 'package:e_commerce/features/auth/presentation/view/controller/signup_cubit/sign_up_cubit.dart';
-// import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
-// import 'signup_view_body.dart'; // Ensure the correct path is imported
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hyper_market/core/utils/helper/error_message_helper.dart';
+import 'package:hyper_market/feature/auth/presentation/view/controller/signup/signup_cubit.dart';
+import 'package:hyper_market/feature/auth/presentation/view/signin_view.dart';
+import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
+import 'signup_view_body.dart';
 
-// class SignUpViewBodyBlocConsumer extends StatelessWidget {
-//   const SignUpViewBodyBlocConsumer({super.key});
+class SignUpViewBodyBlocConsumer extends StatelessWidget {
+  const SignUpViewBodyBlocConsumer({super.key});
 
-//   @override
-//   Widget build(BuildContext context) {
-//     return BlocConsumer<SignUpCubit, SignUpState>(
-//       listener: (context, state) {
-//         if (state is SignUpFailureState) {
-//           buildErroMessage(context, state.errorMessage);
-//         }
-//         if (state is SignUpSuccesState) {
-//           Navigator.pushNamed(context, HomeView.routeName);
-//           ScaffoldMessenger.of(context).showSnackBar(
-//           const  SnackBar(
-//               backgroundColor: TColors.success,
-//               content: Text('تم التسجيل بنجاح'),
-//             ),
-//           );
-//         }
-       
-//       },
-//       builder: (context, state) {
-//         return ModalProgressHUD( 
-//           inAsyncCall: state is SignUpLoadingState ? true : false,
-//            child:const SignupViewBody()); 
-//       },
-//     );
-//   }
-
-
-// }
+  @override
+  Widget build(BuildContext context) {
+    return BlocConsumer<SignUpCubit, SignUpState>(
+      listener: (context, state) {
+        if (state is SignUpSuccessState) {
+          Navigator.pushNamedAndRemoveUntil(
+              context, SigninView.routeName, (route) => false);
+          showSuccessSnackBar(
+            context,
+            'تم إنشاء الحساب بنجاح. يرجى تفعيل بريدك الإلكتروني للمتابعة',
+          );
+        }
+        if (state is SignUpErrorState) {
+          showErrorSnackBar(context, state.message);
+        }
+      },
+      builder: (context, state) {
+        return ModalProgressHUD(
+            inAsyncCall: state is SignUpLoadingState ? true : false,
+            child: const SignupViewBody());
+      },
+    );
+  }
+}

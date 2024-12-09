@@ -33,7 +33,7 @@ class NotificationRepositoryImpl implements NotificationRepository {
       ];
       return Right(notifications);
     } catch (e) {
-      return Left(ServerFailure(errMessage: e.toString()));
+      return Left(ServerFailure(message: e.toString()));
     }
   }
 
@@ -42,7 +42,7 @@ class NotificationRepositoryImpl implements NotificationRepository {
     try {
       return const Right(null);
     } catch (e) {
-      return Left(ServerFailure(errMessage: e.toString()));
+      return Left(ServerFailure(message: e.toString()));
     }
   }
 
@@ -51,7 +51,7 @@ class NotificationRepositoryImpl implements NotificationRepository {
     try {
       return const Right(null);
     } catch (e) {
-      return Left(ServerFailure(errMessage: e.toString()));
+      return Left(ServerFailure(message: e.toString()));
     }
   }
 }
