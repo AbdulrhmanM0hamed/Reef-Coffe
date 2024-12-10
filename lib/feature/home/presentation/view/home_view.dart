@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hyper_market/core/services/service_locator.dart';
 import 'package:hyper_market/feature/cart/presentation/cubit/cart_cubit.dart';
 import 'package:hyper_market/feature/cart/presentation/pages/cart_page.dart';
 import 'package:hyper_market/feature/categories/presentation/view/categories_view.dart';
+import 'package:hyper_market/feature/home/presentation/cubit/user_cubit.dart';
 import 'package:hyper_market/feature/home/presentation/view/widgets/bottom_nav_bar.dart';
 import 'package:hyper_market/feature/home/presentation/view/widgets/home_view_body.dart';
 import 'package:hyper_market/feature/profile/presentation/view/profile_view.dart';
@@ -22,8 +24,13 @@ class _HomeViewState extends State<HomeView> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => CartCubit(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (context) => CartCubit()),
+        BlocProvider(
+          create: (context) => UserCubit(authRepository: getIt())..getCurrentUserName(),
+        ),
+      ],
       child: Scaffold(
         bottomNavigationBar: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 6),
@@ -46,7 +53,14 @@ class _HomeViewState extends State<HomeView> {
               });
             },
             children: [
-              HomeViewBody(),
+              BlocBuilder<UserCubit, UserState>(
+                builder: (context, state) {
+                  if (state is UserLoadedState) {
+                    return HomeViewBody(userName: state.name);
+                  }
+                  return HomeViewBody(userName: 'زائر');
+                },
+              ),
               CategoriesViewApp(),
               CartPage(),
               ProfileView()

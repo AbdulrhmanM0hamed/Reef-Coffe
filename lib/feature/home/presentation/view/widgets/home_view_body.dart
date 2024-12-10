@@ -12,7 +12,8 @@ import 'package:hyper_market/feature/home/presentation/view/widgets/home_top_sli
 import 'package:hyper_market/feature/home/presentation/view/widgets/outline_of_products.dart';
 
 class HomeViewBody extends StatefulWidget {
-  HomeViewBody({super.key});
+  final String userName;
+  HomeViewBody({super.key, required this.userName});
 
   @override
   State<HomeViewBody> createState() => _HomeViewBodyState();
@@ -40,7 +41,7 @@ class _HomeViewBodyState extends State<HomeViewBody> {
           children: [
             CustomAnimations.fadeIn(
               duration: const Duration(milliseconds: 800),
-              child: const CustomHomeAppBar(),
+              child: CustomHomeAppBar(userName: widget.userName),
             ),
             const SizedBox(height: 20),
             CustomAnimations.slideFromTop(

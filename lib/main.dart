@@ -1,4 +1,6 @@
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hyper_market/core/services/local_storage/local_storage_service.dart';
 import 'package:hyper_market/core/services/service_locator.dart';
@@ -10,6 +12,17 @@ import 'package:hyper_market/generated/l10n.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  
+  // Initialize Facebook Auth for Web if platform is web
+  if (kIsWeb) {
+    await FacebookAuth.instance.webAndDesktopInitialize(
+      appId: "1217744842655597",
+      cookie: true,
+      xfbml: true,
+      version: "v15.0",
+    );
+  }
+  
   setupServiceLocator();
   
   await getIt<SupabaseService>().initialize(

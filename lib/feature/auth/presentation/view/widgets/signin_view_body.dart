@@ -7,11 +7,10 @@ import 'package:hyper_market/core/utils/constants/assets.dart';
 import 'package:hyper_market/core/utils/constants/colors.dart';
 import 'package:hyper_market/core/utils/constants/font_manger.dart';
 import 'package:hyper_market/core/utils/constants/styles_manger.dart';
-import 'package:hyper_market/feature/auth/presentation/view/controller/signin/signin_cubit.dart';
+import 'package:hyper_market/feature/auth/presentation/controller/signin/signin_cubit.dart';
 import 'package:hyper_market/feature/auth/presentation/view/widgets/custom_divider.dart';
 import 'package:hyper_market/feature/auth/presentation/view/widgets/dont_have_account.dart';
 import 'package:hyper_market/feature/auth/presentation/view/widgets/socail_button.dart';
-import 'package:hyper_market/feature/home/presentation/view/home_view.dart';
 import 'package:hyper_market/core/utils/animations/custom_animations.dart';
 import '../../../../../generated/l10n.dart';
 
@@ -115,13 +114,17 @@ class _SigninViewBodyState extends State<SigninViewBody> {
                 child: Column(
                   children: [
                     SocialButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        context.read<SignInCubit>().signInWithGoogle();
+                      },
                       iconPath: AssetsManager.googleIcon,
                       buttonText: "تسجيل بواسطة Google",
                     ),
                     SizedBox(height: size.height * 0.015),
                     SocialButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        context.read<SignInCubit>().signInWithFacebook();
+                      },
                       iconPath: AssetsManager.facebookIcon,
                       buttonText: "تسجيل بواسطة Facebook",
                     ),

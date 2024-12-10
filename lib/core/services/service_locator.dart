@@ -4,8 +4,8 @@ import 'package:hyper_market/core/services/local_storage/local_storage_service.d
 import 'package:hyper_market/feature/auth/data/datasources/auth_remote_data_source.dart';
 import 'package:hyper_market/feature/auth/data/repositories/auth_repository_impl.dart';
 import 'package:hyper_market/feature/auth/domain/repositories/auth_repository.dart';
-import 'package:hyper_market/feature/auth/presentation/view/controller/signin/signin_cubit.dart';
-import 'package:hyper_market/feature/auth/presentation/view/controller/signup/signup_cubit.dart';
+import 'package:hyper_market/feature/auth/presentation/controller/signin/signin_cubit.dart';
+import 'package:hyper_market/feature/auth/presentation/controller/signup/signup_cubit.dart';
 import 'package:hyper_market/feature/categories/data/datasources/category_remote_data_source.dart';
 import 'package:hyper_market/feature/categories/data/repositories/category_repository_impl.dart';
 import 'package:hyper_market/feature/categories/domain/repositories/category_repository.dart';

@@ -3,8 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hyper_market/core/utils/common/cusom_progress_hud.dart';
 import 'package:hyper_market/core/utils/constants/colors.dart';
 import 'package:hyper_market/core/utils/helper/error_message_helper.dart';
-import 'package:hyper_market/feature/auth/presentation/view/controller/signin/signin_cubit.dart';
-import 'package:hyper_market/feature/auth/presentation/view/signin_view.dart';
+import 'package:hyper_market/feature/auth/presentation/controller/signin/signin_cubit.dart';
 import 'package:hyper_market/feature/auth/presentation/view/widgets/signin_view_body.dart';
 import 'package:hyper_market/feature/home/presentation/view/home_view.dart';
 

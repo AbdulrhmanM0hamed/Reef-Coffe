@@ -1,7 +1,8 @@
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hyper_market/core/utils/helper/error_message_helper.dart';
-import 'package:hyper_market/feature/auth/presentation/view/controller/signup/signup_cubit.dart';
+import 'package:hyper_market/feature/auth/presentation/controller/signup/signup_cubit.dart';
 import 'package:hyper_market/feature/auth/presentation/view/signin_view.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'signup_view_body.dart';

@@ -82,6 +82,26 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
+  Future<Either<Failure, String?>> getCurrentUserName() async {
+    try {
+      final name = await remoteDataSource.getCurrentUserName();
+      return Right(name);
+    } on CustomException catch (e) {
+      return Left(ServerFailure(message: e.message));
+    }
+  }
+
+  @override
+  Future<Either<Failure, bool>> isEmailRegistered(String email) async {
+    try {
+      final exists = await remoteDataSource.isEmailRegistered(email);
+      return Right(exists);
+    } on CustomException catch (e) {
+      return Left(ServerFailure(message: e.message));
+    }
+  }
+
+  @override
   Future<Either<Failure, void>> resetPassword(String email) async {
     try {
       await remoteDataSource.resetPassword(email);

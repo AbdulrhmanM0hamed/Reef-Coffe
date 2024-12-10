@@ -6,7 +6,8 @@ import 'package:hyper_market/core/utils/constants/styles_manger.dart';
 import 'package:hyper_market/feature/notifications/presentation/view/notifications_view.dart';
 
 class CustomHomeAppBar extends StatelessWidget {
-  const CustomHomeAppBar({super.key});
+  final String userName;
+  const CustomHomeAppBar({super.key, required this.userName});
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +24,7 @@ class CustomHomeAppBar extends StatelessWidget {
                 color: TColors.darkGrey),
           ),
           Text(
-            "عبدالرحمن محمد",
+            userName,
             style: getBoldStyle(
               fontFamily: FontConstant.cairo,
               fontSize: 18,

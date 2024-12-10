@@ -15,6 +15,8 @@ abstract class AuthRepository {
     required String name,
   });
 
+  Future<Either<Failure, bool>> isEmailRegistered(String email);
+
   Future<Either<Failure, UserEntity>> signInWithGoogle();
 
   Future<Either<Failure, UserEntity>> signInWithFacebook();
@@ -24,4 +26,6 @@ abstract class AuthRepository {
   Future<Either<Failure, UserEntity?>> getCurrentUser();
 
   Future<Either<Failure, void>> resetPassword(String email);
+  
+  Future<Either<Failure, String?>> getCurrentUserName();
 }
