@@ -11,13 +11,17 @@ class SignUpCubit extends Cubit<SignUpState> {
   SignUpCubit({required this.authRepository}) : super(SignUpInitialState());
 
   Future<void> signUpWithEmail(
-      String email, String password, String name) async {
+    String email,
+    String password,
+    String name,
+    String phoneNumber,
+  ) async {
     emit(SignUpLoadingState());
 
     try {
       // Check if email exists
       final emailExistsResult = await authRepository.isEmailRegistered(email);
-      
+
       final bool exists = await emailExistsResult.fold(
         (failure) => throw failure,
         (exists) => exists,
@@ -29,7 +33,11 @@ class SignUpCubit extends Cubit<SignUpState> {
       }
 
       final result = await authRepository.signUpWithEmail(
-          email: email, password: password, name: name);
+        email: email,
+        password: password,
+        name: name,
+        phoneNumber: phoneNumber,
+      );
 
       result.fold(
         (failure) => emit(SignUpErrorState(failure.message)),

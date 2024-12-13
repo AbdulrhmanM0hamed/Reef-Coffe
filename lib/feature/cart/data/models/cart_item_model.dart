@@ -2,7 +2,7 @@ class CartItem {
   final String id;
   final String productId;
   final String name;
-  final double price;
+  final double? price;
   final String image;
   int quantity;
 
@@ -16,7 +16,7 @@ class CartItem {
   });
 
   double getTotal() {
-    return price * quantity;
+    return price! * quantity;
   }
 
   CartItem copyWith({

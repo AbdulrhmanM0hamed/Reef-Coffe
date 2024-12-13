@@ -13,6 +13,7 @@ abstract class AuthRepository {
     required String email,
     required String password,
     required String name,
+    required String phoneNumber,
   });
 
   Future<Either<Failure, bool>> isEmailRegistered(String email);
@@ -28,4 +29,8 @@ abstract class AuthRepository {
   Future<Either<Failure, void>> resetPassword(String email);
   
   Future<Either<Failure, String?>> getCurrentUserName();
+  Future<Either<Failure, String?>> getUserPhoneNumber(String email);
+  Future<Either<Failure, void>> verifyPhoneNumber(String phoneNumber);
+  Future<bool> verifyOTP(String phoneNumber, String otp);
+Future<void> sendOTP(String phoneNumber);
 }

@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:hyper_market/feature/auth/presentation/view/forget_password.dart';
 import 'package:hyper_market/feature/auth/presentation/view/signin_view.dart';
 import 'package:hyper_market/feature/auth/presentation/view/signup_view.dart';
 import 'package:hyper_market/feature/details/presentation/view/details_view.dart';
 import 'package:hyper_market/feature/home/presentation/view/home_view.dart';
 import 'package:hyper_market/feature/onBoarding/presentation/view/on_bordaing_view.dart';
+import 'package:hyper_market/feature/orders/presentation/view/orders_view.dart';
 import 'package:hyper_market/feature/splash/view/splash_view.dart';
 import 'package:hyper_market/feature/products/domain/entities/product.dart';
 
@@ -35,6 +37,14 @@ Route<dynamic> onGenratedRoutes(RouteSettings settings) {
     case HomeView.routeName:
       return MaterialPageRoute(
         builder: (context) => const HomeView(),
+      );
+    case ForgotPasswordView.routeName:
+      return MaterialPageRoute(
+        builder: (context) => const ForgotPasswordView(),
+      );
+    case OrdersView.routeName:
+      return MaterialPageRoute(
+        builder: (context) => const OrdersView(),
       );
     default:
       return MaterialPageRoute(

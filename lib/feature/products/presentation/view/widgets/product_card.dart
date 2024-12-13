@@ -1,9 +1,13 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hyper_market/core/utils/constants/colors.dart';
 import 'package:hyper_market/core/utils/constants/font_manger.dart';
 import 'package:hyper_market/core/utils/constants/styles_manger.dart';
+import 'package:hyper_market/feature/cart/data/models/cart_item_model.dart';
+import 'package:hyper_market/feature/cart/presentation/cubit/cart_cubit.dart';
 import 'package:hyper_market/feature/details/presentation/view/details_view.dart';
+import 'package:hyper_market/feature/products/presentation/view/widgets/add_product_snackbar.dart';
 import 'package:page_transition/page_transition.dart';
 import '../../../domain/entities/product.dart';
 
@@ -14,9 +18,9 @@ class ProductCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size; // الحصول على حجم الشاشة
-    final isSmallScreen = size.width < 360; // تحديد إذا كان الجهاز صغيرًا
-    final double responsivePadding = size.width * 0.03; // حشوة تعتمد على العرض
+    final size = MediaQuery.of(context).size;
+    final isSmallScreen = size.width < 360;
+    final double responsivePadding = size.width * 0.03;
 
     return GestureDetector(
       onTap: () {
@@ -25,8 +29,8 @@ class ProductCard extends StatelessWidget {
           PageTransition(
             type: PageTransitionType.fade,
             child: DetailsView(product: product),
-            duration: const Duration(milliseconds: 300), // مدة الانتقال
-            reverseDuration: const Duration(milliseconds: 250), // مدة العودة
+            duration: const Duration(milliseconds: 300),
+            reverseDuration: const Duration(milliseconds: 250),
           ),
         );
       },
@@ -42,7 +46,6 @@ class ProductCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // **Product Image Section** (Responsive)
             Expanded(
               flex: 5,
               child: Container(
@@ -66,8 +69,6 @@ class ProductCard extends StatelessWidget {
                 ),
               ),
             ),
-
-            // **Product Details Section**
             Expanded(
               flex: 4,
               child: Padding(
@@ -75,7 +76,6 @@ class ProductCard extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Product Name and Discount Tag
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -95,7 +95,7 @@ class ProductCard extends StatelessWidget {
                         if (product.hasDiscount)
                           Container(
                             padding: EdgeInsets.symmetric(
-                              horizontal: size.width * 0.015, // Dynamic padding
+                              horizontal: size.width * 0.015,
                               vertical: size.height * 0.005,
                             ),
                             decoration: BoxDecoration(
@@ -118,8 +118,6 @@ class ProductCard extends StatelessWidget {
                       ],
                     ),
                     const SizedBox(height: 8),
-
-                    // **Price Section**
                     if (product.hasDiscount)
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.end,
@@ -136,7 +134,7 @@ class ProductCard extends StatelessWidget {
                           ),
                           const SizedBox(width: 4),
                           Text(
-                            '${product.price.toStringAsFixed(2)}',
+                            '${product.price}',
                             style: TextStyle(
                               fontFamily: FontConstant.cairo,
                               fontSize: FontSize.size14,
@@ -153,18 +151,14 @@ class ProductCard extends StatelessWidget {
                         '${product.price.toStringAsFixed(2)} EGP',
                         style: getBoldStyle(
                           fontFamily: FontConstant.cairo,
-                          fontSize: isSmallScreen
-                              ? FontSize.size12
-                              : FontSize.size16,
+                          fontSize:
+                              isSmallScreen ? FontSize.size12 : FontSize.size16,
                         ),
                       ),
                     const SizedBox(height: 8),
-
-                    // **Organic Tag + Add to Cart Button**
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        // Organic or Empty Placeholder
                         if (product.isOrganic)
                           Container(
                             padding: EdgeInsets.symmetric(
@@ -199,12 +193,26 @@ class ProductCard extends StatelessWidget {
                             ),
                           )
                         else
-                          const SizedBox.shrink(), // Empty Placeholder
-
-                        // Add to Cart (Always Fixed)
+                          const SizedBox.shrink(),
                         InkWell(
                           onTap: () {
-                            // TODO: Add to cart functionality
+                            final cartItem = CartItem(
+                              id: product.id!,
+                              productId: product.id!,
+                              name: product.name,
+                              price: product.discountPrice ==  0.0 ? product.price : product.discountPrice, 
+                              image: product.imageUrl!,
+                            );
+
+
+                            context.read<CartCubit>().addItem(cartItem);
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: AddProductSnackbar(product: product),
+                                backgroundColor: TColors.primary,
+                                duration: const Duration(seconds: 1),
+                              ),
+                            );
                           },
                           child: Container(
                             padding: EdgeInsets.symmetric(

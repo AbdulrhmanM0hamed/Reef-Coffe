@@ -6,9 +6,16 @@ import 'package:hyper_market/feature/auth/data/repositories/auth_repository_impl
 import 'package:hyper_market/feature/auth/domain/repositories/auth_repository.dart';
 import 'package:hyper_market/feature/auth/presentation/controller/signin/signin_cubit.dart';
 import 'package:hyper_market/feature/auth/presentation/controller/signup/signup_cubit.dart';
+import 'package:hyper_market/feature/cart/presentation/cubit/cart_cubit.dart';
 import 'package:hyper_market/feature/categories/data/datasources/category_remote_data_source.dart';
 import 'package:hyper_market/feature/categories/data/repositories/category_repository_impl.dart';
 import 'package:hyper_market/feature/categories/domain/repositories/category_repository.dart';
+import 'package:hyper_market/feature/orders/data/datasources/order_remote_data_source.dart';
+import 'package:hyper_market/feature/orders/data/repositories/order_repository_impl.dart';
+import 'package:hyper_market/feature/orders/domain/repositories/order_repository.dart';
+import 'package:hyper_market/feature/orders/domain/usecases/create_order_usecase.dart';
+import 'package:hyper_market/feature/orders/domain/usecases/get_orders_usecase.dart';
+import 'package:hyper_market/feature/orders/presentation/cubit/orders_cubit.dart';
 import 'package:hyper_market/feature/products/data/datasources/product_remote_data_source.dart';
 import 'package:hyper_market/feature/products/data/repositories/product_repository_impl.dart';
 import 'package:hyper_market/feature/products/domain/repositories/product_repository.dart';
@@ -77,5 +84,32 @@ void setupServiceLocator() {
   );
   getIt.registerLazySingleton<SignUpCubit>(
     () => SignUpCubit(authRepository: getIt<AuthRepository>()),
+  );
+  getIt.registerLazySingleton<CartCubit>(
+    () => CartCubit(),
+  );
+
+  // Orders Feature
+  getIt.registerLazySingleton<OrdersCubit>(
+    () => OrdersCubit(
+      getOrdersUseCase: getIt<GetOrderUseCase>(),
+      createOrderUseCase: getIt<CreateOrderUseCase>(),
+    ),
+  );
+
+  getIt.registerLazySingleton(() => GetOrderUseCase(getIt<OrderRepository>()));
+  getIt.registerLazySingleton(
+      () => CreateOrderUseCase(getIt<OrderRepository>()));
+
+  getIt.registerLazySingleton<OrderRepository>(
+    () => OrderRepositoryImpl(
+      remoteDataSource: getIt<OrderRemoteDataSource>(),
+    ),
+  );
+
+  getIt.registerLazySingleton<OrderRemoteDataSource>(
+    () => OrderRemoteDataSourceImpl(
+      supabaseClient: getIt<SupabaseService>().client,
+    ),
   );
 }

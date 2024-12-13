@@ -25,7 +25,6 @@ class ProductCardShimmer extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Image placeholder
             Expanded(
               flex: 2,
               child: Container(
@@ -35,7 +34,6 @@ class ProductCardShimmer extends StatelessWidget {
                 ),
               ),
             ),
-            // Content
             Expanded(
               flex: 1,
               child: Padding(
@@ -44,7 +42,6 @@ class ProductCardShimmer extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    // Title placeholder
                     Container(
                       width: double.infinity,
                       height: 16,
@@ -54,7 +51,6 @@ class ProductCardShimmer extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 8),
-                    // Price placeholder
                     Container(
                       width: 80,
                       height: 14,

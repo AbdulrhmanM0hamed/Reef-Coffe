@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hyper_market/core/services/service_locator.dart';
 import 'package:hyper_market/core/utils/constants/colors.dart';
 import 'package:hyper_market/core/utils/constants/font_manger.dart';
 import 'package:hyper_market/core/utils/constants/styles_manger.dart';
+import 'package:hyper_market/feature/orders/presentation/cubit/orders_cubit.dart';
+import 'package:hyper_market/feature/orders/presentation/view/orders_view.dart';
 import 'package:hyper_market/feature/profile/presentation/view/widgets/profiel_menu_switch.dart';
 import 'package:hyper_market/feature/profile/presentation/view/widgets/profile_header.dart';
 import 'package:hyper_market/feature/profile/presentation/view/widgets/profile_menu_item.dart';
@@ -19,13 +23,22 @@ class ProfileViewBody extends StatelessWidget {
             // Profile Header
             const ProfileHeader(),
             const SizedBox(height: 24),
-            
+
             // Profile Menu Items
+            // في profile_view_body.dart
             ProfileMenuItem(
               icon: Icons.shopping_bag_outlined,
               title: 'طلباتي',
               onTap: () {
-                // Navigate to orders
+                final ordersCubit = getIt<OrdersCubit>();
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => BlocProvider.value(
+                      value: ordersCubit..getOrders(),
+                      child: const OrdersView(),
+                    ),
+                  ),
+                );
               },
             ),
             ProfileMenuItem(
@@ -73,7 +86,7 @@ class ProfileViewBody extends StatelessWidget {
               },
             ),
             const SizedBox(height: 24),
-            
+
             // Logout Button
             SizedBox(
               width: double.infinity,
@@ -81,7 +94,10 @@ class ProfileViewBody extends StatelessWidget {
                 onPressed: () {
                   // Handle logout
                 },
-                icon: const Icon(Icons.logout, color: TColors.darkGrey,),
+                icon: const Icon(
+                  Icons.logout,
+                  color: TColors.darkGrey,
+                ),
                 label: Text(
                   'تسجيل الخروج',
                   style: getSemiBoldStyle(
@@ -91,7 +107,8 @@ class ProfileViewBody extends StatelessWidget {
                   ),
                 ),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color.fromARGB(255, 4, 243, 56).withOpacity(0.1),
+                  backgroundColor:
+                      const Color.fromARGB(255, 4, 243, 56).withOpacity(0.1),
                   padding: const EdgeInsets.symmetric(vertical: 12),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8),
@@ -105,7 +122,3 @@ class ProfileViewBody extends StatelessWidget {
     );
   }
 }
-
-
-
-

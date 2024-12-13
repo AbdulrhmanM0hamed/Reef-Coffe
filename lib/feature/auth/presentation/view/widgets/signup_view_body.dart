@@ -5,6 +5,7 @@ import 'package:hyper_market/core/utils/common/elvated_button.dart';
 import 'package:hyper_market/core/utils/common/password_field.dart';
 import 'package:hyper_market/feature/auth/presentation/controller/signup/signup_cubit.dart';
 import 'package:hyper_market/feature/auth/presentation/view/widgets/custom_check_box.dart';
+import 'package:hyper_market/feature/auth/presentation/view/widgets/custom_phone_field.dart';
 import 'package:hyper_market/feature/auth/presentation/view/widgets/hava_an_account.dart';
 import 'package:hyper_market/feature/auth/presentation/view/widgets/terms_and_condition.dart';
 import 'package:hyper_market/generated/l10n.dart';
@@ -19,7 +20,7 @@ class SignupViewBody extends StatefulWidget {
 class _SignupViewBodyState extends State<SignupViewBody> {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   AutovalidateMode autovalidateMode = AutovalidateMode.disabled;
-  late String email, password, userName;
+  late String email, password, userName, phoneNumber;
   bool isAgreed = false;
 
   @override
@@ -50,6 +51,11 @@ class _SignupViewBodyState extends State<SignupViewBody> {
                 suffixIcon: const Icon(Icons.email),
               ),
               SizedBox(height: screenHeight * 0.02),
+              CustomPhoneField(
+            
+                onSaved: (value) => phoneNumber = value!,
+              ),
+              SizedBox(height: screenHeight * 0.02),
               PasswordField(
                 onSaved: (value) => password = value!,
               ),
@@ -77,7 +83,7 @@ class _SignupViewBodyState extends State<SignupViewBody> {
                       formKey.currentState!.save();
                       context
                           .read<SignUpCubit>()
-                          .signUpWithEmail(email, password, userName);
+                          .signUpWithEmail(email, password, userName, phoneNumber);
                     } else {
                       setState(() {
                         autovalidateMode = AutovalidateMode.always;

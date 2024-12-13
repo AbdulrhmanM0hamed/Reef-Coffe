@@ -43,7 +43,7 @@ class ProductsCubit extends Cubit<ProductsState> {
 
     final filteredProducts = _allProducts.where((product) {
       final name = product.name.toLowerCase();
-      final description = product.description.toLowerCase() ?? '';
+      final description = product.description.toLowerCase();
       return name.contains(_currentQuery) || description.contains(_currentQuery);
     }).toList();
 

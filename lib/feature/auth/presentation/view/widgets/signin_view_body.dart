@@ -8,6 +8,7 @@ import 'package:hyper_market/core/utils/constants/colors.dart';
 import 'package:hyper_market/core/utils/constants/font_manger.dart';
 import 'package:hyper_market/core/utils/constants/styles_manger.dart';
 import 'package:hyper_market/feature/auth/presentation/controller/signin/signin_cubit.dart';
+import 'package:hyper_market/feature/auth/presentation/view/forget_password.dart';
 import 'package:hyper_market/feature/auth/presentation/view/widgets/custom_divider.dart';
 import 'package:hyper_market/feature/auth/presentation/view/widgets/dont_have_account.dart';
 import 'package:hyper_market/feature/auth/presentation/view/widgets/socail_button.dart';
@@ -73,7 +74,12 @@ class _SigninViewBodyState extends State<SigninViewBody> {
               CustomAnimations.fadeIn(
                 duration: Duration(milliseconds: 1000),
                 child: TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.pushNamed(
+                      context,
+                      ForgotPasswordView.routeName,
+                    );
+                  },
                   child: Text(
                     "نسيت كلمة المرور؟",
                     style: getMediumStyle(

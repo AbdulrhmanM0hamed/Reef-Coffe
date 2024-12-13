@@ -29,10 +29,15 @@ class AuthRepositoryImpl implements AuthRepository {
     required String email,
     required String password,
     required String name,
+    required String phoneNumber,
   }) async {
     try {
-      final user =
-          await remoteDataSource.signUpWithEmail(email, password, name);
+      final user = await remoteDataSource.signUpWithEmail(
+        email,
+        password,
+        name,
+        phoneNumber,
+      );
       return Right(UserModel.fromSupabaseUser(user));
     } on CustomException catch (e) {
       return Left(ServerFailure(message: e.message));
@@ -92,6 +97,26 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
+  Future<Either<Failure, String?>> getUserPhoneNumber(String email) async {
+    try {
+      final phoneNumber = await remoteDataSource.getUserPhoneNumber(email);
+      return Right(phoneNumber);
+    } on CustomException catch (e) {
+      return Left(ServerFailure(message: e.message));
+    }
+  }
+
+  @override
+  Future<Either<Failure, void>> verifyPhoneNumber(String phoneNumber) async {
+    try {
+      await remoteDataSource.verifyPhoneNumber(phoneNumber);
+      return const Right(null);
+    } on CustomException catch (e) {
+      return Left(ServerFailure(message: e.message));
+    }
+  }
+
+  @override
   Future<Either<Failure, bool>> isEmailRegistered(String email) async {
     try {
       final exists = await remoteDataSource.isEmailRegistered(email);
@@ -108,6 +133,24 @@ class AuthRepositoryImpl implements AuthRepository {
       return const Right(null);
     } on CustomException catch (e) {
       return Left(ServerFailure(message: e.message));
+    }
+  }
+
+  @override
+  Future<void> sendOTP(String phoneNumber) async {
+    try {
+      await remoteDataSource.sendOTP(phoneNumber);
+    } on CustomException catch (e) {
+      throw CustomException(message: e.message);
+    }
+  }
+
+  @override
+  Future<bool> verifyOTP(String phoneNumber, String otp) async {
+    try {
+      return await remoteDataSource.verifyOTP(phoneNumber, otp);
+    } on CustomException catch (e) {
+      throw CustomException(message: e.message);
     }
   }
 }
