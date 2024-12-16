@@ -14,12 +14,11 @@ class FavoriteCubit extends Cubit<FavoriteState> {
   final List<ProductModel> _favorites = [];
 
   FavoriteCubit() : super(FavoriteInitial()) {
-    _loadUserId();
-    _loadFavorites();
+    _loadUserId().then((_) => _loadFavorites());
   }
 
-  void _loadUserId() {
-    final userDataJson = Prefs.getString(KUserData);
+  Future<void> _loadUserId() async {
+    final userDataJson = await Prefs.getString(KUserData);
     if (userDataJson != null && userDataJson.isNotEmpty) {
       try {
         final userData = json.decode(userDataJson);
@@ -30,9 +29,9 @@ class FavoriteCubit extends Cubit<FavoriteState> {
     }
   }
 
-  void updateUserId() {
+  Future<void> updateUserId() async {
     String? newUserId;
-    final userDataJson = Prefs.getString(KUserData);
+    final userDataJson = await Prefs.getString(KUserData);
     if (userDataJson != null && userDataJson.isNotEmpty) {
       try {
         final userData = json.decode(userDataJson);
@@ -44,7 +43,7 @@ class FavoriteCubit extends Cubit<FavoriteState> {
 
     if (_userId != newUserId) {
       _userId = newUserId;
-      _loadFavorites();
+      await _loadFavorites();
     }
   }
 
@@ -55,7 +54,7 @@ class FavoriteCubit extends Cubit<FavoriteState> {
     }
 
     try {
-      final favoritesJson = Prefs.getString('favorites_${_userId}');
+      final favoritesJson = await Prefs.getString('favorites_${_userId}');
       if (favoritesJson != null && favoritesJson.isNotEmpty) {
         final List<dynamic> decoded = json.decode(favoritesJson);
         _favorites.clear();
@@ -84,7 +83,7 @@ class FavoriteCubit extends Cubit<FavoriteState> {
     }
   }
 
-  void toggleFavorite(Product product) {
+  Future<void> toggleFavorite(Product product) async {
     if (_userId == null || isClosed) return;
 
     try {
@@ -116,7 +115,7 @@ class FavoriteCubit extends Cubit<FavoriteState> {
         _favorites.add(productModel);
       }
       
-      _saveFavorites();
+      await _saveFavorites();
       if (!isClosed) emit(FavoriteLoaded(favorites: List.from(_favorites)));
     } catch (e) {
       if (!isClosed) emit(FavoriteError('Error updating favorites: $e'));

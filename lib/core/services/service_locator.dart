@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:hyper_market/core/services/notification_service.dart';
 import 'package:hyper_market/core/services/shared_preferences.dart';
 import 'package:hyper_market/core/services/supabase/supabase_initialize.dart';
 import 'package:hyper_market/core/services/local_storage/local_storage_service.dart';
@@ -36,6 +37,7 @@ void setupServiceLocator() {
   // Services
   getIt.registerLazySingleton<SupabaseService>(() => SupabaseService());
   getIt.registerLazySingleton<LocalStorageService>(() => LocalStorageService());
+  getIt.registerLazySingleton<NotificationService>(() => NotificationService());
 
   // Categories
   getIt.registerLazySingleton<CategoryRemoteDataSource>(

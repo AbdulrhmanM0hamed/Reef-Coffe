@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hyper_market/core/services/service_locator.dart';
@@ -124,10 +125,11 @@ class ProfileViewBody extends StatelessWidget {
                   ),
                   onPressed: () async {
                     // Get current user ID before clearing data
-                    final userDataJson = Prefs.getString(KUserData);
+                    final userDataJson = await Prefs.getString(KUserData);
                     if (userDataJson != null && userDataJson.isNotEmpty) {
                       try {
-                        final user = UserEntity.fromJson(userDataJson);
+                        final userData = json.decode(userDataJson);
+                        final user = UserEntity.fromJson(userData);
                         // Clear user specific favorites
                         await Prefs.setString('${KUserFavorites}${user.id}', '[]');
                       } catch (e) {

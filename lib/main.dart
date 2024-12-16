@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hyper_market/core/services/local_storage/local_storage_service.dart';
+import 'package:hyper_market/core/services/notification_service.dart';
 import 'package:hyper_market/core/services/service_locator.dart';
 import 'package:hyper_market/core/services/shared_preferences.dart';
 import 'package:hyper_market/core/services/supabase/supabase_initialize.dart';
@@ -20,7 +21,7 @@ void main() async {
   // Initialize Facebook Auth for Web if platform is web
   if (kIsWeb) {
     await FacebookAuth.instance.webAndDesktopInitialize(
-      appId: "1217744842655597",
+      appId: "1318649632135518",
       cookie: true,
       xfbml: true,
       version: "v15.0",
@@ -34,10 +35,14 @@ void main() async {
     supabaseKey:
         'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtpemdtZ2FvY2RobmFydnF0enZmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzMzMjQ5NjksImV4cCI6MjA0ODkwMDk2OX0.LwosgMdM5ZcZAeVxn3b84lIeO4K6_-l4BsYF5pxxkJg',
   );
+
   await getIt<LocalStorageService>().init();
+  await Prefs.init();
+
+  // Initialize NotificationService after SharedPreferences is initialized
+  await getIt<NotificationService>().initialize();
 
   runApp(const MyApp());
-  await Prefs.init();
 }
 
 class MyApp extends StatelessWidget {
