@@ -19,8 +19,8 @@ class DetailsView extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (context) => getIt<CartCubit>()),
-        BlocProvider(create: (context) => getIt<FavoriteCubit>()),
+        BlocProvider.value(value: getIt<CartCubit>()),
+        BlocProvider.value(value: getIt<FavoriteCubit>()),
       ],
       child: SafeArea(
         child: Scaffold(

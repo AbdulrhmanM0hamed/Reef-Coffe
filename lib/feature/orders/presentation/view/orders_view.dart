@@ -15,6 +15,11 @@ class OrdersView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios_new_outlined),
+          onPressed: () => Navigator.pop(context),
+        ),
         title: Text(
           'طلباتي',
           style: getBoldStyle(
@@ -30,7 +35,7 @@ class OrdersView extends StatelessWidget {
           } else if (state is OrdersLoaded) {
             if (state.orders.isEmpty) {
               return Center(
-                child: Text(
+              child: Text(
                   'لا توجد طلبات حتى الآن',
                   style: getMediumStyle(
                     fontFamily: FontConstant.cairo,

@@ -135,9 +135,11 @@ class _DetailsViewBodyState extends State<DetailsViewBody> {
                           ),
                         ),
                         buildInfoCard(
-                          mainText: widget.product.isOrganic ? 'طبيعي' : 'غير طبيعي',
-                          subText:
-                              widget.product.isOrganic ? '100% طبيعي' : 'منتج مصنع',
+                          mainText:
+                              widget.product.isOrganic ? 'طبيعي' : 'غير طبيعي',
+                          subText: widget.product.isOrganic
+                              ? '100% طبيعي'
+                              : 'منتج مصنع',
                           iconInfo: SvgPicture.asset(
                             'assets/images/lotus.svg',
                             width: 50,
@@ -173,24 +175,44 @@ class _DetailsViewBodyState extends State<DetailsViewBody> {
             SizedBox(height: sizeHeight * 0.018),
             ElevatedButton(
               onPressed: () {
-                print('Add to cart button pressed');
                 try {
+                  print('Debug: Adding product from details view - ${widget.product.name}');
+                  print('Debug: Product price - ${widget.product.price}');
+                  print('Debug: Product discount price - ${widget.product.discountPrice}');
+                  print('Debug: Selected quantity - $_quantity');
+                  
                   final cartItem = CartItem(
                     id: widget.product.id!,
                     productId: widget.product.id!,
                     name: widget.product.name,
-                    price: widget.product.discountPrice == 0.0
-                        ? widget.product.price
-                        : widget.product.discountPrice,
-                    image: widget.product.imageUrl!,
+                    price: widget.product.hasDiscount && widget.product.discountPrice != null
+                        ? widget.product.discountPrice!
+                        : widget.product.price,
+                    image: widget.product.imageUrl ?? '',
                     quantity: _quantity,
                   );
-                  print('CartItem created: ${cartItem.name} with quantity: ${cartItem.quantity}');
 
+                  print('Debug: CartItem created - ${cartItem.name} - Price: ${cartItem.price} - Quantity: ${cartItem.quantity}');
+                  
                   context.read<CartCubit>().addItem(cartItem);
-                  print('AddItem called on CartCubit');
+                  print('Debug: Item added to cart successfully');
+
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text('تم إضافة ${widget.product.name} إلى السلة'),
+                      backgroundColor: TColors.primary,
+                      duration: const Duration(seconds: 2),
+                    ),
+                  );
                 } catch (e) {
-                  print('Error creating cart item: $e');
+                  print('Error adding item to cart: $e');
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('حدث خطأ أثناء الإضافة إلى السلة'),
+                      backgroundColor: Colors.red,
+                      duration: Duration(seconds: 2),
+                    ),
+                  );
                 }
               },
               style: ElevatedButton.styleFrom(

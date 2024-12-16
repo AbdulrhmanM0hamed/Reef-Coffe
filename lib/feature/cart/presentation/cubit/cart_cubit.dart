@@ -9,7 +9,8 @@ class CartCubit extends Cubit<CartState> {
   final List<CartItem> _items = [];
 
   List<CartItem> getItems() {
-    print('Getting cart items, count: ${_items.length}');
+    print('Debug: Getting items from cart. Count: ${_items.length}');
+    print('Debug: Items: ${_items.map((e) => '${e.name} (${e.quantity})').join(', ')}');
     return List.unmodifiable(_items);
   }
 
@@ -18,69 +19,55 @@ class CartCubit extends Cubit<CartState> {
   }
 
   void addItem(CartItem item) {
-    print('Attempting to add item to cart: ${item.name}');
     try {
-      final existingIndex = _items.indexWhere((i) => i.productId == item.productId);
-      if (existingIndex >= 0) {
-        print('Item already exists in cart, updating quantity');
+      print('Debug: Adding item to cart: ${item.name}');
+      if (item.price == null || item.price! <= 0) {
+        throw Exception('Invalid price for item: ${item.name}');
+      }
+
+      if (item.quantity <= 0) {
+        throw Exception('Invalid quantity for item: ${item.name}');
+      }
+
+      final existingIndex =
+          _items.indexWhere((i) => i.productId == item.productId);
+      print('Debug: Existing item index: $existingIndex');
+      
+      if (existingIndex != -1) {
+        print('Debug: Updating existing item quantity');
         _items[existingIndex].quantity += item.quantity;
       } else {
-        print('Adding new item to cart');
+        print('Debug: Adding new item to cart');
         _items.add(item);
       }
-      print('Current cart items: ${_items.length}');
-      // Emit new state with updated items list
+
+      print('Debug: Cart items after update: ${_items.length}');
       emit(CartUpdated(List.from(_items)));
-      print('Cart state updated successfully');
     } catch (e) {
       print('Error adding item to cart: $e');
-      // Emit current state to ensure UI is consistent
-      emit(CartUpdated(List.from(_items)));
+      throw e;
     }
   }
 
   void removeItem(String productId) {
-    print('Attempting to remove item from cart: $productId');
-    try {
-      _items.removeWhere((item) => item.productId == productId);
-      print('Current cart items: ${_items.length}');
-      emit(CartUpdated(List.from(_items)));
-      print('Cart state updated successfully');
-    } catch (e) {
-      print('Error removing item from cart: $e');
-      emit(CartUpdated(List.from(_items)));
-    }
+    _items.removeWhere((item) => item.productId == productId);
+    emit(CartUpdated(List.from(_items)));
   }
 
   void updateQuantity(String productId, int quantity) {
-    print('Attempting to update quantity for item: $productId to $quantity');
-    try {
-      final index = _items.indexWhere((item) => item.productId == productId);
-      if (index >= 0) {
-        if (quantity <= 0) {
-          _items.removeAt(index);
-        } else {
-          _items[index].quantity = quantity;
-        }
-        print('Current cart items: ${_items.length}');
-        emit(CartUpdated(List.from(_items)));
-        print('Cart state updated successfully');
+    final index = _items.indexWhere((item) => item.productId == productId);
+    if (index >= 0) {
+      if (quantity <= 0) {
+        _items.removeAt(index);
+      } else {
+        _items[index].quantity = quantity;
       }
-    } catch (e) {
-      print('Error updating quantity: $e');
       emit(CartUpdated(List.from(_items)));
     }
   }
 
   void clearCart() {
-    print('Clearing cart');
-    try {
-      _items.clear();
-      emit(CartUpdated(List.from(_items)));
-      print('Cart cleared successfully');
-    } catch (e) {
-      print('Error clearing cart: $e');
-      emit(CartUpdated(List.from(_items)));
-    }
+    _items.clear();
+    emit(CartUpdated(List.from(_items)));
   }
 }

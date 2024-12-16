@@ -92,22 +92,10 @@ void setupServiceLocator() {
   );
 
   // Cart
-  getIt.registerFactory(() => CartCubit());
+  getIt.registerLazySingleton(() => CartCubit());
 
   // Favorites
-  getIt.registerFactory(() {
-    String? userId;
-    final userDataJson = Prefs.getString(KUserData);
-    if (userDataJson != null && userDataJson.isNotEmpty) {
-      try {
-        final user = UserEntity.fromJson(userDataJson);
-        userId = user.id;
-      } catch (e) {
-        debugPrint('Error parsing user data: $e');
-      }
-    }
-    return FavoriteCubit(userId: userId);
-  });
+  getIt.registerLazySingleton(() => FavoriteCubit());
 
   // Orders
   getIt.registerLazySingleton<OrdersCubit>(

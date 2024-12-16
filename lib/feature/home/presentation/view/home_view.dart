@@ -4,6 +4,7 @@ import 'package:hyper_market/core/services/service_locator.dart';
 import 'package:hyper_market/feature/cart/presentation/cubit/cart_cubit.dart';
 import 'package:hyper_market/feature/cart/presentation/pages/cart_page.dart';
 import 'package:hyper_market/feature/categories/presentation/view/categories_view.dart';
+import 'package:hyper_market/feature/favorites/presentation/cubit/favorite_cubit.dart';
 import 'package:hyper_market/feature/home/presentation/cubit/user_cubit.dart';
 import 'package:hyper_market/feature/home/presentation/view/widgets/bottom_nav_bar.dart';
 import 'package:hyper_market/feature/home/presentation/view/widgets/home_view_body.dart';
@@ -26,7 +27,8 @@ class _HomeViewState extends State<HomeView> {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (context) => CartCubit()),
+        BlocProvider.value(value: getIt<CartCubit>()),
+        BlocProvider.value(value: getIt<FavoriteCubit>()),
         BlocProvider(
           create: (context) => UserCubit(authRepository: getIt())..getCurrentUserName(),
         ),

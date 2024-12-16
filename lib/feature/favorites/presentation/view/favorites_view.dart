@@ -13,10 +13,15 @@ class FavoritesView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => getIt<FavoriteCubit>(),
+    return BlocProvider.value(
+      value: getIt<FavoriteCubit>(),
       child: Scaffold(
         appBar: AppBar(
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back_ios_new_outlined),
+            onPressed: () => Navigator.pop(context),
+          ),
+          centerTitle: true,
           title: Text(
             'المفضلة',
             style: getBoldStyle(
@@ -27,7 +32,7 @@ class FavoritesView extends StatelessWidget {
         ),
         body: BlocBuilder<FavoriteCubit, FavoriteState>(
           builder: (context, state) {
-            if (state is FavoriteUpdated) {
+            if (state is FavoriteLoaded) {
               if (state.favorites.isEmpty) {
                 return Center(
                   child: Text(

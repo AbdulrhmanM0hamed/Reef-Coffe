@@ -14,117 +14,115 @@ class CartPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-        create: (context) => getIt<CartCubit>(),
-        child: Scaffold(
-          appBar: AppBar(
-            centerTitle: true,
-            title: Text(
-              'سلة التسوق',
-              style: getBoldStyle(
-                  fontFamily: FontConstant.cairo, fontSize: FontSize.size20),
-            ),
-            actions: [
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: GestureDetector(
-                    onTap: () => context.read<CartCubit>().clearCart(),
-                    child: SvgPicture.asset(
-                      "assets/images/trash.svg",
-                      width: 24,
-                      height: 24,
-                    )),
-              )
-            ],
-          ),
-          body: BlocBuilder<CartCubit, CartState>(
-            builder: (context, state) {
-              final cartCubit = context.read<CartCubit>();
-              final items = cartCubit.getItems();
-              if (items.isEmpty) {
-                return Center(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        'سلة التسوق فارغة',
-                        style: getBoldStyle(
-                            fontFamily: FontConstant.cairo,
-                            fontSize: FontSize.size18,
-                            color: TColors.darkGrey),
-                      ),
-                      const SizedBox(
-                        width: 10,
-                      ),
-                      SvgPicture.asset(
-                        "assets/images/basket.svg",
-                        width: 50,
-                        height: 50,
-                      )
-                    ],
-                  ),
-                );
-              }
-
-              return Column(
+    return Scaffold(
+      appBar: AppBar(
+        centerTitle: true,
+        title: Text(
+          'سلة التسوق',
+          style: getBoldStyle(
+              fontFamily: FontConstant.cairo, fontSize: FontSize.size20),
+        ),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: GestureDetector(
+                onTap: () => context.read<CartCubit>().clearCart(),
+                child: SvgPicture.asset(
+                  "assets/images/trash.svg",
+                  width: 24,
+                  height: 24,
+                )),
+          )
+        ],
+      ),
+      body: BlocBuilder<CartCubit, CartState>(
+        builder: (context, state) {
+          final cartCubit = context.read<CartCubit>();
+          final items = cartCubit.getItems();
+          if (items.isEmpty) {
+            return Center(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Expanded(
-                    child: ListView.builder(
-                      itemCount: items.length,
-                      itemBuilder: (context, index) {
-                        return CartItemWidget(
-                          item: items[index],
-                        );
-                      },
-                    ),
+                  Text(
+                    'سلة التسوق فارغة',
+                    style: getBoldStyle(
+                        fontFamily: FontConstant.cairo,
+                        fontSize: FontSize.size18,
+                        color: TColors.darkGrey),
                   ),
-                  Container(
-                    padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      borderRadius: const BorderRadius.only(
-                          topLeft: Radius.circular(16),
-                          topRight: Radius.circular(16)),
-                      boxShadow: [
-                        BoxShadow(
-                          color: TColors.darkerGrey.withOpacity(.20),
-                          spreadRadius: 0,
-                          blurRadius: 0,
-                          offset: const Offset(0, -2),
-                        ),
-                      ],
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Text(
-                              'المجموع',
-                              style: getBoldStyle(
-                                  fontFamily: FontConstant.cairo,
-                                  fontSize: FontSize.size18,
-                                  color: TColors.darkGrey),
-                            ),
-                            Text(
-                              '${cartCubit.getTotal()} ج.م',
-                              style: getBoldStyle(
-                                  fontFamily: FontConstant.cairo,
-                                  fontSize:
-                                      MediaQuery.of(context).size.width * 0.047,
-                                  color: TColors.secondary),
-                            ),
-                          ],
-                        ),
-                        const PayingButton(),
-                      ],
-                    ),
+                  const SizedBox(
+                    width: 10,
                   ),
+                  SvgPicture.asset(
+                    "assets/images/basket.svg",
+                    width: 50,
+                    height: 50,
+                  )
                 ],
-              );
-            },
-          ),
-        ));
+              ),
+            );
+          }
+
+          return Column(
+            children: [
+              Expanded(
+                child: ListView.builder(
+                  itemCount: items.length,
+                  itemBuilder: (context, index) {
+                    return CartItemWidget(
+                      item: items[index],
+                    );
+                  },
+                ),
+              ),
+              Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(16),
+                      topRight: Radius.circular(16)),
+                  boxShadow: [
+                    BoxShadow(
+                      color: TColors.darkerGrey.withOpacity(.20),
+                      spreadRadius: 0,
+                      blurRadius: 0,
+                      offset: const Offset(0, -2),
+                    ),
+                  ],
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          'المجموع',
+                          style: getBoldStyle(
+                              fontFamily: FontConstant.cairo,
+                              fontSize: FontSize.size18,
+                              color: TColors.darkGrey),
+                        ),
+                        Text(
+                          '${cartCubit.getTotal()} ج.م',
+                          style: getBoldStyle(
+                              fontFamily: FontConstant.cairo,
+                              fontSize:
+                                  MediaQuery.of(context).size.width * 0.047,
+                              color: TColors.secondary),
+                        ),
+                      ],
+                    ),
+                    const PayingButton(),
+                  ],
+                ),
+              ),
+            ],
+          );
+        },
+      ),
+    );
   }
 }

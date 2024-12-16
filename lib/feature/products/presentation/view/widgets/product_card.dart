@@ -196,22 +196,45 @@ class ProductCard extends StatelessWidget {
                           const SizedBox.shrink(),
                         InkWell(
                           onTap: () {
-                            final cartItem = CartItem(
-                              id: product.id!,
-                              productId: product.id!,
-                              name: product.name,
-                              price: product.discountPrice ==  0.0 ? product.price : product.discountPrice, 
-                              image: product.imageUrl!,
-                            );
+                            try {
+                              print('Debug: Adding product to cart - ${product.name}');
+                              print('Debug: Product price - ${product.price}');
+                              print('Debug: Product discount price - ${product.discountPrice}');
+                              
+                              final cartItem = CartItem(
+                                id: product.id!,
+                                productId: product.id!,
+                                name: product.name,
+                                price: product.discountPrice == 0.0 ? product.price : product.discountPrice,
+                                image: product.imageUrl!,
+                                quantity: 1,
+                              );
 
-                            context.read<CartCubit>().addItem(cartItem);
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: AddProductSnackbar(product: product),
-                                backgroundColor: TColors.primary,
-                                duration: const Duration(seconds: 1),
-                              ),
-                            );
+                              print('Debug: CartItem created - ${cartItem.name} - Price: ${cartItem.price}');
+                              
+                              final cartCubit = context.read<CartCubit>();
+                              print('Debug: Got CartCubit instance');
+                              
+                              cartCubit.addItem(cartItem);
+                              print('Debug: Item added to cart');
+                              
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: AddProductSnackbar(product: product),
+                                  backgroundColor: TColors.primary,
+                                  duration: const Duration(seconds: 1),
+                                ),
+                              );
+                            } catch (e) {
+                              print('Error adding product to cart: $e');
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: const Text('حدث خطأ أثناء الإضافة إلى السلة'),
+                                  backgroundColor: Colors.red,
+                                  duration: const Duration(seconds: 2),
+                                ),
+                              );
+                            }
                           },
                           child: Container(
                             padding: EdgeInsets.symmetric(
@@ -224,7 +247,7 @@ class ProductCard extends StatelessWidget {
                             ),
                             child: Icon(
                               Icons.add,
-                              size: size.width * 0.05, // Dynamic size
+                              size: size.width * 0.05,
                               color: Colors.white,
                             ),
                           ),

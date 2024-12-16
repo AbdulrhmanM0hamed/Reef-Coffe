@@ -52,7 +52,8 @@ class _HomeViewBodyState extends State<HomeViewBody> {
             CustomAnimations.slideFromTop(
               duration: const Duration(milliseconds: 1000),
               child: BlocProvider(
-                create: (context) => getIt<SpecialOffersCubit>()..loadSpecialOffers(),
+                create: (context) =>
+                    getIt<SpecialOffersCubit>()..loadSpecialOffers(),
                 child: HomeTopSlider(),
               ),
             ),
@@ -76,16 +77,7 @@ class _HomeViewBodyState extends State<HomeViewBody> {
               duration: const Duration(milliseconds: 1400),
               child: BestSellingProductsListView(),
             ),
-            const SizedBox(height: 16),
-            CustomAnimations.slideFromLeft(
-              duration: const Duration(milliseconds: 1500),
-              child: const OutLineOfProducts(title: " البقالة"),
-            ),
-            // CustomAnimations.slideFromRight(
-            //   duration: const Duration(milliseconds: 1600),
-            //   child: Groceries(),
-            // ),
-            const SizedBox(height: 16),
+            const SizedBox(height: 20),
           ],
         ),
       ),
