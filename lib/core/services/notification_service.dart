@@ -97,12 +97,14 @@ class NotificationService {
 
   Future<void> _showOrderStatusNotification(String orderId, String status) async {
     String message = _getStatusMessage(status);
+    // Get last 8 characters from order ID
+    String shortOrderId = orderId.length > 8 ? orderId.substring(orderId.length - 8) : orderId;
     
     await AwesomeNotifications().createNotification(
       content: NotificationContent(
         id: DateTime.now().millisecondsSinceEpoch.remainder(100000),
         channelKey: _channelKey,
-        title: 'تحديث حالة الطلب #$orderId',
+        title: 'تحديث حالة الطلب #$shortOrderId',
         body: message,
         notificationLayout: NotificationLayout.Default,
       ),

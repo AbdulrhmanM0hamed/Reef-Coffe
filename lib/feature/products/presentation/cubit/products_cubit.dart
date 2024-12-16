@@ -59,7 +59,7 @@ class ProductsCubit extends Cubit<ProductsState> {
     var filteredProducts = _allProducts.where((product) {
       bool priceInRange = product.price >= minPrice && product.price <= maxPrice;
       bool naturalMatch = !isNatural || product.isOrganic;
-      bool discountMatch = !hasDiscount || product.discountPrice! > 0;
+      bool discountMatch = !hasDiscount || (product.hasDiscount && (product.discountPrice ?? 0) > 0);
       
       return priceInRange && naturalMatch && discountMatch;
     }).toList();
