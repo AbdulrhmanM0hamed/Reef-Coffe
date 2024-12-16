@@ -23,12 +23,10 @@ class ProfileMenuSwitch extends StatelessWidget {
       leading: Icon(icon, color: TColors.primary),
       title: Text(
         title,
-        style: getSemiBoldStyle(
+        style: getBoldStyle(
           fontFamily: FontConstant.cairo,
           fontSize: 16,
-          color: Theme.of(context).brightness == Brightness.dark 
-            ? TColors.white 
-            : TColors.black,
+       
         ),
       ),
       trailing: Switch(

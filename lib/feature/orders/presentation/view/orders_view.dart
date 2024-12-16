@@ -64,7 +64,7 @@ class OrdersView extends StatelessWidget {
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    state.message,
+                    state.message ?? 'حدث خطأ غير معروف',
                     style: getRegularStyle(
                       fontFamily: FontConstant.cairo,
                       fontSize: FontSize.size14,

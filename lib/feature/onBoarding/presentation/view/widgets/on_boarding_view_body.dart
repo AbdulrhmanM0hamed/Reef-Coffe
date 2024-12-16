@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:hyper_market/core/services/shared_preferences.dart';
 import 'package:hyper_market/core/utils/common/elvated_button.dart';
 import 'package:hyper_market/core/utils/constants/assets.dart';
 import 'package:hyper_market/core/utils/constants/colors.dart';
+import 'package:hyper_market/core/utils/constants/constants.dart';
 import 'package:hyper_market/core/utils/constants/font_manger.dart';
 import 'package:hyper_market/core/utils/constants/strings_manager.dart';
 import 'package:hyper_market/core/utils/constants/styles_manger.dart';
@@ -179,7 +181,8 @@ class _OnBoardingViewBodyState extends State<OnBoardingViewBody> {
             duration: Duration(milliseconds: 1500),
             child: CustomElevatedButton(
               buttonText: StringManager.start,
-              onPressed: () {
+              onPressed: ()  {
+                Prefs.setBool(KIsOnboardingViewSeen, true);
                 Navigator.pushReplacementNamed(context, SigninView.routeName);
               },
             ),

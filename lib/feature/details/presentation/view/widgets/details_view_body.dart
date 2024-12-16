@@ -1,9 +1,12 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hyper_market/core/utils/constants/colors.dart';
 import 'package:hyper_market/core/utils/constants/font_manger.dart';
 import 'package:hyper_market/core/utils/constants/styles_manger.dart';
+import 'package:hyper_market/feature/cart/data/models/cart_item_model.dart';
+import 'package:hyper_market/feature/cart/presentation/cubit/cart_cubit.dart';
 import 'package:hyper_market/feature/details/presentation/view/widgets/custom_nav_pop.dart';
 import 'package:hyper_market/feature/details/presentation/view/widgets/info_section.dart';
 import 'package:hyper_market/feature/details/presentation/view/widgets/price_with_additons.dart';
@@ -60,7 +63,7 @@ class DetailsViewBody extends StatelessWidget {
             ReviewsWidget(product: product),
             SizedBox(height: sizeHeight * 0.015),
             Text(
-              product.description,
+              product.description!,
               style: getSemiBoldStyle(
                 fontFamily: FontConstant.cairo,
                 fontSize: sizeWidth * 0.035,
@@ -90,9 +93,8 @@ class DetailsViewBody extends StatelessWidget {
                       crossAxisSpacing: 12,
                       childAspectRatio: 1.5,
                       children: [
-                        // كرت الصلاحية
                         buildInfoCard(
-                          mainText: product.expiryName,
+                          mainText: product.expiryName!,
                           subText: 'الصلاحية',
                           iconInfo: Stack(
                             alignment: Alignment.center,
@@ -116,8 +118,6 @@ class DetailsViewBody extends StatelessWidget {
                             ],
                           ),
                         ),
-
-                        // كرت طبيعي/غير طبيعي
                         buildInfoCard(
                           mainText: product.isOrganic ? 'طبيعي' : 'غير طبيعي',
                           subText:
@@ -128,7 +128,6 @@ class DetailsViewBody extends StatelessWidget {
                             height: 50,
                           ),
                         ),
-                        // كرت السعرات الحرارية
                         buildInfoCard(
                           mainText: '${product.caloriesPer100g}',
                           subText: 'سعرة حرارية',
@@ -139,8 +138,6 @@ class DetailsViewBody extends StatelessWidget {
                             height: 50,
                           ),
                         ),
-
-                        // كرت التقييمات
                         buildInfoCard(
                           mainText: '${product.rating}',
                           subText: 'تقييم',
@@ -160,7 +157,17 @@ class DetailsViewBody extends StatelessWidget {
             SizedBox(height: sizeHeight * 0.018),
             ElevatedButton(
               onPressed: () {
-                // TODO: Implement add to cart functionality
+                final cartItem = CartItem(
+                  id: product.id!,
+                  productId: product.id!,
+                  name: product.name,
+                  price: product.discountPrice == 0.0
+                      ? product.price
+                      : product.discountPrice,
+                  image: product.imageUrl!,
+                );
+
+                context.read<CartCubit>().addItem(cartItem);
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: TColors.primary,

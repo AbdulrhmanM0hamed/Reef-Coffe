@@ -1,7 +1,7 @@
 import '../../domain/entities/order.dart';
 
 class OrderModel extends OrderEntity {
-  const OrderModel({
+  OrderModel({
     required String id,
     required String userId,
     required List<OrderItem> items,
@@ -10,6 +10,7 @@ class OrderModel extends OrderEntity {
     required DateTime createdAt,
     String? deliveryAddress,
     String? phoneNumber,
+    String? name,
   }) : super(
           id: id,
           userId: userId,
@@ -19,21 +20,29 @@ class OrderModel extends OrderEntity {
           createdAt: createdAt,
           deliveryAddress: deliveryAddress,
           phoneNumber: phoneNumber,
+          name: name ?? '',
         );
 
   factory OrderModel.fromJson(Map<String, dynamic> json) {
-    return OrderModel(
-      id: json['id'],
-      userId: json['user_id'],
-      items: (json['items'] as List)
-          .map((item) => OrderItemModel.fromJson(item))
-          .toList(),
-      totalAmount: json['total_amount'].toDouble(),
-      status: json['status'],
-      createdAt: DateTime.parse(json['created_at']),
-      deliveryAddress: json['delivery_address'],
-      phoneNumber: json['phone_number'],
-    );
+    try {
+      return OrderModel(
+        id: json['id'] ?? '',
+        userId: json['user_id'] ?? '',
+        items: (json['items'] as List?)
+                ?.map((item) => OrderItemModel.fromJson(item))
+                .toList() ??
+            [],
+        totalAmount: (json['total_amount'] ?? 0.0).toDouble(),
+        status: json['status'] ?? 'pending',
+        createdAt: DateTime.parse(json['created_at'] ?? DateTime.now().toIso8601String()),
+        deliveryAddress: json['delivery_address'],
+        phoneNumber: json['phone_number'],
+        name: json['name'] ?? '',
+      );
+    } catch (e) {
+      print('Error parsing OrderModel: $e');
+      rethrow;
+    }
   }
 
   Map<String, dynamic> toJson() {
@@ -46,12 +55,13 @@ class OrderModel extends OrderEntity {
       'created_at': createdAt.toIso8601String(),
       'delivery_address': deliveryAddress,
       'phone_number': phoneNumber,
+      'name': name,
     };
   }
 }
 
 class OrderItemModel extends OrderItem {
-  const OrderItemModel({
+  OrderItemModel({
     required String productId,
     required String productName,
     required int quantity,
@@ -66,13 +76,18 @@ class OrderItemModel extends OrderItem {
         );
 
   factory OrderItemModel.fromJson(Map<String, dynamic> json) {
-    return OrderItemModel(
-      productId: json['product_id'],
-      productName: json['product_name'],
-      quantity: json['quantity'],
-      price: json['price'].toDouble(),
-      imageUrl: json['image_url'],
-    );
+    try {
+      return OrderItemModel(
+        productId: json['product_id'] ?? '',
+        productName: json['product_name'] ?? '',
+        quantity: json['quantity'] ?? 0,
+        price: (json['price'] ?? 0.0).toDouble(),
+        imageUrl: json['image_url'],
+      );
+    } catch (e) {
+      print('Error parsing OrderItemModel: $e');
+      rethrow;
+    }
   }
 
   Map<String, dynamic> toJson() {

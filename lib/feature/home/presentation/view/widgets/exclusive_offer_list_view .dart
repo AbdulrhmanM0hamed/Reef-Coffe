@@ -7,7 +7,7 @@ import 'package:hyper_market/feature/products/presentation/view/widgets/product_
 import 'package:hyper_market/feature/products/presentation/view/widgets/product_card_shimmer.dart';
 
 class ExclusiveOfferSection extends StatelessWidget {
-  const ExclusiveOfferSection({Key? key}) : super(key: key);
+  const ExclusiveOfferSection({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +19,7 @@ class ExclusiveOfferSection extends StatelessWidget {
             return Center(child: Text(state.message));
           } else if (state is ProductsLoaded) {
             final discountedProducts = state.products
-                .where((product) => product.discountPrice! > 0)
+                .where((product) => product.hasDiscount && (product.discountPrice ?? 0) > 0)
                 .toList();
 
             if (discountedProducts.isEmpty) {
@@ -29,6 +29,7 @@ class ExclusiveOfferSection extends StatelessWidget {
             return SizedBox(
               height: MediaQuery.of(context).size.height * 0.32,
               child: ListView.builder(
+                physics: const BouncingScrollPhysics(),
                 scrollDirection: Axis.horizontal,
                 itemCount: discountedProducts.length,
                 padding: const EdgeInsets.symmetric(horizontal: 16),

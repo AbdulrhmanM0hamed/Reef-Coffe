@@ -1,33 +1,45 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hyper_market/core/utils/constants/font_manger.dart';
 import 'package:hyper_market/core/utils/constants/styles_manger.dart';
-import 'package:hyper_market/core/utils/constants/colors.dart';
+import 'package:hyper_market/feature/favorites/presentation/cubit/favorite_cubit.dart';
 import 'package:hyper_market/feature/products/domain/entities/product.dart';
 
 class TitleWithFavorite extends StatelessWidget {
   final Product product;
 
   const TitleWithFavorite({
-    Key? key,
+    super.key,
     required this.product,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
-    final sizeWidth = MediaQuery.of(context).size.width;
     return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text(
-          product.name,
-          style: getBoldStyle(
-            fontFamily: FontConstant.cairo,
-            fontSize: sizeWidth * 0.05,
+        Expanded(
+          child: Text(
+            product.name,
+            style: getBoldStyle(
+              fontFamily: FontConstant.cairo,
+              fontSize: FontSize.size20,
+            ),
           ),
         ),
-        const Spacer(),
-        const Icon(
-          Icons.favorite_border,
-          color: TColors.darkGrey,
+        BlocBuilder<FavoriteCubit, FavoriteState>(
+          builder: (context, state) {
+            final isFavorite = context.read<FavoriteCubit>().isFavorite(product.id!);
+            return IconButton(
+              onPressed: () {
+                context.read<FavoriteCubit>().toggleFavorite(product);
+              },
+              icon: Icon(
+                isFavorite ? Icons.favorite : Icons.favorite_border,
+                color: isFavorite ? Colors.red : Colors.grey,
+              ),
+            );
+          },
         ),
       ],
     );

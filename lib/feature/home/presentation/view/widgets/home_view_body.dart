@@ -81,10 +81,10 @@ class _HomeViewBodyState extends State<HomeViewBody> {
               duration: const Duration(milliseconds: 1500),
               child: const OutLineOfProducts(title: " البقالة"),
             ),
-            CustomAnimations.slideFromRight(
-              duration: const Duration(milliseconds: 1600),
-              child: Groceries(),
-            ),
+            // CustomAnimations.slideFromRight(
+            //   duration: const Duration(milliseconds: 1600),
+            //   child: Groceries(),
+            // ),
             const SizedBox(height: 16),
           ],
         ),

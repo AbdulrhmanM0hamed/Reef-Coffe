@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:hyper_market/core/services/shared_preferences.dart';
 import 'package:hyper_market/core/utils/constants/assets.dart';
 import 'package:hyper_market/core/utils/constants/colors.dart';
+import 'package:hyper_market/core/utils/constants/constants.dart';
 import 'package:hyper_market/core/utils/constants/font_manger.dart';
 import 'package:hyper_market/core/utils/constants/styles_manger.dart';
+import 'package:hyper_market/feature/auth/presentation/view/signin_view.dart';
+import 'package:hyper_market/feature/home/presentation/view/home_view.dart';
 import 'package:hyper_market/feature/onBoarding/presentation/view/on_bordaing_view.dart';
 
 class SplashViewBody extends StatefulWidget {
@@ -13,7 +17,8 @@ class SplashViewBody extends StatefulWidget {
   State<SplashViewBody> createState() => _SplashViewBodyState();
 }
 
-class _SplashViewBodyState extends State<SplashViewBody> with SingleTickerProviderStateMixin {
+class _SplashViewBodyState extends State<SplashViewBody>
+    with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
   late Animation<double> _fadeAnimation;
   late Animation<double> _scaleAnimation;
@@ -83,11 +88,17 @@ class _SplashViewBodyState extends State<SplashViewBody> with SingleTickerProvid
                   children: [
                     TextSpan(
                       text: "هايير ", // النص الأول
-                      style: getBoldStyle(fontFamily: FontConstant.cairo, fontSize: FontSize.size30, color: TColors.primary),
+                      style: getBoldStyle(
+                          fontFamily: FontConstant.cairo,
+                          fontSize: FontSize.size30,
+                          color: TColors.primary),
                     ),
                     TextSpan(
                       text: "ماركت", // النص الثاني
-                      style: getBoldStyle(fontFamily: FontConstant.cairo, fontSize: FontSize.size30, color: TColors.secondary),
+                      style: getBoldStyle(
+                          fontFamily: FontConstant.cairo,
+                          fontSize: FontSize.size30,
+                          color: TColors.secondary),
                     ),
                   ],
                 ),
@@ -100,8 +111,17 @@ class _SplashViewBodyState extends State<SplashViewBody> with SingleTickerProvid
   }
 
   void excuteNavigation() {
-    Future.delayed(const Duration(seconds:3), () {
-      Navigator.pushReplacementNamed(context, OnBordaingView.routeName);
+    bool isLoginSuccess = Prefs.getBool(KIsloginSuccess);
+    bool isOnboardingViewSeen = Prefs.getBool(KIsOnboardingViewSeen);
+
+    Future.delayed(const Duration(seconds: 2), () {
+      if (!isOnboardingViewSeen) {
+        Navigator.pushReplacementNamed(context, OnBordaingView.routeName);
+      } else if (isLoginSuccess) {
+        Navigator.pushReplacementNamed(context, HomeView.routeName);
+      } else {
+        Navigator.pushReplacementNamed(context, SigninView.routeName);
+      }
     });
   }
 }

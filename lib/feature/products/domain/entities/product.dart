@@ -40,6 +40,7 @@ class Product extends Equatable {
     this.expiryName = '',
     this.expiryNumber = 0.0,
   });
+  
 
   @override
   List<Object?> get props => [

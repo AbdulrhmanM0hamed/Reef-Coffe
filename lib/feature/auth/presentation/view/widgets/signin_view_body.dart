@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hyper_market/core/services/shared_preferences.dart';
 import 'package:hyper_market/core/utils/common/custom_text_form_field.dart';
 import 'package:hyper_market/core/utils/common/elvated_button.dart';
 import 'package:hyper_market/core/utils/common/password_field.dart';
 import 'package:hyper_market/core/utils/constants/assets.dart';
 import 'package:hyper_market/core/utils/constants/colors.dart';
+import 'package:hyper_market/core/utils/constants/constants.dart';
 import 'package:hyper_market/core/utils/constants/font_manger.dart';
 import 'package:hyper_market/core/utils/constants/styles_manger.dart';
 import 'package:hyper_market/feature/auth/presentation/controller/signin/signin_cubit.dart';
@@ -94,8 +96,10 @@ class _SigninViewBodyState extends State<SigninViewBody> {
               CustomAnimations.fadeIn(
                 duration: Duration(milliseconds: 1100),
                 child: CustomElevatedButton(
+
                   buttonText: S.current!.login,
                   onPressed: () {
+                    Prefs.setBool(KIsloginSuccess, true);
                     if (formKey.currentState!.validate()) {
                       formKey.currentState!.save();
                       context.read<SignInCubit>().signInWithEmail(
@@ -121,7 +125,9 @@ class _SigninViewBodyState extends State<SigninViewBody> {
                   children: [
                     SocialButton(
                       onPressed: () {
-                        context.read<SignInCubit>().signInWithGoogle();
+                        context.read<SignInCubit>().signInWithGoogle().then((_) {
+                          Prefs.setBool(KIsloginSuccess, true);
+                        });
                       },
                       iconPath: AssetsManager.googleIcon,
                       buttonText: "تسجيل بواسطة Google",

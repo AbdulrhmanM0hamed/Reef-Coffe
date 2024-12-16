@@ -204,7 +204,6 @@ class ProductCard extends StatelessWidget {
                               image: product.imageUrl!,
                             );
 
-
                             context.read<CartCubit>().addItem(cartItem);
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(

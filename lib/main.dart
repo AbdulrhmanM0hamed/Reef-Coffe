@@ -5,6 +5,7 @@ import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hyper_market/core/services/local_storage/local_storage_service.dart';
 import 'package:hyper_market/core/services/service_locator.dart';
+import 'package:hyper_market/core/services/shared_preferences.dart';
 import 'package:hyper_market/core/services/supabase/supabase_initialize.dart';
 import 'package:hyper_market/core/utils/helper/on_genrated_routes.dart';
 import 'package:hyper_market/core/utils/theme/theme.dart';
@@ -35,6 +36,7 @@ void main() async {
   await getIt<LocalStorageService>().init();
 
   runApp(const MyApp());
+  await Prefs.init();
 }
 
 class MyApp extends StatelessWidget {
@@ -57,7 +59,7 @@ class MyApp extends StatelessWidget {
         supportedLocales: S.delegate.supportedLocales,
         locale: const Locale('ar'),
         onGenerateRoute: onGenratedRoutes,
-        initialRoute: HomeView.routeName,
+        initialRoute: SplashView.routeName,
  
     );
   }

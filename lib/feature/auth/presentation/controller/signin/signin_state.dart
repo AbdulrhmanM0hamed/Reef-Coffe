@@ -1,10 +1,10 @@
 part of 'signin_cubit.dart';
 
-sealed class SignInState extends Equatable {
+abstract class SignInState extends Equatable {
   const SignInState();
 
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [];
 }
 
 class SignInInitialState extends SignInState {
@@ -19,14 +19,25 @@ class SignInSuccessState extends SignInState {
   const SignInSuccessState(this.user);
 
   @override
-  List<Object> get props => [user];
+  List<Object?> get props => [user];
 }
 
 class SignInErrorState extends SignInState {
   final String message;
-  
+
   const SignInErrorState(this.message);
 
   @override
-  List<Object> get props => [message];
+  List<Object?> get props => [message];
 }
+
+class SignOutErrorState extends SignInState {
+  final String message;
+
+  const SignOutErrorState(this.message);
+
+  @override
+  List<Object?> get props => [message];
+}
+
+class AuthSignedOutState extends SignInState {}

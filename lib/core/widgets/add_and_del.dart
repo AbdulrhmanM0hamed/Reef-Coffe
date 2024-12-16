@@ -49,7 +49,7 @@ class AddAndDeleteItem extends StatelessWidget {
             fontSize: sizeWidth * 0.045,
           ),
         ),
-        SizedBox(width: sizeWidth * 0.01), // استخدام 3% من عرض الشاشة
+        SizedBox(width: sizeWidth * 0.01),
         IconButton(
             onPressed: onPressedDel,
             icon: Icon(

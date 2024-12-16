@@ -6,10 +6,12 @@ import 'package:hyper_market/feature/auth/data/repositories/auth_repository_impl
 import 'package:hyper_market/feature/auth/domain/repositories/auth_repository.dart';
 import 'package:hyper_market/feature/auth/presentation/controller/signin/signin_cubit.dart';
 import 'package:hyper_market/feature/auth/presentation/controller/signup/signup_cubit.dart';
+import 'package:hyper_market/feature/auth/domain/entities/user_entity.dart';
 import 'package:hyper_market/feature/cart/presentation/cubit/cart_cubit.dart';
 import 'package:hyper_market/feature/categories/data/datasources/category_remote_data_source.dart';
 import 'package:hyper_market/feature/categories/data/repositories/category_repository_impl.dart';
 import 'package:hyper_market/feature/categories/domain/repositories/category_repository.dart';
+import 'package:hyper_market/feature/favorites/presentation/cubit/favorite_cubit.dart';
 import 'package:hyper_market/feature/orders/data/datasources/order_remote_data_source.dart';
 import 'package:hyper_market/feature/orders/data/repositories/order_repository_impl.dart';
 import 'package:hyper_market/feature/orders/domain/repositories/order_repository.dart';
@@ -87,6 +89,10 @@ void setupServiceLocator() {
   );
   getIt.registerLazySingleton<CartCubit>(
     () => CartCubit(),
+  );
+
+  getIt.registerFactoryParam<FavoriteCubit, String?, void>(
+    (userId, _) => FavoriteCubit(userId: userId),
   );
 
   // Orders Feature
