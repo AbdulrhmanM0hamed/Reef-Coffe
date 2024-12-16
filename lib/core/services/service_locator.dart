@@ -1,6 +1,9 @@
+import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:hyper_market/core/services/shared_preferences.dart';
 import 'package:hyper_market/core/services/supabase/supabase_initialize.dart';
 import 'package:hyper_market/core/services/local_storage/local_storage_service.dart';
+import 'package:hyper_market/core/utils/constants/constants.dart';
 import 'package:hyper_market/feature/auth/data/datasources/auth_remote_data_source.dart';
 import 'package:hyper_market/feature/auth/data/repositories/auth_repository_impl.dart';
 import 'package:hyper_market/feature/auth/domain/repositories/auth_repository.dart';
@@ -87,15 +90,26 @@ void setupServiceLocator() {
   getIt.registerLazySingleton<SignUpCubit>(
     () => SignUpCubit(authRepository: getIt<AuthRepository>()),
   );
-  getIt.registerLazySingleton<CartCubit>(
-    () => CartCubit(),
-  );
 
-  getIt.registerFactoryParam<FavoriteCubit, String?, void>(
-    (userId, _) => FavoriteCubit(userId: userId),
-  );
+  // Cart
+  getIt.registerFactory(() => CartCubit());
 
-  // Orders Feature
+  // Favorites
+  getIt.registerFactory(() {
+    String? userId;
+    final userDataJson = Prefs.getString(KUserData);
+    if (userDataJson != null && userDataJson.isNotEmpty) {
+      try {
+        final user = UserEntity.fromJson(userDataJson);
+        userId = user.id;
+      } catch (e) {
+        debugPrint('Error parsing user data: $e');
+      }
+    }
+    return FavoriteCubit(userId: userId);
+  });
+
+  // Orders
   getIt.registerLazySingleton<OrdersCubit>(
     () => OrdersCubit(
       getOrdersUseCase: getIt<GetOrderUseCase>(),

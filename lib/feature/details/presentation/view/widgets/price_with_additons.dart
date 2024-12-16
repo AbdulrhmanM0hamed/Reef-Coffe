@@ -6,13 +6,38 @@ import 'package:hyper_market/core/utils/constants/styles_manger.dart';
 import 'package:hyper_market/core/widgets/add_and_del.dart';
 import 'package:hyper_market/feature/products/domain/entities/product.dart';
 
-class PriceWithButton_add_min extends StatelessWidget {
+class PriceWithButton_add_min extends StatefulWidget {
   final Product product;
+  final Function(int quantity) onQuantityChanged;
 
   const PriceWithButton_add_min({
     Key? key,
     required this.product,
+    required this.onQuantityChanged,
   }) : super(key: key);
+
+  @override
+  State<PriceWithButton_add_min> createState() => _PriceWithButton_add_minState();
+}
+
+class _PriceWithButton_add_minState extends State<PriceWithButton_add_min> {
+  int quantity = 1;
+
+  void _incrementQuantity() {
+    setState(() {
+      quantity++;
+      widget.onQuantityChanged(quantity);
+    });
+  }
+
+  void _decrementQuantity() {
+    if (quantity > 1) {
+      setState(() {
+        quantity--;
+        widget.onQuantityChanged(quantity);
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -20,12 +45,12 @@ class PriceWithButton_add_min extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        if (product.hasDiscount)
+        if (widget.product.hasDiscount)
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                '${product.discountPrice?.toStringAsFixed(2)} جنيه',
+                '${widget.product.discountPrice?.toStringAsFixed(2)} جنيه',
                 style: getBoldStyle(
                   fontFamily: FontConstant.cairo,
                   fontSize: sizeWidth * 0.04,
@@ -33,7 +58,7 @@ class PriceWithButton_add_min extends StatelessWidget {
                 ),
               ),
               Text(
-                '${product.price.toStringAsFixed(2)} جنيه',
+                '${widget.product.price.toStringAsFixed(2)} جنيه',
                 style: TextStyle(
                   fontFamily: FontConstant.cairo,
                   fontSize: sizeWidth * 0.035,
@@ -47,7 +72,7 @@ class PriceWithButton_add_min extends StatelessWidget {
           )
         else
           Text(
-            '${product.price.toStringAsFixed(2)} جنيه',
+            '${widget.product.price.toStringAsFixed(2)} جنيه',
             style: getBoldStyle(
               fontFamily: FontConstant.cairo,
               fontSize: sizeWidth * 0.04,
@@ -56,9 +81,9 @@ class PriceWithButton_add_min extends StatelessWidget {
           ),
         AddAndDeleteItem(
           sizeWidth: sizeWidth,
-          number: 1,
-          onPressedAdd: () {},
-          onPressedDel: () {},
+          number: quantity,
+          onPressedAdd: _incrementQuantity,
+          onPressedDel: _decrementQuantity,
         ),
       ],
     );

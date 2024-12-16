@@ -14,13 +14,26 @@ import 'package:hyper_market/feature/details/presentation/view/widgets/review.da
 import 'package:hyper_market/feature/details/presentation/view/widgets/title_with_favorite.dart';
 import 'package:hyper_market/feature/products/domain/entities/product.dart';
 
-class DetailsViewBody extends StatelessWidget {
+class DetailsViewBody extends StatefulWidget {
   final Product product;
 
   const DetailsViewBody({
     Key? key,
     required this.product,
   }) : super(key: key);
+
+  @override
+  State<DetailsViewBody> createState() => _DetailsViewBodyState();
+}
+
+class _DetailsViewBodyState extends State<DetailsViewBody> {
+  int _quantity = 1;
+
+  void _updateQuantity(int quantity) {
+    setState(() {
+      _quantity = quantity;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +48,7 @@ class DetailsViewBody extends StatelessWidget {
           children: [
             const CustomNavPop(),
             Hero(
-              tag: 'product_image_${product.id}_list',
+              tag: 'product_image_${widget.product.id}_list',
               child: Container(
                 width: double.infinity,
                 height: sizeHeight * 0.30,
@@ -43,7 +56,7 @@ class DetailsViewBody extends StatelessWidget {
                   borderRadius: BorderRadius.circular(16),
                 ),
                 child: CachedNetworkImage(
-                  imageUrl: product.imageUrl ?? '',
+                  imageUrl: widget.product.imageUrl ?? '',
                   fit: BoxFit.contain,
                   errorWidget: (context, error, stackTrace) {
                     return Icon(
@@ -56,14 +69,17 @@ class DetailsViewBody extends StatelessWidget {
               ),
             ),
             SizedBox(height: sizeHeight * 0.01),
-            TitleWithFavorite(product: product),
+            TitleWithFavorite(product: widget.product),
             SizedBox(height: sizeHeight * 0.01),
-            PriceWithButton_add_min(product: product),
+            PriceWithButton_add_min(
+              product: widget.product,
+              onQuantityChanged: _updateQuantity,
+            ),
             SizedBox(height: sizeHeight * 0.015),
-            ReviewsWidget(product: product),
+            ReviewsWidget(product: widget.product),
             SizedBox(height: sizeHeight * 0.015),
             Text(
-              product.description!,
+              widget.product.description!,
               style: getSemiBoldStyle(
                 fontFamily: FontConstant.cairo,
                 fontSize: sizeWidth * 0.035,
@@ -94,7 +110,7 @@ class DetailsViewBody extends StatelessWidget {
                       childAspectRatio: 1.5,
                       children: [
                         buildInfoCard(
-                          mainText: product.expiryName!,
+                          mainText: widget.product.expiryName!,
                           subText: 'الصلاحية',
                           iconInfo: Stack(
                             alignment: Alignment.center,
@@ -107,7 +123,7 @@ class DetailsViewBody extends StatelessWidget {
                               Positioned(
                                 top: 25,
                                 child: Text(
-                                  '${product.expiryNumber.toInt()}',
+                                  '${widget.product.expiryNumber.toInt()}',
                                   style: getBoldStyle(
                                     fontFamily: FontConstant.cairo,
                                     fontSize: 20,
@@ -119,9 +135,9 @@ class DetailsViewBody extends StatelessWidget {
                           ),
                         ),
                         buildInfoCard(
-                          mainText: product.isOrganic ? 'طبيعي' : 'غير طبيعي',
+                          mainText: widget.product.isOrganic ? 'طبيعي' : 'غير طبيعي',
                           subText:
-                              product.isOrganic ? '100% طبيعي' : 'منتج مصنع',
+                              widget.product.isOrganic ? '100% طبيعي' : 'منتج مصنع',
                           iconInfo: SvgPicture.asset(
                             'assets/images/lotus.svg',
                             width: 50,
@@ -129,7 +145,7 @@ class DetailsViewBody extends StatelessWidget {
                           ),
                         ),
                         buildInfoCard(
-                          mainText: '${product.caloriesPer100g}',
+                          mainText: '${widget.product.caloriesPer100g}',
                           subText: 'سعرة حرارية',
                           extraText: '100 جرام',
                           iconInfo: SvgPicture.asset(
@@ -139,9 +155,9 @@ class DetailsViewBody extends StatelessWidget {
                           ),
                         ),
                         buildInfoCard(
-                          mainText: '${product.rating}',
+                          mainText: '${widget.product.rating}',
                           subText: 'تقييم',
-                          extraText: '${product.ratingCount} مراجعة',
+                          extraText: '${widget.product.ratingCount} مراجعة',
                           iconInfo: SvgPicture.asset(
                             'assets/images/favourites.svg',
                             width: 50,
@@ -157,17 +173,25 @@ class DetailsViewBody extends StatelessWidget {
             SizedBox(height: sizeHeight * 0.018),
             ElevatedButton(
               onPressed: () {
-                final cartItem = CartItem(
-                  id: product.id!,
-                  productId: product.id!,
-                  name: product.name,
-                  price: product.discountPrice == 0.0
-                      ? product.price
-                      : product.discountPrice,
-                  image: product.imageUrl!,
-                );
+                print('Add to cart button pressed');
+                try {
+                  final cartItem = CartItem(
+                    id: widget.product.id!,
+                    productId: widget.product.id!,
+                    name: widget.product.name,
+                    price: widget.product.discountPrice == 0.0
+                        ? widget.product.price
+                        : widget.product.discountPrice,
+                    image: widget.product.imageUrl!,
+                    quantity: _quantity,
+                  );
+                  print('CartItem created: ${cartItem.name} with quantity: ${cartItem.quantity}');
 
-                context.read<CartCubit>().addItem(cartItem);
+                  context.read<CartCubit>().addItem(cartItem);
+                  print('AddItem called on CartCubit');
+                } catch (e) {
+                  print('Error creating cart item: $e');
+                }
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: TColors.primary,
