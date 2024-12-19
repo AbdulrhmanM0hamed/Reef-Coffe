@@ -48,6 +48,23 @@ class SignInCubit extends Cubit<SignInState> {
     );
   }
 
+  Future<void> signInWithApple() async {
+    emit(SignInLoadingState());
+
+    final result = await authRepository.signInWithApple();
+
+    result.fold(
+      (failure) => emit(SignInErrorState(failure.message)),
+      (user) {
+        // Save user data
+        final userJson = jsonEncode(user.toJson());
+        Prefs.setString(KUserData, userJson);
+        Prefs.setBool(KUserLogout, false);
+        emit(SignInSuccessState(user));
+      },
+    );
+  }
+
   // Future<void> signInWithFacebook() async {
   //   emit(SignInLoadingState());
 

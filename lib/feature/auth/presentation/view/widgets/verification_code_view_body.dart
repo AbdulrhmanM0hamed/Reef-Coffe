@@ -32,22 +32,9 @@ class VerificationCodeViewBody extends StatelessWidget {
             arguments: email,
           );
         } else if (state is ResetPasswordError) {
-          String errorMessage = state.message;
-          if (state.message.contains(
-              "New password should be different from the old password")) {
-            errorMessage =
-                "كلمة المرور الجديدة يجب أن تكون مختلفة عن كلمة المرور القديمة";
-          } else if (state.message.contains("For security purposes")) {
-            // Extract the number of seconds from the error message
-            final RegExp regex = RegExp(r'after (\d+) seconds');
-            final match = regex.firstMatch(state.message);
-            final seconds = match?.group(1) ?? "14";
-            errorMessage =
-                "لأسباب أمنية، يرجى الانتظار $seconds ثانية قبل إعادة طلب الكود";
-          }
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text(errorMessage),
+              content: Text(state.message),
               backgroundColor: Colors.red,
             ),
           );

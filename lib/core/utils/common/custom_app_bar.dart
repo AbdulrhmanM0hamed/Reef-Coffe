@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:hyper_market/core/utils/constants/font_manger.dart';
 import 'package:hyper_market/core/utils/constants/styles_manger.dart';
 
-AppBar customAppBar(BuildContext context, String title, {bool loginScreen = false}) {
+customAppBar(BuildContext context, String title, {bool loginScreen = false}) {
   return AppBar(
     leading: IconButton(
       onPressed: () {

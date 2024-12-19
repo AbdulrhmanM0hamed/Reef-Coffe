@@ -1,6 +1,4 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:equatable/equatable.dart';
 import 'package:hyper_market/feature/auth/domain/repositories/auth_repository.dart';
 import 'package:hyper_market/feature/auth/presentation/controller/reset_password/reset_password_state.dart';
 

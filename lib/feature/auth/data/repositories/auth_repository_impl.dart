@@ -54,6 +54,16 @@ class AuthRepositoryImpl implements AuthRepository {
     }
   }
 
+  @override
+  Future<Either<Failure, UserEntity>> signInWithApple() async {
+    try {
+      final user = await remoteDataSource.signInWithApple();
+      return Right(UserModel.fromSupabaseUser(user));
+    } on CustomException catch (e) {
+      return Left(ServerFailure(message: e.message));
+    }
+  }
+
   // @override
   // Future<Either<Failure, UserEntity>> signInWithFacebook() async {
   //   try {

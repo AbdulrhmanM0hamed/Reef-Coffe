@@ -3,13 +3,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hyper_market/core/services/service_locator.dart';
 import 'package:hyper_market/core/utils/common/cusom_progress_hud.dart';
 import 'package:hyper_market/core/utils/common/elvated_button.dart';
+import 'package:hyper_market/core/utils/constants/font_manger.dart';
+import 'package:hyper_market/core/utils/constants/styles_manger.dart';
 import 'package:hyper_market/core/utils/constants/values_manger.dart';
 import 'package:hyper_market/core/utils/helper/error_message_helper.dart';
 import 'package:hyper_market/feature/auth/presentation/controller/reset_password/reset_password_cubit.dart';
 import 'package:hyper_market/feature/auth/presentation/controller/reset_password/reset_password_state.dart';
 import 'package:hyper_market/feature/auth/presentation/view/verification_code_view.dart';
 import 'package:hyper_market/feature/auth/presentation/view/widgets/custom_Text_field_email.dart';
-import 'package:hyper_market/feature/auth/presentation/view/widgets/custom_phone_field.dart';
 
 class ForgetPasswordViewBody extends StatefulWidget {
   const ForgetPasswordViewBody({super.key});
@@ -74,9 +75,12 @@ class _ForgetPasswordViewBodyState extends State<ForgetPasswordViewBody> {
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       Text(
-                        'أدخل بريدك الإلكتروني المسجل',
+                        'أدخل بريدك الإلكتروني المُسجل',
                         textAlign: TextAlign.center,
-                        style: Theme.of(context).textTheme.titleMedium,
+                        style: getBoldStyle(
+                          fontFamily: FontConstant.cairo,
+                          fontSize: FontSize.size16,
+                        ),
                       ),
                       const SizedBox(height: AppSize.s20),
                       CustomTextFieldEmail(

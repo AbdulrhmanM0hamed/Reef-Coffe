@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hyper_market/core/services/shared_preferences.dart';
@@ -34,7 +36,7 @@ class _SigninViewBodyState extends State<SigninViewBody> {
   @override
   void initState() {
     super.initState();
-    Future.delayed(Duration(milliseconds: 100), () {
+    Future.delayed(const Duration(milliseconds: 100), () {
       setState(() {
         _isVisible = true;
       });
@@ -58,7 +60,7 @@ class _SigninViewBodyState extends State<SigninViewBody> {
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               CustomAnimations.slideFromTop(
-                duration: Duration(milliseconds: 800),
+                duration: const Duration(milliseconds: 800),
                 child: CustomTextFormField(
                   onSaved: (value) => email = value!,
                   hintText: S.current!.email,
@@ -67,7 +69,7 @@ class _SigninViewBodyState extends State<SigninViewBody> {
               ),
               SizedBox(height: size.height * 0.02),
               CustomAnimations.slideFromTop(
-                duration: Duration(milliseconds: 900),
+                duration:const Duration(milliseconds: 900),
                 child: PasswordField(
                   hintText: S.current!.password,
                   onSaved: (value) => password = value!,
@@ -75,7 +77,7 @@ class _SigninViewBodyState extends State<SigninViewBody> {
               ),
               SizedBox(height: size.height * 0.01),
               CustomAnimations.fadeIn(
-                duration: Duration(milliseconds: 1000),
+                duration:const Duration(milliseconds: 1000),
                 child: TextButton(
                   onPressed: () {
                     Navigator.pushNamed(
@@ -85,7 +87,7 @@ class _SigninViewBodyState extends State<SigninViewBody> {
                   },
                   child: Text(
                     "نسيت كلمة المرور؟",
-                    style: getMediumStyle(
+                    style: getSemiBoldStyle(
                       fontFamily: FontConstant.cairo,
                       fontSize: size.height * 0.016,
                       color: TColors.primary,
@@ -95,7 +97,7 @@ class _SigninViewBodyState extends State<SigninViewBody> {
               ),
               SizedBox(height: size.height * 0.02),
               CustomAnimations.fadeIn(
-                duration: Duration(milliseconds: 1100),
+                duration: const Duration(milliseconds: 1100),
                 child: CustomElevatedButton(
 
                   buttonText: S.current!.login,
@@ -116,12 +118,12 @@ class _SigninViewBodyState extends State<SigninViewBody> {
               ),
               SizedBox(height: size.height * 0.02),
               CustomAnimations.fadeIn(
-                duration: Duration(milliseconds: 1200),
+                duration: const Duration(milliseconds: 1200),
                 child: const CustomDivider(),
               ),
               SizedBox(height: size.height * 0.02),
               CustomAnimations.slideFromBottom(
-                duration: Duration(milliseconds: 1300),
+                duration: const Duration(milliseconds: 1300),
                 child: Column(
                   children: [
                     SocialButton(
@@ -133,26 +135,42 @@ class _SigninViewBodyState extends State<SigninViewBody> {
                       iconPath: AssetsManager.googleIcon,
                       buttonText: "تسجيل بواسطة Google",
                     ),
+                   
+                  //   SocialButton(
+                  //     onPressed: () {
+                  // //      context.read<SignInCubit>().signInWithFacebook();
+                  //     },
+                  //     iconPath: AssetsManager.facebookIcon,
+                  //     buttonText: "تسجيل بواسطة Facebook",
+                  //   ),
                     SizedBox(height: size.height * 0.015),
-                    SocialButton(
-                      onPressed: () {
-                  //      context.read<SignInCubit>().signInWithFacebook();
-                      },
-                      iconPath: AssetsManager.facebookIcon,
-                      buttonText: "تسجيل بواسطة Facebook",
-                    ),
-                    SizedBox(height: size.height * 0.015),
-                    SocialButton(
-                      onPressed: () {},
-                      iconPath: AssetsManager.appleIcon,
-                      buttonText: "تسجيل بواسطة Apple",
-                    ),
+
+                    // Platform.isIOS  ?
+                    //   SocialButton(
+                    //     onPressed: () {
+                    //       context.read<SignInCubit>().signInWithApple();
+                    //     },
+                    //     iconPath: AssetsManager.appleIcon,
+                    //     buttonText: "تسجيل بواسطة Apple",
+                    //   ) : 
+                    //   Tooltip(
+                    //     message: 'متوفر فقط على أجهزة iOS',
+                    //     child: Opacity(
+                    //       opacity: 0.5,
+                    //       child: SocialButton(
+                    //         onPressed: () {},
+                    //         iconPath: AssetsManager.appleIcon,
+                    //         buttonText: "تسجيل بواسطة Apple ",
+                    //       ),
+                    //     ),
+                    //   ),
+                   
                   ],
                 ),
               ),
-              SizedBox(height: size.height * 0.02),
+              SizedBox(height: size.height * 0.01),
               CustomAnimations.fadeIn(
-                duration: Duration(milliseconds: 1400),
+                duration: const Duration(milliseconds: 1400),
                 child: const DontHaveAccount(),
               ),
             ],

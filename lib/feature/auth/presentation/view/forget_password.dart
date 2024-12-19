@@ -11,7 +11,7 @@ class ForgotPasswordView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: customAppBar(context , "نسيان كلمة المرور"),
+      appBar: customAppBar(context ,  "نسيان كلمة المرور"),
       body: const ForgetPasswordViewBody(),
     );
   }

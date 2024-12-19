@@ -1,15 +1,13 @@
-import 'package:flutter/foundation.dart';
-import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:hyper_market/core/error/excptions.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'dart:math';
 
 abstract class AuthRemoteDataSource {
   Future<User> signInWithEmail(String email, String password);
   Future<User> signUpWithEmail(
       String email, String password, String name, String phoneNumber);
   Future<User> signInWithGoogle();
+  Future<User> signInWithApple();
   // Future<User> signInWithFacebook();
   Future<void> signOut();
   Future<User?> getCurrentUser();
@@ -42,18 +40,23 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       );
 
       if (response.user == null) {
-        throw const CustomException(
-            message: 'خطأ في البريد الإلكتروني أو كلمة المرور');
+        throw const CustomException(message: 'فشل في تسجيل الدخول');
       }
 
       return response.user!;
     } catch (e) {
-      if (e.toString().contains('email_not_confirmed')) {
-        throw const CustomException(
-            message: "يرجى التحقق من بريدك الإلكترونى لتفعيل حسابك");
+      if (e is AuthException) {
+        String message = e.message;
+        if (e.message.contains("Invalid login credentials")) {
+          message = "البريد الإلكتروني أو كلمة المرور غير صحيحة";
+        } else if (e.message.contains("Email not confirmed")) {
+          message = "يرجى تأكيد البريد الإلكتروني أولاً";
+        } else if (e.message.contains("Too many requests")) {
+          message = "محاولات كثيرة، يرجى المحاولة بعد قليل";
+        }
+        throw CustomException(message: message);
       }
-      throw const CustomException(
-          message: 'خطأ في البريد الإلكتروني أو كلمة المرور');
+      throw const CustomException(message: 'حدث خطأ في تسجيل الدخول');
     }
   }
 
@@ -90,7 +93,18 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
 
       return response.user!;
     } catch (e) {
-      throw CustomException(message: e.toString());
+      if (e is AuthException) {
+        String message = e.message;
+        if (e.message.contains("User already registered")) {
+          message = "البريد الإلكتروني مسجل مسبقاً";
+        } else if (e.message.contains("Password should be at least 6 characters")) {
+          message = "كلمة المرور يجب أن تكون 6 أحرف على الأقل";
+        } else if (e.message.contains("Invalid email")) {
+          message = "البريد الإلكتروني غير صالح";
+        }
+        throw CustomException(message: message);
+      }
+      throw const CustomException(message: 'حدث خطأ في إنشاء الحساب');
     }
   }
 
@@ -148,6 +162,35 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     }
   }
 
+  @override
+  Future<User> signInWithApple() async {
+    try {
+      final response = await supabaseClient.auth.signInWithOAuth(
+        OAuthProvider.apple,
+        redirectTo: 'hypermarket://callback',
+      );
+
+      if (!response) {
+        throw const CustomException(message: 'فشل في تسجيل الدخول باستخدام Apple');
+      }
+
+      final user = supabaseClient.auth.currentUser;
+      if (user == null) {
+        throw const CustomException(message: 'فشل في تسجيل الدخول باستخدام Apple');
+      }
+
+      return user;
+    } catch (e) {
+      if (e is AuthException) {
+        String message = e.message;
+        if (e.message.contains("User cancelled")) {
+          message = "تم إلغاء تسجيل الدخول";
+        }
+        throw CustomException(message: message);
+      }
+      throw const CustomException(message: 'فشل في تسجيل الدخول باستخدام Apple');
+    }
+  }
 
   // @override
   // Future<User> signInWithFacebook() async {
@@ -180,14 +223,21 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   //   }
   // }
 
-
-
   @override
   Future<void> signOut() async {
     try {
       await supabaseClient.auth.signOut();
     } catch (e) {
-      throw CustomException(message: e.toString());
+      if (e is AuthException) {
+        String message = e.message;
+        if (e.message.contains("User not found")) {
+          message = "لم يتم تسجيل الدخول";
+        } else if (e.message.contains("Session expired")) {
+          message = "انتهت صلاحية الجلسة";
+        }
+        throw CustomException(message: message);
+      }
+      throw const CustomException(message: 'حدث خطأ في تسجيل الخروج');
     }
   }
 
@@ -202,16 +252,25 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
 
   @override
 
-Future<void> resetPassword(String email) async {
-  try {
-    await supabaseClient.auth.resetPasswordForEmail(
-      email,
-      redirectTo: 'hypermarket://reset-password', 
-    );
-  } catch (e) {
-    throw CustomException(message: e.toString());
+  Future<void> resetPassword(String email) async {
+    try {
+      await supabaseClient.auth.resetPasswordForEmail(
+        email,
+        redirectTo: 'hypermarket://reset-password', 
+      );
+    } catch (e) {
+      if (e is AuthException) {
+        String message = e.message;
+        if (e.message.contains("Email not found")) {
+          message = "البريد الإلكتروني غير مسجل";
+        } else if (e.message.contains("Too many requests")) {
+          message = "محاولات كثيرة، يرجى المحاولة بعد قليل";
+        }
+        throw CustomException(message: message);
+      }
+      throw const CustomException(message: 'حدث خطأ في إعادة تعيين كلمة المرور');
+    }
   }
-}
 
   @override
   Future<bool> isEmailRegistered(String email) async {
@@ -256,8 +315,6 @@ Future<void> resetPassword(String email) async {
     }
   }
 
-
-
   // @override
   // Future<void> verifyPhoneNumber(String phoneNumber) async {
   //   try {
@@ -290,8 +347,6 @@ Future<void> resetPassword(String email) async {
   //     throw CustomException(message: e.toString());
   //   }
   // }
-
-
 
   // @override
   // Future<void> sendOTP(String phoneNumber) async {
@@ -354,9 +409,7 @@ Future<void> resetPassword(String email) async {
   //   }
   // }
 
-
-
-   @override
+  @override
   Future<void> sendResetCode(String email) async {
     try {
       final response = await supabaseClient.auth.resetPasswordForEmail(
@@ -365,9 +418,20 @@ Future<void> resetPassword(String email) async {
       );
     } catch (e) {
       if (e is AuthException) {
-        throw CustomException(message: e.message);
+        String message = e.message;
+        if (e.message.contains("For security purposes")) {
+          final RegExp regex = RegExp(r'after (\d+) seconds');
+          final match = regex.firstMatch(e.message);
+          final seconds = match?.group(1) ?? "14";
+          message = "لأسباب أمنية، يرجى الانتظار $seconds ثانية قبل إعادة طلب الكود";
+        } else if (e.message.contains("Email not found")) {
+          message = "البريد الإلكتروني غير مسجل";
+        } else if (e.message.contains("Too many requests")) {
+          message = "محاولات كثيرة، يرجى المحاولة بعد قليل";
+        }
+        throw CustomException(message: message);
       }
-      throw CustomException(message: 'حدث خطأ في إرسال كود التحقق');
+      throw const CustomException(message: 'حدث خطأ في إرسال كود التحقق');
     }
   }
 
@@ -381,9 +445,17 @@ Future<void> resetPassword(String email) async {
       );
     } catch (e) {
       if (e is AuthException) {
-        throw CustomException(message: e.message);
+        String message = e.message;
+        if (e.message.contains("Invalid otp")) {
+          message = "كود التحقق غير صحيح";
+        } else if (e.message.contains("Token has expired")) {
+          message = "انتهت صلاحية كود التحقق";
+        } else if (e.message.contains("Too many attempts")) {
+          message = "محاولات كثيرة، يرجى طلب كود جديد";
+        }
+        throw CustomException(message: message);
       }
-      throw CustomException(message: 'كود التحقق غير صحيح');
+      throw const CustomException(message: 'كود التحقق غير صحيح');
     }
   }
 
@@ -395,9 +467,17 @@ Future<void> resetPassword(String email) async {
       );
     } catch (e) {
       if (e is AuthException) {
-        throw CustomException(message: e.message);
+        String message = e.message;
+        if (e.message.contains("New password should be different")) {
+          message = "كلمة المرور الجديدة يجب أن تكون مختلفة عن كلمة المرور القديمة";
+        } else if (e.message.contains("Password should be at least 6 characters")) {
+          message = "كلمة المرور يجب أن تكون 6 أحرف على الأقل";
+        } else if (e.message.contains("Token has expired")) {
+          message = "انتهت صلاحية الجلسة، يرجى إعادة تسجيل الدخول";
+        }
+        throw CustomException(message: message);
       }
-      throw CustomException(message: 'حدث خطأ في تحديث كلمة المرور');
+      throw const CustomException(message: 'حدث خطأ في تحديث كلمة المرور');
     }
   }
 }

@@ -32,4 +32,5 @@ abstract class AuthRepository {
  // Future<Either<Failure, void>> verifyPhoneNumber(String phoneNumber);
  // Future<bool> verifyOTP(String phoneNumber, String otp);
  // Future<void> sendOTP(String phoneNumber);
+  Future<Either<Failure, UserEntity>> signInWithApple();
 }

@@ -2,17 +2,18 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:hyper_market/core/utils/common/elvated_button.dart';
 import 'package:hyper_market/core/utils/constants/colors.dart';
 import 'package:hyper_market/core/utils/constants/font_manger.dart';
 import 'package:hyper_market/core/utils/constants/styles_manger.dart';
 import 'package:hyper_market/feature/cart/data/models/cart_item_model.dart';
 import 'package:hyper_market/feature/cart/presentation/cubit/cart_cubit.dart';
-import 'package:hyper_market/feature/details/presentation/view/widgets/custom_nav_pop.dart';
 import 'package:hyper_market/feature/details/presentation/view/widgets/info_section.dart';
 import 'package:hyper_market/feature/details/presentation/view/widgets/price_with_additons.dart';
 import 'package:hyper_market/feature/details/presentation/view/widgets/review.dart';
 import 'package:hyper_market/feature/details/presentation/view/widgets/title_with_favorite.dart';
 import 'package:hyper_market/feature/products/domain/entities/product.dart';
+import 'package:hyper_market/feature/products/presentation/view/widgets/add_product_snackbar.dart';
 
 class DetailsViewBody extends StatefulWidget {
   final Product product;
@@ -76,11 +77,9 @@ class _DetailsViewBodyState extends State<DetailsViewBody> {
                           shape: BoxShape.circle,
                         ),
                         child: Container(
-                     
                           decoration: BoxDecoration(
-                                 color: Colors.white,
-                                 borderRadius: BorderRadius.circular(16)
-                          ),
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(16)),
                           child: IconButton(
                             icon: const Icon(
                               Icons.arrow_back_ios_new_outlined,
@@ -96,13 +95,13 @@ class _DetailsViewBodyState extends State<DetailsViewBody> {
                 ),
               ),
               Transform.translate(
-                offset: Offset(0, -40),
+                offset: const Offset(0, -40),
                 child: Container(
                   decoration: BoxDecoration(
                     color: Theme.of(context).brightness == Brightness.dark
-                        ? Color.fromARGB(255, 19, 19, 19)
+                        ? const Color.fromARGB(255, 19, 19, 19)
                         : Colors.white,
-                    borderRadius: BorderRadius.only(
+                    borderRadius: const BorderRadius.only(
                       topLeft: Radius.circular(40),
                       topRight: Radius.circular(40),
                     ),
@@ -123,7 +122,7 @@ class _DetailsViewBodyState extends State<DetailsViewBody> {
                         ReviewsWidget(product: widget.product),
                         SizedBox(height: sizeHeight * 0.015),
                         Text(
-                          widget.product.description!,
+                          widget.product.description,
                           style: getSemiBoldStyle(
                             fontFamily: FontConstant.cairo,
                             fontSize: sizeWidth * 0.035,
@@ -155,7 +154,7 @@ class _DetailsViewBodyState extends State<DetailsViewBody> {
                                   childAspectRatio: 1.8,
                                   children: [
                                     buildInfoCard(
-                                      mainText: widget.product.expiryName!,
+                                      mainText: widget.product.expiryName,
                                       subText: 'الصلاحية',
                                       iconInfo: Stack(
                                         alignment: Alignment.center,
@@ -221,7 +220,7 @@ class _DetailsViewBodyState extends State<DetailsViewBody> {
                           },
                         ),
                         SizedBox(height: sizeHeight * 0.018),
-                        ElevatedButton(
+                        CustomElevatedButton(
                           onPressed: () {
                             try {
                               final cartItem = CartItem(
@@ -237,13 +236,12 @@ class _DetailsViewBodyState extends State<DetailsViewBody> {
                               );
 
                               context.read<CartCubit>().addItem(cartItem);
-
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
-                                  content: Text(
-                                      'تم إضافة ${widget.product.name} إلى السلة'),
+                                  content: AddProductSnackbar(
+                                      product: widget.product),
                                   backgroundColor: TColors.primary,
-                                  duration: const Duration(seconds: 2),
+                                  duration: const Duration(seconds: 1),
                                 ),
                               );
                             } catch (e) {
@@ -257,21 +255,7 @@ class _DetailsViewBodyState extends State<DetailsViewBody> {
                               );
                             }
                           },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: TColors.primary,
-                            minimumSize: Size(double.infinity, 50),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                          ),
-                          child: Text(
-                            "اضف الى السلة",
-                            style: getBoldStyle(
-                              fontFamily: FontConstant.cairo,
-                              fontSize: FontSize.size16,
-                              color: Colors.white,
-                            ),
-                          ),
+                          buttonText: 'اضافة للسلة',
                         ),
                       ],
                     ),
