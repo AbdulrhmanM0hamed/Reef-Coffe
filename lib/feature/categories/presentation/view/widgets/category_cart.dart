@@ -46,25 +46,40 @@ class CategoryCart extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
           color: cardColor,
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(12),
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            CachedNetworkImage(
-              imageUrl: category.imageUrl,
-              width: 100,
-              height: 75,
-              errorWidget: (context, error, stackTrace) {
-                return const Icon(Icons.error);
-              },
+            Expanded(
+              flex: 5,
+              child: Container(
+                width: 170,
+                padding: const EdgeInsets.all(8),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(12.0),
+                  child: CachedNetworkImage(
+                    imageUrl: category.imageUrl,
+                    fit: BoxFit.cover,
+                    errorWidget: (context, error, stackTrace) {
+                      return const Icon(
+                        Icons.error_outline,
+                        color: Colors.grey,
+                        size: 32,
+                      );
+                    },
+                  ),
+                ),
+              ),
             ),
-            const SizedBox(height: 8),
-            Text(
-              category.name,
-              style: getBoldStyle(
-                fontFamily: FontConstant.cairo,
-                fontSize: FontSize.size16,
+            Center(
+              child: Text(
+                category.name,
+                style: getBoldStyle(
+                  fontFamily: FontConstant.cairo,
+                  fontSize: FontSize.size16,
+               
+                ),
               ),
             ),
           ],

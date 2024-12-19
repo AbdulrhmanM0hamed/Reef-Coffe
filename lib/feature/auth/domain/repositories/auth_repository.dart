@@ -17,20 +17,19 @@ abstract class AuthRepository {
   });
 
   Future<Either<Failure, bool>> isEmailRegistered(String email);
-
   Future<Either<Failure, UserEntity>> signInWithGoogle();
-
-  Future<Either<Failure, UserEntity>> signInWithFacebook();
-
+ // Future<Either<Failure, UserEntity>> signInWithFacebook();
   Future<Either<Failure, void>> signOut();
-
   Future<Either<Failure, UserEntity?>> getCurrentUser();
-
   Future<Either<Failure, void>> resetPassword(String email);
-  
   Future<Either<Failure, String?>> getCurrentUserName();
   Future<Either<Failure, String?>> getUserPhoneNumber(String email);
-  Future<Either<Failure, void>> verifyPhoneNumber(String phoneNumber);
-  Future<bool> verifyOTP(String phoneNumber, String otp);
-Future<void> sendOTP(String phoneNumber);
+
+  Future<Either<Failure, void>> sendResetCode(String email);
+  Future<Either<Failure, void>> verifyResetCode(String email, String code);
+  Future<Either<Failure, void>> resetPasswordWithCode(String email, String newPassword);
+
+ // Future<Either<Failure, void>> verifyPhoneNumber(String phoneNumber);
+ // Future<bool> verifyOTP(String phoneNumber, String otp);
+ // Future<void> sendOTP(String phoneNumber);
 }

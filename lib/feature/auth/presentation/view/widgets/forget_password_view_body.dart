@@ -6,6 +6,7 @@ import 'package:hyper_market/core/utils/common/elvated_button.dart';
 import 'package:hyper_market/core/utils/constants/values_manger.dart';
 import 'package:hyper_market/core/utils/helper/error_message_helper.dart';
 import 'package:hyper_market/feature/auth/presentation/controller/reset_password/reset_password_cubit.dart';
+import 'package:hyper_market/feature/auth/presentation/controller/reset_password/reset_password_state.dart';
 import 'package:hyper_market/feature/auth/presentation/view/verification_code_view.dart';
 import 'package:hyper_market/feature/auth/presentation/view/widgets/custom_Text_field_email.dart';
 import 'package:hyper_market/feature/auth/presentation/view/widgets/custom_phone_field.dart';
@@ -28,83 +29,82 @@ class _ForgetPasswordViewBodyState extends State<ForgetPasswordViewBody> {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => ResetPasswordCubit(authRepository: getIt()),
-      child: BlocConsumer<ResetPasswordCubit, ResetPasswordState>(
+      child: BlocListener<ResetPasswordCubit, ResetPasswordState>(
         listener: (context, state) {
-          if (state is ResetPasswordPhoneRequiredState) {
-            setState(() {
-              showPhoneField = true;
-            });
-          }
-          if (state is ResetPasswordSuccessState) {
-            Navigator.pushNamed(context, VerificationCodeView.routeName);
-            showSuccessSnackBar(
-              context,
-              'سيتم إرسال رمز التحقق إلى رقم هاتفك',
+          if (state is ResetCodeSent) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(state.message),
+                backgroundColor: Colors.green,
+              ),
+            );
+            Navigator.pushNamed(
+              context, 
+              VerificationCodeView.routeName,
+              arguments: email,
+            );
+          } else if (state is ResetPasswordError) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(state.message),
+                backgroundColor: Colors.red,
+              ),
             );
           }
-          if (state is ResetPasswordErrorState) {
-            showErrorSnackBar(context, state.message);
-          }
         },
-        builder: (context, state) {
-          return CustomProgressHud(
-            inLoading: state is ResetPasswordLoadingState ? true : false,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 20),
-              child: Form(
-                key: _formKey,
-                autovalidateMode: autovalidateMode,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Text(
-                      showPhoneField
-                          ? 'أدخل رقم هاتفك للتحقق'
-                          : 'أدخل بريدك الإلكتروني المسجل',
-                      textAlign: TextAlign.center,
-                      style: Theme.of(context).textTheme.titleMedium,
-                    ),
-                    const SizedBox(height: AppSize.s20),
-                    if (!showPhoneField) ...[
+        child: BlocConsumer<ResetPasswordCubit, ResetPasswordState>(
+          listener: (context, state) {
+            if (state is PasswordResetSuccess) {
+              showSuccessSnackBar(
+                context,
+                'تم إرسال رابط إعادة تعيين كلمة المرور إلى بريدك الإلكتروني',
+              );
+              Navigator.pop(context);
+            }
+          },
+          builder: (context, state) {
+            return CustomProgressHud(
+              inLoading: state is ResetPasswordLoading ? true : false,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 20),
+                child: Form(
+                  key: _formKey,
+                  autovalidateMode: autovalidateMode,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Text(
+                        'أدخل بريدك الإلكتروني المسجل',
+                        textAlign: TextAlign.center,
+                        style: Theme.of(context).textTheme.titleMedium,
+                      ),
+                      const SizedBox(height: AppSize.s20),
                       CustomTextFieldEmail(
                         hintText: "البريد الإلكتروني",
                         suffixIcon: const Icon(Icons.email),
                         onSaved: (value) => email = value!,
                       ),
-                    ] else ...[
-                      CustomPhoneField(
-                        onSaved: (value) => phoneNumber = value!,
+                      const SizedBox(height: AppSize.s20),
+                      CustomElevatedButton(
+                        buttonText: "ارسل الكود",
+                        onPressed: () {
+                          if (_formKey.currentState!.validate()) {
+                            _formKey.currentState!.save();
+                            context.read<ResetPasswordCubit>().sendResetCode(email);
+                          } else {
+                            setState(() {
+                              autovalidateMode = AutovalidateMode.always;
+                            });
+                          }
+                        },
                       ),
                     ],
-                    const SizedBox(height: AppSize.s20),
-                    CustomElevatedButton(
-                      onPressed: () {
-                        if (_formKey.currentState!.validate()) {
-                          _formKey.currentState!.save();
-                          if (!showPhoneField) {
-                            context
-                                .read<ResetPasswordCubit>()
-                                .checkEmailAndGetPhone(email);
-                          } else {
-                            context
-                                .read<ResetPasswordCubit>()
-                                .verifyPhoneNumber(phoneNumber);
-                          }
-                        } else {
-                          setState(() {
-                            autovalidateMode = AutovalidateMode.always;
-                          });
-                        }
-                      },
-                      buttonText:
-                          showPhoneField ? "تحقق من رقم الهاتف" : "متابعة",
-                    ),
-                  ],
+                  ),
                 ),
               ),
-            ),
-          );
-        },
+            );
+          },
+        ),
       ),
     );
   }

@@ -15,7 +15,9 @@ class OfferCardShimmer extends StatelessWidget {
       margin: EdgeInsets.symmetric(horizontal: size.width * 0.02),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(16),
-        color: Colors.white,
+        color: Theme.of(context).brightness == Brightness.dark
+            ? Colors.grey[900]
+            : Colors.white,
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.05),
@@ -26,8 +28,12 @@ class OfferCardShimmer extends StatelessWidget {
         ],
       ),
       child: Shimmer.fromColors(
-        baseColor: Colors.grey[300]!,
-        highlightColor: Colors.grey[100]!,
+        baseColor: Theme.of(context).brightness == Brightness.dark
+            ? Colors.grey[800]!
+            : Colors.grey[300]!,
+        highlightColor: Theme.of(context).brightness == Brightness.dark
+            ? Colors.grey[700]!
+            : Colors.grey[100]!,
         child: Row(
           children: [
             Expanded(
@@ -35,7 +41,9 @@ class OfferCardShimmer extends StatelessWidget {
               child: Container(
                 margin: EdgeInsets.all(size.width * 0.02),
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: Theme.of(context).brightness == Brightness.dark
+                      ? Colors.grey[800]
+                      : Colors.white,
                   borderRadius: BorderRadius.circular(12),
                 ),
                 height: size.height * 0.15,
@@ -53,7 +61,9 @@ class OfferCardShimmer extends StatelessWidget {
                       width: double.infinity,
                       height: 20,
                       decoration: BoxDecoration(
-                        color: Colors.white,
+                        color: Theme.of(context).brightness == Brightness.dark
+                            ? Colors.grey[800]
+                            : Colors.white,
                         borderRadius: BorderRadius.circular(4),
                       ),
                     ),
@@ -63,7 +73,9 @@ class OfferCardShimmer extends StatelessWidget {
                       width: size.width * 0.3,
                       height: 16,
                       decoration: BoxDecoration(
-                        color: Colors.white,
+                        color: Theme.of(context).brightness == Brightness.dark
+                            ? Colors.grey[800]
+                            : Colors.white,
                         borderRadius: BorderRadius.circular(4),
                       ),
                     ),

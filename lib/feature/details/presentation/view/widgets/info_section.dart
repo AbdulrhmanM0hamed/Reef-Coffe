@@ -110,7 +110,7 @@ class buildInfoCard extends StatelessWidget {
           decoration: BoxDecoration(
             color: Theme.of(context).brightness == Brightness.dark
                 ? TColors.darkerGrey
-                : TColors.white,
+                : TColors.borderPrimary,
             borderRadius: BorderRadius.circular(12),
             boxShadow: [
               BoxShadow(

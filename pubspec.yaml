@@ -51,11 +51,13 @@ dependencies:
   modal_progress_hud_nsn: ^0.5.1
   network_info_plus: ^6.1.1
   page_transition: ^2.1.0
+  pin_code_fields: ^8.0.1
   shared_preferences: ^2.3.3
   shimmer: ^3.0.0
   smooth_page_indicator: ^1.2.0+3
   supabase_flutter: ^2.8.1
   timeago: ^3.6.0
+  uni_links3: ^0.5.3
   uuid: ^4.5.1
 
 dev_dependencies:

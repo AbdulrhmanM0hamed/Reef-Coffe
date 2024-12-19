@@ -10,11 +10,12 @@ class SplashView extends StatefulWidget {
   State<SplashView> createState() => _SplashViewState();
 }
 
-class _SplashViewState extends State<SplashView> {
+class _SplashViewState extends State<SplashView> with SingleTickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body:SafeArea(child: SplashViewBody())
-    ) ;
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      body: const SafeArea(child: SplashViewBody())
+    );
   }
 }

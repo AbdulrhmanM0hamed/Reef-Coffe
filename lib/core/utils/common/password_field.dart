@@ -6,10 +6,11 @@ import 'package:hyper_market/generated/l10n.dart';
 class PasswordField extends StatefulWidget {
   const PasswordField({
     super.key, 
-    this.onSaved, 
+    this.onSaved, required this.hintText, 
   });
 
   final void Function(String?)? onSaved;
+  final String hintText;
 
   @override
   State<PasswordField> createState() => _PasswordFieldState();
@@ -23,7 +24,7 @@ class _PasswordFieldState extends State<PasswordField> {
     return CustomTextFormField(
       obsacureText: _obscureText, // تمرير قيمة _obscureText
       onSaved: widget.onSaved, // تمرير onSaved
-      hintText: S.current!.password,
+      hintText: widget.hintText,
       suffixIcon: GestureDetector(
         onTap: () {
           setState(() {

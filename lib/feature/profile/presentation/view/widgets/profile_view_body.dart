@@ -131,23 +131,27 @@ class ProfileViewBody extends StatelessWidget {
                         final userData = json.decode(userDataJson);
                         final user = UserEntity.fromJson(userData);
                         // Clear user specific favorites
-                        await Prefs.setString('${KUserFavorites}${user.id}', '[]');
+                        await Prefs.setString(
+                            '${KUserFavorites}${user.id}', '[]');
                       } catch (e) {
                         debugPrint('Error clearing favorites: $e');
                       }
                     }
-                    
-                    // Set logout flags
-                    await Prefs.setBool(KUserLogout, true);
-                    await Prefs.setBool(KIsloginSuccess, false);
-                    await Prefs.setString(KUserData, '');
-                    
+
+                    // Clear all user data
+                    (
+                      Prefs.setBool(KUserLogout, true),
+                      Prefs.setBool(KIsloginSuccess, false),
+                      Prefs.setString(KUserData, ''),
+                      Prefs.setBool(KIsloginSuccess, false),
+                    );
+
                     // Clear user session
-                    context.read<SignInCubit>().signOut();
-                    
-                    // Navigate to sign in
-                    Navigator.of(context)
-                        .pushReplacementNamed(SigninView.routeName);
+                    if (context.mounted) {
+                      context.read<SignInCubit>().signOut();
+                      Navigator.of(context)
+                          .pushReplacementNamed(SigninView.routeName);
+                    }
                   },
                   child: Text(
                     'تسجيل الخروج',

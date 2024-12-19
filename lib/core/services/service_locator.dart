@@ -10,6 +10,7 @@ import 'package:hyper_market/feature/auth/data/repositories/auth_repository_impl
 import 'package:hyper_market/feature/auth/domain/repositories/auth_repository.dart';
 import 'package:hyper_market/feature/auth/presentation/controller/signin/signin_cubit.dart';
 import 'package:hyper_market/feature/auth/presentation/controller/signup/signup_cubit.dart';
+import 'package:hyper_market/feature/auth/presentation/controller/reset_password/reset_password_cubit.dart';
 import 'package:hyper_market/feature/auth/domain/entities/user_entity.dart';
 import 'package:hyper_market/feature/cart/presentation/cubit/cart_cubit.dart';
 import 'package:hyper_market/feature/categories/data/datasources/category_remote_data_source.dart';
@@ -91,6 +92,10 @@ void setupServiceLocator() {
   );
   getIt.registerLazySingleton<SignUpCubit>(
     () => SignUpCubit(authRepository: getIt<AuthRepository>()),
+  );
+
+  getIt.registerLazySingleton<ResetPasswordCubit>(
+    () => ResetPasswordCubit(authRepository: getIt<AuthRepository>()),
   );
 
   // Cart

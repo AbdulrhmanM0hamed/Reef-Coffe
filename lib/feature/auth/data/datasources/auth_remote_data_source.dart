@@ -10,16 +10,22 @@ abstract class AuthRemoteDataSource {
   Future<User> signUpWithEmail(
       String email, String password, String name, String phoneNumber);
   Future<User> signInWithGoogle();
-  Future<User> signInWithFacebook();
+  // Future<User> signInWithFacebook();
   Future<void> signOut();
   Future<User?> getCurrentUser();
   Future<void> resetPassword(String email);
   Future<bool> isEmailRegistered(String email);
   Future<String?> getCurrentUserName();
   Future<String?> getUserPhoneNumber(String email);
-  Future<void> verifyPhoneNumber(String phoneNumber);
-  Future<void> sendOTP(String phoneNumber);
-  Future<bool> verifyOTP(String phoneNumber, String otp);
+  
+  // Future<void> verifyPhoneNumber(String phoneNumber);
+  // Future<void> sendOTP(String phoneNumber);
+  // Future<bool> verifyOTP(String phoneNumber, String otp);
+
+
+  Future<void> sendResetCode(String email);
+  Future<void> verifyResetCode(String email, String code);
+  Future<void> resetPasswordWithCode(String email, String newPassword);
 }
 
 class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
@@ -88,8 +94,6 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     }
   }
 
-  //_AssertionError ('package:gotrue/src/gotrue_client.dart': Failed assertion: line 208 pos 12: '(email != null && phone == null) || (email == null && phone != null)': You must provide either an email or phone number)
-//_AssertionError ('package:gotrue/src/gotrue_client.dart': Failed assertion: line 208 pos 12: '(email != null && phone == null) || (email == null && phone != null)': You must provide either an email or phone number)
   @override
   Future<User> signInWithGoogle() async {
     try {
@@ -144,95 +148,39 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     }
   }
 
+
   // @override
-  // Future<User> signInWithGoogle() async {
+  // Future<User> signInWithFacebook() async {
   //   try {
-  //     final GoogleSignIn googleSignIn = GoogleSignIn(
-  //       scopes: ['email'],
-  //       clientId:
-  //           '904000175391-7jj5ffb8bgon6djhjlmjca0gkicg2bp9.apps.googleusercontent.com',
-  //     );
+  //     final facebookAuth = FacebookAuth.instance;
 
-  //     await googleSignIn.signOut();
+  //     final LoginResult result = await facebookAuth.login();
 
-  //     final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
-
-  //     if (googleUser == null) {
-  //       throw const CustomException(message: 'تم إلغاء تسجيل الدخول');
+  //     if (result.status != LoginStatus.success) {
+  //       throw const CustomException(
+  //           message: 'فشل في تسجيل الدخول بواسطة Facebook');
   //     }
 
-  //     final GoogleSignInAuthentication googleAuth =
-  //         await googleUser.authentication;
+  //     final accessToken = result.accessToken!;
 
-  //     final AuthCredential credential = GoogleAuthProvider.credential(
-  //       accessToken: googleAuth.accessToken,
-  //       idToken: googleAuth.idToken,
-  //     );
-
-  //     // Sign in with Supabase using Google token
   //     final response = await supabaseClient.auth.signInWithIdToken(
-  //       provider: OAuthProvider.google,
-  //       idToken: credential.idToken!,
-  //       accessToken: credential.accessToken,
+  //       provider: OAuthProvider.facebook,
+  //       idToken: accessToken.tokenString,
   //     );
 
-  //     if (response.user == null) {
-  //       throw const CustomException(message: 'فشل في تسجيل الدخول بواسطة جوجل');
+  //     final user = response.user;
+  //     if (user == null) {
+  //       throw const CustomException(
+  //           message: 'فشل في تسجيل الدخول بواسطة Facebook');
   //     }
 
-  //     // Check if profile exists
-  //     final profile = await supabaseClient
-  //         .from('profiles')
-  //         .select()
-  //         .eq('id', response.user!.id)
-  //         .maybeSingle();
-
-  //     // If profile doesn't exist, create it
-  //     if (profile == null) {
-  //       await supabaseClient.from('profiles').insert({
-  //         'id': response.user!.id,
-  //         'name': googleUser.displayName,
-  //         'email': googleUser.email,
-  //         // Note: Google sign in doesn't provide phone number
-  //       });
-  //     }
-
-  //     return response.user!;
+  //     return user;
   //   } catch (e) {
   //     throw CustomException(message: e.toString());
   //   }
   // }
 
-  @override
-  Future<User> signInWithFacebook() async {
-    try {
-      final facebookAuth = FacebookAuth.instance;
 
-      final LoginResult result = await facebookAuth.login();
-
-      if (result.status != LoginStatus.success) {
-        throw const CustomException(
-            message: 'فشل في تسجيل الدخول بواسطة Facebook');
-      }
-
-      final accessToken = result.accessToken!;
-
-      final response = await supabaseClient.auth.signInWithIdToken(
-        provider: OAuthProvider.facebook,
-        idToken: accessToken.tokenString,
-      );
-
-      final user = response.user;
-      if (user == null) {
-        throw const CustomException(
-            message: 'فشل في تسجيل الدخول بواسطة Facebook');
-      }
-
-      return user;
-    } catch (e) {
-      throw CustomException(message: e.toString());
-    }
-  }
 
   @override
   Future<void> signOut() async {
@@ -253,13 +201,17 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   }
 
   @override
-  Future<void> resetPassword(String email) async {
-    try {
-      await supabaseClient.auth.resetPasswordForEmail(email);
-    } catch (e) {
-      throw CustomException(message: e.toString());
-    }
+
+Future<void> resetPassword(String email) async {
+  try {
+    await supabaseClient.auth.resetPasswordForEmail(
+      email,
+      redirectTo: 'hypermarket://reset-password', 
+    );
+  } catch (e) {
+    throw CustomException(message: e.toString());
   }
+}
 
   @override
   Future<bool> isEmailRegistered(String email) async {
@@ -304,97 +256,148 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     }
   }
 
-  @override
-  Future<void> verifyPhoneNumber(String phoneNumber) async {
+
+
+  // @override
+  // Future<void> verifyPhoneNumber(String phoneNumber) async {
+  //   try {
+  //     // Here we'll integrate with your SMS service provider
+  //     final response = await supabaseClient
+  //         .from('profiles')
+  //         .select('phone_number')
+  //         .eq('phone_number', phoneNumber)
+  //         .single();
+
+  //     if (response == null) {
+  //       throw const CustomException(message: 'رقم الهاتف غير مسجل');
+  //     }
+
+  //     // Generate OTP (6 digits)
+  //     final otp = (100000 + Random().nextInt(900000)).toString();
+
+  //     // Store OTP in Supabase with expiration time (5 minutes)
+  //     await supabaseClient.from('otp_verification').insert({
+  //       'phone_number': phoneNumber,
+  //       'otp': otp,
+  //       'expires_at':
+  //           DateTime.now().add(const Duration(minutes: 5)).toIso8601String(),
+  //     });
+
+  //     // Here you would integrate with an SMS service to send the OTP
+  //     // For now, we'll just print it (in production, you'd use a real SMS service)
+  //     debugPrint('OTP for $phoneNumber: $otp');
+  //   } catch (e) {
+  //     throw CustomException(message: e.toString());
+  //   }
+  // }
+
+
+
+  // @override
+  // Future<void> sendOTP(String phoneNumber) async {
+  //   try {
+  //     // Here we'll integrate with your SMS service provider
+  //     final response = await supabaseClient
+  //         .from('profiles')
+  //         .select('phone_number')
+  //         .eq('phone_number', phoneNumber)
+  //         .single();
+
+  //     if (response == null) {
+  //       throw const CustomException(message: 'رقم الهاتف غير مسجل');
+  //     }
+
+  //     // Generate OTP (6 digits)
+  //     final otp = (100000 + Random().nextInt(900000)).toString();
+
+  //     // Store OTP in Supabase with expiration time (5 minutes)
+  //     await supabaseClient.from('otp_verification').insert({
+  //       'phone_number': phoneNumber,
+  //       'otp': otp,
+  //       'expires_at':
+  //           DateTime.now().add(const Duration(minutes: 5)).toIso8601String(),
+  //     });
+
+  //     // Here you would integrate with an SMS service to send the OTP
+  //     // For now, we'll just print it (in production, you'd use a real SMS service)
+  //     debugPrint('OTP for $phoneNumber: $otp');
+  //   } catch (e) {
+  //     throw CustomException(message: e.toString());
+  //   }
+  // }
+
+  // @override
+  // Future<bool> verifyOTP(String phoneNumber, String otp) async {
+  //   try {
+  //     final response = await supabaseClient
+  //         .from('otp_verification')
+  //         .select()
+  //         .eq('phone_number', phoneNumber)
+  //         .eq('otp', otp)
+  //         .gte('expires_at', DateTime.now().toIso8601String())
+  //         .single();
+
+  //     if (response == null) {
+  //       throw const CustomException(
+  //           message: 'رمز التحقق غير صحيح أو منتهي الصلاحية');
+  //     }
+
+  //     // Delete used OTP
+  //     await supabaseClient
+  //         .from('otp_verification')
+  //         .delete()
+  //         .eq('phone_number', phoneNumber);
+
+  //     return true;
+  //   } catch (e) {
+  //     throw CustomException(message: e.toString());
+  //   }
+  // }
+
+
+
+   @override
+  Future<void> sendResetCode(String email) async {
     try {
-      // Here we'll integrate with your SMS service provider
-      final response = await supabaseClient
-          .from('profiles')
-          .select('phone_number')
-          .eq('phone_number', phoneNumber)
-          .single();
-
-      if (response == null) {
-        throw const CustomException(message: 'رقم الهاتف غير مسجل');
-      }
-
-      // Generate OTP (6 digits)
-      final otp = (100000 + Random().nextInt(900000)).toString();
-
-      // Store OTP in Supabase with expiration time (5 minutes)
-      await supabaseClient.from('otp_verification').insert({
-        'phone_number': phoneNumber,
-        'otp': otp,
-        'expires_at':
-            DateTime.now().add(const Duration(minutes: 5)).toIso8601String(),
-      });
-
-      // Here you would integrate with an SMS service to send the OTP
-      // For now, we'll just print it (in production, you'd use a real SMS service)
-      debugPrint('OTP for $phoneNumber: $otp');
+      final response = await supabaseClient.auth.resetPasswordForEmail(
+        email,
+        redirectTo: null, 
+      );
     } catch (e) {
-      throw CustomException(message: e.toString());
+      if (e is AuthException) {
+        throw CustomException(message: e.message);
+      }
+      throw CustomException(message: 'حدث خطأ في إرسال كود التحقق');
     }
   }
 
   @override
-  Future<void> sendOTP(String phoneNumber) async {
+  Future<void> verifyResetCode(String email, String code) async {
     try {
-      // Here we'll integrate with your SMS service provider
-      final response = await supabaseClient
-          .from('profiles')
-          .select('phone_number')
-          .eq('phone_number', phoneNumber)
-          .single();
-
-      if (response == null) {
-        throw const CustomException(message: 'رقم الهاتف غير مسجل');
-      }
-
-      // Generate OTP (6 digits)
-      final otp = (100000 + Random().nextInt(900000)).toString();
-
-      // Store OTP in Supabase with expiration time (5 minutes)
-      await supabaseClient.from('otp_verification').insert({
-        'phone_number': phoneNumber,
-        'otp': otp,
-        'expires_at':
-            DateTime.now().add(const Duration(minutes: 5)).toIso8601String(),
-      });
-
-      // Here you would integrate with an SMS service to send the OTP
-      // For now, we'll just print it (in production, you'd use a real SMS service)
-      debugPrint('OTP for $phoneNumber: $otp');
+      final response = await supabaseClient.auth.verifyOTP(
+        email: email,
+        token: code,
+        type: OtpType.recovery,
+      );
     } catch (e) {
-      throw CustomException(message: e.toString());
+      if (e is AuthException) {
+        throw CustomException(message: e.message);
+      }
+      throw CustomException(message: 'كود التحقق غير صحيح');
     }
   }
 
   @override
-  Future<bool> verifyOTP(String phoneNumber, String otp) async {
+  Future<void> resetPasswordWithCode(String email, String newPassword) async {
     try {
-      final response = await supabaseClient
-          .from('otp_verification')
-          .select()
-          .eq('phone_number', phoneNumber)
-          .eq('otp', otp)
-          .gte('expires_at', DateTime.now().toIso8601String())
-          .single();
-
-      if (response == null) {
-        throw const CustomException(
-            message: 'رمز التحقق غير صحيح أو منتهي الصلاحية');
-      }
-
-      // Delete used OTP
-      await supabaseClient
-          .from('otp_verification')
-          .delete()
-          .eq('phone_number', phoneNumber);
-
-      return true;
+      final response = await supabaseClient.auth.updateUser(
+        UserAttributes(password: newPassword),
+      );
     } catch (e) {
-      throw CustomException(message: e.toString());
+      if (e is AuthException) {
+        throw CustomException(message: e.message);
+      }
+      throw CustomException(message: 'حدث خطأ في تحديث كلمة المرور');
     }
   }
 }

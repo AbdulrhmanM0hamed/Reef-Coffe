@@ -47,27 +47,29 @@ class ProductCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Expanded(
-              flex: 5,
+              flex: 4,
               child: Container(
-                width: double.infinity,
-                padding: EdgeInsets.all(responsivePadding),
-                decoration: const BoxDecoration(
-                  borderRadius: BorderRadius.vertical(
-                    top: Radius.circular(12),
-                  ),
-                ),
-                child: CachedNetworkImage(
-                  imageUrl: product.imageUrl ?? '',
-                  fit: BoxFit.contain,
-                  errorWidget: (context, error, stackTrace) {
-                    return Icon(
-                      Icons.error_outline,
-                      color: Colors.grey.shade400,
-                      size: isSmallScreen ? 24 : 32,
-                    );
-                  },
-                ),
-              ),
+                  width: double.infinity,
+                  padding: EdgeInsets.all(responsivePadding),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(12.0),
+                    child: Container(
+                      decoration: const BoxDecoration(
+                        color: Colors.white,
+                      ),
+                      child: CachedNetworkImage(
+                        imageUrl: product.imageUrl ?? '',
+                        fit: BoxFit.cover,
+                        errorWidget: (context, error, stackTrace) {
+                          return Icon(
+                            Icons.error_outline,
+                            color: Colors.grey.shade400,
+                            size: isSmallScreen ? 24 : 32,
+                          );
+                        },
+                      ),
+                    ),
+                  )),
             ),
             Expanded(
               flex: 4,
@@ -88,8 +90,8 @@ class ProductCard extends StatelessWidget {
                                   ? FontSize.size10
                                   : FontSize.size14,
                             ),
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
+                            maxLines: 1,
+                            overflow: TextOverflow.clip,
                           ),
                         ),
                         if (product.hasDiscount)
@@ -197,27 +199,21 @@ class ProductCard extends StatelessWidget {
                         InkWell(
                           onTap: () {
                             try {
-                              print('Debug: Adding product to cart - ${product.name}');
-                              print('Debug: Product price - ${product.price}');
-                              print('Debug: Product discount price - ${product.discountPrice}');
-                              
                               final cartItem = CartItem(
                                 id: product.id!,
                                 productId: product.id!,
                                 name: product.name,
-                                price: product.discountPrice == 0.0 ? product.price : product.discountPrice,
+                                price: product.hasDiscount
+                                    ? product.discountPrice!
+                                    : product.price,
                                 image: product.imageUrl!,
                                 quantity: 1,
                               );
 
-                              print('Debug: CartItem created - ${cartItem.name} - Price: ${cartItem.price}');
-                              
                               final cartCubit = context.read<CartCubit>();
-                              print('Debug: Got CartCubit instance');
-                              
+
                               cartCubit.addItem(cartItem);
-                              print('Debug: Item added to cart');
-                              
+
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
                                   content: AddProductSnackbar(product: product),
@@ -226,12 +222,12 @@ class ProductCard extends StatelessWidget {
                                 ),
                               );
                             } catch (e) {
-                              print('Error adding product to cart: $e');
                               ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: const Text('حدث خطأ أثناء الإضافة إلى السلة'),
+                                const SnackBar(
+                                  content:
+                                      Text('حدث خطأ أثناء الإضافة إلى السلة'),
                                   backgroundColor: Colors.red,
-                                  duration: const Duration(seconds: 2),
+                                  duration: Duration(seconds: 2),
                                 ),
                               );
                             }

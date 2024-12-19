@@ -8,7 +8,9 @@ class ProductCardShimmer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).brightness == Brightness.dark
+            ? Colors.grey[900]
+            : Colors.white,
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
@@ -20,8 +22,12 @@ class ProductCardShimmer extends StatelessWidget {
         ],
       ),
       child: Shimmer.fromColors(
-        baseColor: Colors.grey[300]!,
-        highlightColor: Colors.grey[100]!,
+        baseColor: Theme.of(context).brightness == Brightness.dark
+            ? Colors.grey[800]!
+            : Colors.grey[300]!,
+        highlightColor: Theme.of(context).brightness == Brightness.dark
+            ? Colors.grey[700]!
+            : Colors.grey[100]!,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -29,7 +35,9 @@ class ProductCardShimmer extends StatelessWidget {
               flex: 2,
               child: Container(
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: Theme.of(context).brightness == Brightness.dark
+                      ? Colors.grey[800]
+                      : Colors.white,
                   borderRadius: BorderRadius.circular(16),
                 ),
               ),
@@ -46,7 +54,9 @@ class ProductCardShimmer extends StatelessWidget {
                       width: double.infinity,
                       height: 16,
                       decoration: BoxDecoration(
-                        color: Colors.white,
+                        color: Theme.of(context).brightness == Brightness.dark
+                            ? Colors.grey[800]
+                            : Colors.white,
                         borderRadius: BorderRadius.circular(4),
                       ),
                     ),
@@ -55,7 +65,9 @@ class ProductCardShimmer extends StatelessWidget {
                       width: 80,
                       height: 14,
                       decoration: BoxDecoration(
-                        color: Colors.white,
+                        color: Theme.of(context).brightness == Brightness.dark
+                            ? Colors.grey[800]
+                            : Colors.white,
                         borderRadius: BorderRadius.circular(4),
                       ),
                     ),

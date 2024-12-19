@@ -69,6 +69,7 @@ class _SigninViewBodyState extends State<SigninViewBody> {
               CustomAnimations.slideFromTop(
                 duration: Duration(milliseconds: 900),
                 child: PasswordField(
+                  hintText: S.current!.password,
                   onSaved: (value) => password = value!,
                 ),
               ),
@@ -99,7 +100,7 @@ class _SigninViewBodyState extends State<SigninViewBody> {
 
                   buttonText: S.current!.login,
                   onPressed: () {
-                    Prefs.setBool(KIsloginSuccess, true);
+                 //   Prefs.setBool(KIsloginSuccess, true);
                     if (formKey.currentState!.validate()) {
                       formKey.currentState!.save();
                       context.read<SignInCubit>().signInWithEmail(
@@ -135,7 +136,7 @@ class _SigninViewBodyState extends State<SigninViewBody> {
                     SizedBox(height: size.height * 0.015),
                     SocialButton(
                       onPressed: () {
-                        context.read<SignInCubit>().signInWithFacebook();
+                  //      context.read<SignInCubit>().signInWithFacebook();
                       },
                       iconPath: AssetsManager.facebookIcon,
                       buttonText: "تسجيل بواسطة Facebook",

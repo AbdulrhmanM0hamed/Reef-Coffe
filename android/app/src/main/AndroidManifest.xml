@@ -11,42 +11,49 @@
         android:name=".MyApplication"
         android:icon="@mipmap/ic_launcher">
 
-        <activity
-            android:name=".MainActivity"
-            android:exported="true"
-            android:launchMode="singleTop"
-            android:theme="@style/LaunchTheme"
-            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
-            android:hardwareAccelerated="true"
-            android:windowSoftInputMode="adjustResize">
-               <meta-data
-            android:name="com.facebook.sdk.ApplicationId"
-            android:value="@string/facebook_app_id"/>
-        <meta-data 
-            android:name="com.facebook.sdk.ClientToken"
-            android:value="@string/facebook_client_token"/>
+       <activity
+    android:name=".MainActivity"
+    android:exported="true"
+    android:launchMode="singleTop"
+    android:theme="@style/LaunchTheme"
+    android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
+    android:hardwareAccelerated="true"
+    android:windowSoftInputMode="adjustResize">
 
-            <meta-data
-          
-                android:name="io.flutter.embedding.android.NormalTheme" 
-                android:resource="@style/NormalTheme" />
+    <!-- Specify that the launch screen should continue being displayed -->
+    <meta-data
+        android:name="io.flutter.embedding.android.SplashScreenDrawable"
+        android:resource="@drawable/launch_background" />
 
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
+    <!-- Theme to apply as soon as Flutter begins rendering frames -->
+    <meta-data
+        android:name="io.flutter.embedding.android.NormalTheme"
+        android:resource="@style/NormalTheme" />
 
-            <!-- Deep Link for Google Sign In -->
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW"/>
-                <category android:name="android.intent.category.DEFAULT"/>
-                <category android:name="android.intent.category.BROWSABLE"/>
-                <data
-                    android:scheme="com.example.hyper_market"
-                    android:host="oauth2redirect"/>
-            </intent-filter>
-        </activity>
+    <meta-data
+        android:name="com.facebook.sdk.ApplicationId"
+        android:value="@string/facebook_app_id"/>
 
+    <!-- Main launcher intent filter -->
+    <intent-filter>
+        <action android:name="android.intent.action.MAIN"/>
+        <category android:name="android.intent.category.LAUNCHER"/>
+    </intent-filter>
+
+    <!-- Deep linking intent filter -->
+    <intent-filter android:autoVerify="true">
+        <action android:name="android.intent.action.VIEW" />
+        <category android:name="android.intent.category.DEFAULT" />
+        <category android:name="android.intent.category.BROWSABLE" />
+        <data
+            android:scheme="hypermarket"
+            android:host="reset-password" />
+        <data
+            android:scheme="https"
+            android:host="kizgmgaocdhnarvqtzvf.supabase.co"
+            android:pathPattern="/auth/v1/verify" />
+    </intent-filter>
+</activity>
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />

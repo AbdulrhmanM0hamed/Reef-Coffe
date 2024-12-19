@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hyper_market/core/services/service_locator.dart';
 import 'package:hyper_market/feature/auth/presentation/view/forget_password.dart';
+import 'package:hyper_market/feature/auth/presentation/view/new_password_view.dart';
 import 'package:hyper_market/feature/auth/presentation/view/signin_view.dart';
 import 'package:hyper_market/feature/auth/presentation/view/signup_view.dart';
+import 'package:hyper_market/feature/auth/presentation/view/verification_code_view.dart';
 import 'package:hyper_market/feature/details/presentation/view/details_view.dart';
 import 'package:hyper_market/feature/favorites/presentation/cubit/favorite_cubit.dart';
 import 'package:hyper_market/feature/favorites/presentation/view/favorites_view.dart';
@@ -49,6 +51,16 @@ Route<dynamic> onGenratedRoutes(RouteSettings settings) {
     case OrdersView.routeName:
       return MaterialPageRoute(
         builder: (context) => const OrdersView(),
+      );
+    case VerificationCodeView.routeName:
+      final email = settings.arguments as String;
+      return MaterialPageRoute(
+        builder: (context) => VerificationCodeView(email: email),
+      );
+    case NewPasswordView.routeName:
+      final email = settings.arguments as String;
+      return MaterialPageRoute(
+        builder: (context) => NewPasswordView(email: email),
       );
     case '/favorites':
       return MaterialPageRoute(

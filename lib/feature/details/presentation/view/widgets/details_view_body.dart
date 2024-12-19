@@ -40,201 +40,248 @@ class _DetailsViewBodyState extends State<DetailsViewBody> {
     var sizeHeight = MediaQuery.of(context).size.height;
     var sizeWidth = MediaQuery.of(context).size.width;
 
-    return SingleChildScrollView(
-      child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: sizeWidth * 0.04),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const CustomNavPop(),
-            Hero(
-              tag: 'product_image_${widget.product.id}_list',
-              child: Container(
-                width: double.infinity,
-                height: sizeHeight * 0.30,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                child: CachedNetworkImage(
-                  imageUrl: widget.product.imageUrl ?? '',
-                  fit: BoxFit.contain,
-                  errorWidget: (context, error, stackTrace) {
-                    return Icon(
-                      Icons.error_outline,
-                      color: Colors.grey.shade400,
-                      size: 64,
-                    );
-                  },
-                ),
-              ),
-            ),
-            SizedBox(height: sizeHeight * 0.01),
-            TitleWithFavorite(product: widget.product),
-            SizedBox(height: sizeHeight * 0.01),
-            PriceWithButton_add_min(
-              product: widget.product,
-              onQuantityChanged: _updateQuantity,
-            ),
-            SizedBox(height: sizeHeight * 0.015),
-            ReviewsWidget(product: widget.product),
-            SizedBox(height: sizeHeight * 0.015),
-            Text(
-              widget.product.description!,
-              style: getSemiBoldStyle(
-                fontFamily: FontConstant.cairo,
-                fontSize: sizeWidth * 0.035,
-                color: TColors.darkGrey,
-              ),
-            ),
-            SizedBox(height: sizeHeight * 0.025),
-            LayoutBuilder(
-              builder: (context, constraints) {
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+    return Stack(
+      children: [
+        SingleChildScrollView(
+          child: Column(
+            children: [
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.45,
+                child: Stack(
                   children: [
-                    Text(
-                      'معلومات المنتج',
-                      style: getBoldStyle(
-                        fontFamily: FontConstant.cairo,
-                        fontSize: constraints.maxWidth * 0.045,
-                        color: TColors.darkGrey,
+                    AspectRatio(
+                      aspectRatio: 3.2 / 3,
+                      child: Hero(
+                        tag: 'product_image_${widget.product.id}_list',
+                        child: CachedNetworkImage(
+                          imageUrl: widget.product.imageUrl ?? '',
+                          fit: BoxFit.cover,
+                          errorWidget: (context, error, stackTrace) {
+                            return Icon(
+                              Icons.error_outline,
+                              color: Colors.grey.shade400,
+                              size: 64,
+                            );
+                          },
+                        ),
                       ),
                     ),
-                    const SizedBox(height: 12),
-                    GridView.count(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      crossAxisCount: 2,
-                      mainAxisSpacing: 12,
-                      crossAxisSpacing: 12,
-                      childAspectRatio: 1.5,
+                    Positioned(
+                      top: 40,
+                      right: 16,
+                      child: Container(
+                        width: 40,
+                        height: 40,
+                        decoration: const BoxDecoration(
+                          shape: BoxShape.circle,
+                        ),
+                        child: Container(
+                     
+                          decoration: BoxDecoration(
+                                 color: Colors.white,
+                                 borderRadius: BorderRadius.circular(16)
+                          ),
+                          child: IconButton(
+                            icon: const Icon(
+                              Icons.arrow_back_ios_new_outlined,
+                              size: 20,
+                              color: TColors.black,
+                            ),
+                            onPressed: () => Navigator.pop(context),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Transform.translate(
+                offset: Offset(0, -40),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).brightness == Brightness.dark
+                        ? Color.fromARGB(255, 19, 19, 19)
+                        : Colors.white,
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(40),
+                      topRight: Radius.circular(40),
+                    ),
+                  ),
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: sizeWidth * 0.04),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        buildInfoCard(
-                          mainText: widget.product.expiryName!,
-                          subText: 'الصلاحية',
-                          iconInfo: Stack(
-                            alignment: Alignment.center,
-                            children: [
-                              SvgPicture.asset(
-                                'assets/images/calener.svg',
-                                width: 50,
-                                height: 70,
-                              ),
-                              Positioned(
-                                top: 25,
-                                child: Text(
-                                  '${widget.product.expiryNumber.toInt()}',
+                        const SizedBox(height: 24),
+                        TitleWithFavorite(product: widget.product),
+                        SizedBox(height: sizeHeight * 0.01),
+                        PriceWithButton_add_min(
+                          product: widget.product,
+                          onQuantityChanged: _updateQuantity,
+                        ),
+                        SizedBox(height: sizeHeight * 0.015),
+                        ReviewsWidget(product: widget.product),
+                        SizedBox(height: sizeHeight * 0.015),
+                        Text(
+                          widget.product.description!,
+                          style: getSemiBoldStyle(
+                            fontFamily: FontConstant.cairo,
+                            fontSize: sizeWidth * 0.035,
+                            color: TColors.darkGrey,
+                          ),
+                        ),
+                        SizedBox(height: sizeHeight * 0.020),
+                        LayoutBuilder(
+                          builder: (context, constraints) {
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'معلومات المنتج',
                                   style: getBoldStyle(
                                     fontFamily: FontConstant.cairo,
-                                    fontSize: 20,
-                                    color: TColors.darkerGrey,
+                                    fontSize: constraints.maxWidth * 0.045,
+                                    color: TColors.darkGrey,
                                   ),
                                 ),
-                              ),
-                            ],
-                          ),
+                                const SizedBox(height: 12),
+                                GridView.count(
+                                  padding: EdgeInsets.zero,
+                                  shrinkWrap: true,
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  crossAxisCount: 2,
+                                  mainAxisSpacing: 8,
+                                  crossAxisSpacing: 8,
+                                  childAspectRatio: 1.8,
+                                  children: [
+                                    buildInfoCard(
+                                      mainText: widget.product.expiryName!,
+                                      subText: 'الصلاحية',
+                                      iconInfo: Stack(
+                                        alignment: Alignment.center,
+                                        children: [
+                                          SvgPicture.asset(
+                                            'assets/images/calener.svg',
+                                            width: 50,
+                                            height: 70,
+                                          ),
+                                          Positioned(
+                                            top: 25,
+                                            child: Text(
+                                              '${widget.product.expiryNumber.toInt()}',
+                                              style: getBoldStyle(
+                                                fontFamily: FontConstant.cairo,
+                                                fontSize: 20,
+                                                color: TColors.darkerGrey,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    buildInfoCard(
+                                      mainText: widget.product.isOrganic
+                                          ? 'طبيعي'
+                                          : 'غير طبيعي',
+                                      subText: widget.product.isOrganic
+                                          ? '100% طبيعي'
+                                          : 'منتج مصنع',
+                                      iconInfo: SvgPicture.asset(
+                                        'assets/images/lotus.svg',
+                                        width: 50,
+                                        height: 50,
+                                      ),
+                                    ),
+                                    buildInfoCard(
+                                      mainText:
+                                          '${widget.product.caloriesPer100g}',
+                                      subText: 'سعرة حرارية',
+                                      extraText: '100 جرام',
+                                      iconInfo: SvgPicture.asset(
+                                        'assets/images/calory.svg',
+                                        width: 50,
+                                        height: 50,
+                                      ),
+                                    ),
+                                    buildInfoCard(
+                                      mainText: '${widget.product.rating}',
+                                      subText: 'تقييم',
+                                      extraText:
+                                          '${widget.product.ratingCount} مراجعة',
+                                      iconInfo: SvgPicture.asset(
+                                        'assets/images/favourites.svg',
+                                        width: 50,
+                                        height: 50,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            );
+                          },
                         ),
-                        buildInfoCard(
-                          mainText:
-                              widget.product.isOrganic ? 'طبيعي' : 'غير طبيعي',
-                          subText: widget.product.isOrganic
-                              ? '100% طبيعي'
-                              : 'منتج مصنع',
-                          iconInfo: SvgPicture.asset(
-                            'assets/images/lotus.svg',
-                            width: 50,
-                            height: 50,
+                        SizedBox(height: sizeHeight * 0.018),
+                        ElevatedButton(
+                          onPressed: () {
+                            try {
+                              final cartItem = CartItem(
+                                id: widget.product.id!,
+                                productId: widget.product.id!,
+                                name: widget.product.name,
+                                price: widget.product.hasDiscount &&
+                                        widget.product.discountPrice != null
+                                    ? widget.product.discountPrice!
+                                    : widget.product.price,
+                                image: widget.product.imageUrl ?? '',
+                                quantity: _quantity,
+                              );
+
+                              context.read<CartCubit>().addItem(cartItem);
+
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(
+                                      'تم إضافة ${widget.product.name} إلى السلة'),
+                                  backgroundColor: TColors.primary,
+                                  duration: const Duration(seconds: 2),
+                                ),
+                              );
+                            } catch (e) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content:
+                                      Text('حدث خطأ أثناء الإضافة إلى السلة'),
+                                  backgroundColor: Colors.red,
+                                  duration: Duration(seconds: 2),
+                                ),
+                              );
+                            }
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: TColors.primary,
+                            minimumSize: Size(double.infinity, 50),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
                           ),
-                        ),
-                        buildInfoCard(
-                          mainText: '${widget.product.caloriesPer100g}',
-                          subText: 'سعرة حرارية',
-                          extraText: '100 جرام',
-                          iconInfo: SvgPicture.asset(
-                            'assets/images/calory.svg',
-                            width: 50,
-                            height: 50,
-                          ),
-                        ),
-                        buildInfoCard(
-                          mainText: '${widget.product.rating}',
-                          subText: 'تقييم',
-                          extraText: '${widget.product.ratingCount} مراجعة',
-                          iconInfo: SvgPicture.asset(
-                            'assets/images/favourites.svg',
-                            width: 50,
-                            height: 50,
+                          child: Text(
+                            "اضف الى السلة",
+                            style: getBoldStyle(
+                              fontFamily: FontConstant.cairo,
+                              fontSize: FontSize.size16,
+                              color: Colors.white,
+                            ),
                           ),
                         ),
                       ],
                     ),
-                  ],
-                );
-              },
-            ),
-            SizedBox(height: sizeHeight * 0.018),
-            ElevatedButton(
-              onPressed: () {
-                try {
-                  print('Debug: Adding product from details view - ${widget.product.name}');
-                  print('Debug: Product price - ${widget.product.price}');
-                  print('Debug: Product discount price - ${widget.product.discountPrice}');
-                  print('Debug: Selected quantity - $_quantity');
-                  
-                  final cartItem = CartItem(
-                    id: widget.product.id!,
-                    productId: widget.product.id!,
-                    name: widget.product.name,
-                    price: widget.product.hasDiscount && widget.product.discountPrice != null
-                        ? widget.product.discountPrice!
-                        : widget.product.price,
-                    image: widget.product.imageUrl ?? '',
-                    quantity: _quantity,
-                  );
-
-                  print('Debug: CartItem created - ${cartItem.name} - Price: ${cartItem.price} - Quantity: ${cartItem.quantity}');
-                  
-                  context.read<CartCubit>().addItem(cartItem);
-                  print('Debug: Item added to cart successfully');
-
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text('تم إضافة ${widget.product.name} إلى السلة'),
-                      backgroundColor: TColors.primary,
-                      duration: const Duration(seconds: 2),
-                    ),
-                  );
-                } catch (e) {
-                  print('Error adding item to cart: $e');
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('حدث خطأ أثناء الإضافة إلى السلة'),
-                      backgroundColor: Colors.red,
-                      duration: Duration(seconds: 2),
-                    ),
-                  );
-                }
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: TColors.primary,
-                minimumSize: Size(double.infinity, 50),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
+                  ),
                 ),
               ),
-              child: Text(
-                "اضف الى السلة",
-                style: getBoldStyle(
-                  fontFamily: FontConstant.cairo,
-                  fontSize: FontSize.size16,
-                  color: Colors.white,
-                ),
-              ),
-            ),
-            SizedBox(height: sizeHeight * 0.02),
-          ],
+            ],
+          ),
         ),
-      ),
+      ],
     );
   }
 }

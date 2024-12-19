@@ -54,15 +54,15 @@ class AuthRepositoryImpl implements AuthRepository {
     }
   }
 
-  @override
-  Future<Either<Failure, UserEntity>> signInWithFacebook() async {
-    try {
-      final user = await remoteDataSource.signInWithFacebook();
-      return Right(UserModel.fromSupabaseUser(user));
-    } on CustomException catch (e) {
-      return Left(ServerFailure(message: e.message));
-    }
-  }
+  // @override
+  // Future<Either<Failure, UserEntity>> signInWithFacebook() async {
+  //   try {
+  //     final user = await remoteDataSource.signInWithFacebook();
+  //     return Right(UserModel.fromSupabaseUser(user));
+  //   } on CustomException catch (e) {
+  //     return Left(ServerFailure(message: e.message));
+  //   }
+  // }
 
   @override
   Future<Either<Failure, void>> signOut() async {
@@ -105,16 +105,16 @@ class AuthRepositoryImpl implements AuthRepository {
       return Left(ServerFailure(message: e.message));
     }
   }
+  // @override
+  // Future<Either<Failure, void>> verifyPhoneNumber(String phoneNumber) async {
+  //   try {
+  //     await remoteDataSource.verifyPhoneNumber(phoneNumber);
+  //     return const Right(null);
+  //   } on CustomException catch (e) {
+  //     return Left(ServerFailure(message: e.message));
+  //   }
+  // }
 
-  @override
-  Future<Either<Failure, void>> verifyPhoneNumber(String phoneNumber) async {
-    try {
-      await remoteDataSource.verifyPhoneNumber(phoneNumber);
-      return const Right(null);
-    } on CustomException catch (e) {
-      return Left(ServerFailure(message: e.message));
-    }
-  }
 
   @override
   Future<Either<Failure, bool>> isEmailRegistered(String email) async {
@@ -137,20 +137,50 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<void> sendOTP(String phoneNumber) async {
+  Future<Either<Failure, void>> sendResetCode(String email) async {
     try {
-      await remoteDataSource.sendOTP(phoneNumber);
+      await remoteDataSource.sendResetCode(email);
+      return const Right(null);
     } on CustomException catch (e) {
-      throw CustomException(message: e.message);
+      return Left(ServerFailure(message: e.message));
     }
   }
 
   @override
-  Future<bool> verifyOTP(String phoneNumber, String otp) async {
+  Future<Either<Failure, void>> verifyResetCode(String email, String code) async {
     try {
-      return await remoteDataSource.verifyOTP(phoneNumber, otp);
+      await remoteDataSource.verifyResetCode(email, code);
+      return const Right(null);
     } on CustomException catch (e) {
-      throw CustomException(message: e.message);
+      return Left(ServerFailure(message: e.message));
     }
   }
+
+  @override
+  Future<Either<Failure, void>> resetPasswordWithCode(String email, String newPassword) async {
+    try {
+      await remoteDataSource.resetPasswordWithCode(email, newPassword);
+      return const Right(null);
+    } on CustomException catch (e) {
+      return Left(ServerFailure(message: e.message));
+    }
+  }
+
+  // @override
+  // Future<void> sendOTP(String phoneNumber) async {
+  //   try {
+  //     await remoteDataSource.sendOTP(phoneNumber);
+  //   } on CustomException catch (e) {
+  //     throw CustomException(message: e.message);
+  //   }
+  // }
+
+  // @override
+  // Future<bool> verifyOTP(String phoneNumber, String otp) async {
+  //   try {
+  //     return await remoteDataSource.verifyOTP(phoneNumber, otp);
+  //   } on CustomException catch (e) {
+  //     throw CustomException(message: e.message);
+  //   }
+  // }
 }
