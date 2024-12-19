@@ -449,7 +449,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         if (e.message.contains("Invalid otp")) {
           message = "كود التحقق غير صحيح";
         } else if (e.message.contains("Token has expired")) {
-          message = "انتهت صلاحية كود التحقق";
+          message = "كود التحقق غير صحيح";
         } else if (e.message.contains("Too many attempts")) {
           message = "محاولات كثيرة، يرجى طلب كود جديد";
         }
