@@ -12,12 +12,15 @@ import 'package:hyper_market/feature/cart/presentation/cubit/cart_cubit.dart';
 import 'package:hyper_market/feature/categories/data/datasources/category_remote_data_source.dart';
 import 'package:hyper_market/feature/categories/data/repositories/category_repository_impl.dart';
 import 'package:hyper_market/feature/categories/domain/repositories/category_repository.dart';
+import 'package:hyper_market/feature/details/data/repositories/comment_repository_impl.dart';
 import 'package:hyper_market/feature/details/data/repositories/rating_repository_impl.dart';
+import 'package:hyper_market/feature/details/domain/repositories/comment_repository.dart';
 import 'package:hyper_market/feature/details/domain/repositories/rating_repository.dart';
 import 'package:hyper_market/feature/details/domain/usecases/add_rating.dart';
 import 'package:hyper_market/feature/details/domain/usecases/check_user_rating.dart';
 import 'package:hyper_market/feature/details/domain/usecases/get_product_rating.dart';
 import 'package:hyper_market/feature/details/domain/usecases/update_rating.dart';
+import 'package:hyper_market/feature/details/presentation/cubit/comment_cubit.dart';
 import 'package:hyper_market/feature/details/presentation/cubit/rating_cubit.dart';
 import 'package:hyper_market/feature/favorites/presentation/cubit/favorite_cubit.dart';
 import 'package:hyper_market/feature/orders/data/datasources/order_remote_data_source.dart';
@@ -154,4 +157,14 @@ void setupServiceLocator() {
       supabaseClient: Supabase.instance.client,
     ),
   );
+
+  // Comment Dependencies
+  getIt.registerLazySingleton(() => Supabase.instance.client);
+
+  // Comment Dependencies
+  getIt.registerLazySingleton(() => CommentCubit(commentRepository: getIt()));
+  getIt.registerLazySingleton<CommentRepository>(
+    () => CommentRepositoryImpl(supabaseClient: getIt()),
+  );
+
 }

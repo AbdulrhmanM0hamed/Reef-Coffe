@@ -30,10 +30,34 @@ class RatingCubit extends Cubit<RatingState> {
 
     result.fold(
       (failure) => emit(RatingError('حدث خطأ في تحميل التقييمات')),
-      (ratingData) => emit(ProductRatingLoaded(
-        rating: ratingData['rating'],
-        count: ratingData['count'],
-      )),
+      (ratingData) {
+        final rating = (ratingData['rating'] as num?)?.toDouble() ?? 0.0;
+        final count = (ratingData['count'] as num?)?.toInt() ?? 0;
+        
+        // حساب عدد كل تقييم
+        Map<String, dynamic> ratingCounts = {
+          '1': 0,
+          '2': 0,
+          '3': 0,
+          '4': 0,
+          '5': 0,
+        };
+        
+        // الحصول على قائمة التقييمات
+        final reviews = ratingData['reviews'] as List<dynamic>? ?? [];
+        
+        // عد كل تقييم
+        for (var review in reviews) {
+          final rating = review['rating']?.toString() ?? '0';
+          ratingCounts[rating] = (ratingCounts[rating] ?? 0) + 1;
+        }
+
+        emit(ProductRatingLoaded(
+          rating: rating,
+          count: count,
+          ratingCounts: ratingCounts,
+        ));
+      },
     );
   }
 

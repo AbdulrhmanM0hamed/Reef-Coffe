@@ -39,15 +39,32 @@ class RatingRepositoryImpl implements RatingRepository {
 
       double averageRating = 0;
       int totalCount = ratingsResponse.length;
+      
+      // تهيئة Map لعد كل تقييم
+      Map<String, int> ratingCounts = {
+        '1': 0,
+        '2': 0,
+        '3': 0,
+        '4': 0,
+        '5': 0,
+      };
 
       if (totalCount > 0) {
         final ratings = ratingsResponse.map((r) => r['rating'] as int).toList();
+        
+        // حساب متوسط التقييم
         averageRating = ratings.reduce((a, b) => a + b) / totalCount;
+        
+        // عد كل تقييم
+        for (var rating in ratings) {
+          ratingCounts[rating.toString()] = (ratingCounts[rating.toString()] ?? 0) + 1;
+        }
       }
 
       return Right({
         'rating': averageRating,
         'count': totalCount,
+        'reviews': ratingsResponse,
       });
     } catch (e) {
       return Left(ServerFailure(message: e.toString()));

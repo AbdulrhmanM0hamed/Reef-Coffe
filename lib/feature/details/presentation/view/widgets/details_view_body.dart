@@ -9,6 +9,7 @@ import 'package:hyper_market/core/utils/constants/styles_manger.dart';
 import 'package:hyper_market/feature/cart/data/models/cart_item_model.dart';
 import 'package:hyper_market/feature/cart/presentation/cubit/cart_cubit.dart';
 import 'package:hyper_market/feature/details/presentation/cubit/rating_cubit.dart';
+import 'package:hyper_market/feature/details/presentation/view/product_reviews_view.dart';
 import 'package:hyper_market/feature/details/presentation/view/widgets/info_section.dart';
 import 'package:hyper_market/feature/details/presentation/view/widgets/price_with_additons.dart';
 import 'package:hyper_market/feature/details/presentation/view/widgets/rating_dialog.dart';
@@ -254,7 +255,35 @@ class _DetailsViewBodyState extends State<DetailsViewBody> {
                               ),
                             ],
                           ),
-                          SizedBox(height: sizeHeight * 0.010),
+                       
+                         
+                          Row(
+                            children: [
+                              const Icon(Icons.comment_outlined),
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => ProductReviewsView(
+                                        productId: widget.product.id!,
+                                      ),
+                                    ),
+                                  );
+                                },
+                                child: Text(
+                                  'التعليقات',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w800,
+                                    fontSize: sizeWidth * 0.041,
+                                    color: TColors.primary,
+                                    decoration: TextDecoration.underline,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 16),
                           Text(
                             widget.product.description,
                             style: getSemiBoldStyle(

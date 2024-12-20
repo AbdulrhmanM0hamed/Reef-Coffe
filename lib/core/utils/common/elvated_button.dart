@@ -7,29 +7,38 @@ class CustomElevatedButton extends StatelessWidget {
   final String buttonText;
   final Color? buttonColor;
   final Color? textColor;
+  final double? width;
 
   const CustomElevatedButton({
     Key? key,
     required this.onPressed,
     required this.buttonText, 
-    this.buttonColor, this.textColor,
+    this.buttonColor,
+    this.textColor,
+    this.width,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
-      onPressed: onPressed,
-      style: ElevatedButton.styleFrom(
-        backgroundColor: buttonColor,
-        minimumSize: Size(double.infinity, 50),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
+    return SizedBox(
+      width: width ?? double.infinity,
+      child: ElevatedButton(
+        onPressed: onPressed,
+        style: ElevatedButton.styleFrom(
+          backgroundColor: buttonColor,
+          minimumSize: const Size(0, 50),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
         ),
-      ),
-      child: Text(
-        buttonText,
-        style: getBoldStyle(
-                    fontFamily: FontConstant.cairo, fontSize: FontSize.size18, color:textColor ),
+        child: Text(
+          buttonText,
+          style: getBoldStyle(
+            fontFamily: FontConstant.cairo,
+            fontSize: FontSize.size18,
+            color: textColor,
+          ),
+        ),
       ),
     );
   }
