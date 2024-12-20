@@ -19,8 +19,8 @@ class VerificationCodeViewBody extends StatelessWidget {
     final TextEditingController codeController = TextEditingController();
     final size = MediaQuery.of(context).size;
     final screenWidth = size.width;
-    final fieldWidth = screenWidth * 0.11; // حجم ثابت نسبي لكل حقل
-    final spacing = screenWidth * 0.01; // المسافة بين الحقول
+    final fieldWidth = screenWidth * 0.11; 
+    final spacing = screenWidth * 0.01; 
 
     return BlocConsumer<ResetPasswordCubit, ResetPasswordState>(
       listener: (context, state) {

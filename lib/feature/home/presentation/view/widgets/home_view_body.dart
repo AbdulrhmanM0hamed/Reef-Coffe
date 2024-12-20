@@ -7,7 +7,6 @@ import 'package:hyper_market/feature/home/presentation/view/widgets/best_selling
 import 'package:hyper_market/feature/home/presentation/view/widgets/custom_home_app_bar.dart';
 import 'package:hyper_market/feature/home/presentation/view/widgets/custom_text_field.dart';
 import 'package:hyper_market/feature/home/presentation/view/widgets/exclusive_offer_list_view%20.dart';
-import 'package:hyper_market/feature/home/presentation/view/widgets/groceries.dart';
 import 'package:hyper_market/feature/home/presentation/view/widgets/home_top_slider.dart';
 import 'package:hyper_market/feature/home/presentation/view/widgets/outline_of_products.dart';
 

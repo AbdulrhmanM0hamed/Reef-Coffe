@@ -1,21 +1,24 @@
-import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hyper_market/core/services/notification_service.dart';
-import 'package:hyper_market/core/services/shared_preferences.dart';
 import 'package:hyper_market/core/services/supabase/supabase_initialize.dart';
 import 'package:hyper_market/core/services/local_storage/local_storage_service.dart';
-import 'package:hyper_market/core/utils/constants/constants.dart';
 import 'package:hyper_market/feature/auth/data/datasources/auth_remote_data_source.dart';
 import 'package:hyper_market/feature/auth/data/repositories/auth_repository_impl.dart';
 import 'package:hyper_market/feature/auth/domain/repositories/auth_repository.dart';
 import 'package:hyper_market/feature/auth/presentation/controller/signin/signin_cubit.dart';
 import 'package:hyper_market/feature/auth/presentation/controller/signup/signup_cubit.dart';
 import 'package:hyper_market/feature/auth/presentation/controller/reset_password/reset_password_cubit.dart';
-import 'package:hyper_market/feature/auth/domain/entities/user_entity.dart';
 import 'package:hyper_market/feature/cart/presentation/cubit/cart_cubit.dart';
 import 'package:hyper_market/feature/categories/data/datasources/category_remote_data_source.dart';
 import 'package:hyper_market/feature/categories/data/repositories/category_repository_impl.dart';
 import 'package:hyper_market/feature/categories/domain/repositories/category_repository.dart';
+import 'package:hyper_market/feature/details/data/repositories/rating_repository_impl.dart';
+import 'package:hyper_market/feature/details/domain/repositories/rating_repository.dart';
+import 'package:hyper_market/feature/details/domain/usecases/add_rating.dart';
+import 'package:hyper_market/feature/details/domain/usecases/check_user_rating.dart';
+import 'package:hyper_market/feature/details/domain/usecases/get_product_rating.dart';
+import 'package:hyper_market/feature/details/domain/usecases/update_rating.dart';
+import 'package:hyper_market/feature/details/presentation/cubit/rating_cubit.dart';
 import 'package:hyper_market/feature/favorites/presentation/cubit/favorite_cubit.dart';
 import 'package:hyper_market/feature/orders/data/datasources/order_remote_data_source.dart';
 import 'package:hyper_market/feature/orders/data/repositories/order_repository_impl.dart';
@@ -31,6 +34,7 @@ import 'package:hyper_market/feature/home/data/repositories/special_offers_repos
 import 'package:hyper_market/feature/home/domain/repositories/special_offers_repository.dart';
 import 'package:hyper_market/feature/home/domain/usecases/get_special_offers.dart';
 import 'package:hyper_market/feature/home/presentation/cubit/special_offers_cubit.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 final getIt = GetIt.instance;
 
@@ -125,6 +129,29 @@ void setupServiceLocator() {
   getIt.registerLazySingleton<OrderRemoteDataSource>(
     () => OrderRemoteDataSourceImpl(
       supabaseClient: getIt<SupabaseService>().client,
+    ),
+  );
+
+  // Rating Feature
+  getIt.registerFactory(
+    () => RatingCubit(
+      addRating: getIt<AddRatingUseCase>(),
+      checkUserRating: getIt<CheckUserRatingUseCase>(),
+      updateRating: getIt<UpdateRatingUseCase>(),
+      getProductRating: getIt<GetProductRatingUseCase>(),
+    ),
+  );
+
+  // Use cases
+  getIt.registerLazySingleton(() => AddRatingUseCase(getIt<RatingRepository>()));
+  getIt.registerLazySingleton(() => CheckUserRatingUseCase(getIt<RatingRepository>()));
+  getIt.registerLazySingleton(() => UpdateRatingUseCase(getIt<RatingRepository>()));
+  getIt.registerLazySingleton(() => GetProductRatingUseCase(getIt<RatingRepository>()));
+
+  // Repository
+  getIt.registerLazySingleton<RatingRepository>(
+    () => RatingRepositoryImpl(
+      supabaseClient: Supabase.instance.client,
     ),
   );
 }

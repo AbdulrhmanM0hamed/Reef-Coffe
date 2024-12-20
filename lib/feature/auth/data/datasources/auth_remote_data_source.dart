@@ -291,7 +291,13 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       final user = supabaseClient.auth.currentUser;
 
       if (user != null) {
-        return user.userMetadata!['name'] as String?;
+        final response = await supabaseClient
+            .from('profiles')
+            .select('name')
+            .eq('id', user.id)
+            .single();
+        
+        return response['name'] as String?;
       }
 
       return null;

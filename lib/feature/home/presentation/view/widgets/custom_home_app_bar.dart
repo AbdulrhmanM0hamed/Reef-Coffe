@@ -9,6 +9,19 @@ class CustomHomeAppBar extends StatelessWidget {
   final String userName;
   const CustomHomeAppBar({super.key, required this.userName});
 
+  String _getGreeting() {
+    final hour = DateTime.now().hour;
+    if (hour >= 5 && hour < 12) {
+      return 'صباح الخير ...';
+    } else if (hour >= 12 && hour < 17) {
+      return 'مساء الخير ...';
+    } else if (hour >= 17 && hour < 21) {
+      return 'مساء الخير ...';
+    } else {
+      return 'مساء الخير ...';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return ListTile(
@@ -17,7 +30,7 @@ class CustomHomeAppBar extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "صباح الخير ...",
+            _getGreeting(),
             style: getMediumStyle(
                 fontFamily: FontConstant.cairo,
                 fontSize: 18,

@@ -12,6 +12,7 @@ import 'package:hyper_market/feature/favorites/presentation/view/favorites_view.
 import 'package:hyper_market/feature/home/presentation/view/home_view.dart';
 import 'package:hyper_market/feature/onBoarding/presentation/view/on_bordaing_view.dart';
 import 'package:hyper_market/feature/orders/presentation/view/orders_view.dart';
+import 'package:hyper_market/feature/products/presentation/view/products_view.dart';
 import 'package:hyper_market/feature/splash/view/splash_view.dart';
 import 'package:hyper_market/feature/products/domain/entities/product.dart';
 
@@ -62,13 +63,15 @@ Route<dynamic> onGenratedRoutes(RouteSettings settings) {
       return MaterialPageRoute(
         builder: (context) => NewPasswordView(email: email),
       );
-    case '/favorites':
+    case FavoritesView.routeName:
       return MaterialPageRoute(
         builder: (context) => BlocProvider.value(
           value: getIt<FavoriteCubit>(),
           child: const FavoritesView(),
         ),
       );
+     
+     
     default:
       return MaterialPageRoute(
         builder: (context) => const SplashView(),

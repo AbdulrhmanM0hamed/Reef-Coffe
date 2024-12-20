@@ -120,8 +120,8 @@ class CustomAnimations {
         (index) => AnimatedBuilder(
           animation: Tween(begin: 0.0, end: 1.0).animate(
             CurvedAnimation(
-              parent: AlwaysStoppedAnimation(1),
-              curve: Interval(
+              parent: const AlwaysStoppedAnimation(1),
+              curve:const Interval(
                 0.0,
                 1.0,
                 curve: Curves.easeOut,
@@ -135,8 +135,8 @@ class CustomAnimations {
                 end: Offset.zero,
               ).animate(
                 CurvedAnimation(
-                  parent: AlwaysStoppedAnimation(1),
-                  curve: Interval(
+                  parent:const AlwaysStoppedAnimation(1),
+                  curve:const Interval(
                     0.0,
                     1.0,
                     curve: Curves.easeOut,
@@ -146,8 +146,8 @@ class CustomAnimations {
               child: FadeTransition(
                 opacity: Tween<double>(begin: 0, end: 1).animate(
                   CurvedAnimation(
-                    parent: AlwaysStoppedAnimation(1),
-                    curve: Interval(
+                    parent:const AlwaysStoppedAnimation(1),
+                    curve:const Interval(
                       0.0,
                       1.0,
                       curve: Curves.easeOut,

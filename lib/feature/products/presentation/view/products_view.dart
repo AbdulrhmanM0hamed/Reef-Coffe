@@ -8,6 +8,8 @@ import '../cubit/products_cubit.dart';
 import 'widgets/products_view_body.dart';
 
 class ProductsView extends StatelessWidget {
+
+  static  const String routeName = 'products';
   final Category category;
 
   const ProductsView({super.key, required this.category});
