@@ -20,7 +20,7 @@ class ProductCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final isSmallScreen = size.width < 360;
-    final double responsivePadding = size.width * 0.03;
+    final responsivePadding = size.width * 0.03;
 
     return GestureDetector(
       onTap: () {
@@ -37,7 +37,7 @@ class ProductCard extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
           color: TColors.primary.withAlpha(10),
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(_getBorderRadius(size)),
           border: Border.all(
             color: Colors.grey.shade500,
             width: 1.5,
@@ -49,27 +49,28 @@ class ProductCard extends StatelessWidget {
             Expanded(
               flex: 4,
               child: Container(
-                  width: double.infinity,
-                  padding: EdgeInsets.all(responsivePadding),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(12.0),
-                    child: Container(
-                      decoration: const BoxDecoration(
-                        color: Colors.white,
-                      ),
-                      child: CachedNetworkImage(
-                        imageUrl: product.imageUrl ?? '',
-                        fit: BoxFit.cover,
-                        errorWidget: (context, error, stackTrace) {
-                          return Icon(
-                            Icons.error_outline,
-                            color: Colors.grey.shade400,
-                            size: isSmallScreen ? 24 : 32,
-                          );
-                        },
-                      ),
+                width: double.infinity,
+                padding: EdgeInsets.all(responsivePadding),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(_getBorderRadius(size)),
+                  child: Container(
+                    decoration: const BoxDecoration(
+                      color: Colors.white,
                     ),
-                  )),
+                    child: CachedNetworkImage(
+                      imageUrl: product.imageUrl ?? '',
+                      fit: BoxFit.cover,
+                      errorWidget: (context, error, stackTrace) {
+                        return Icon(
+                          Icons.error_outline,
+                          color: Colors.grey.shade400,
+                          size: _getErrorIconSize(size),
+                        );
+                      },
+                    ),
+                  ),
+                ),
+              ),
             ),
             Expanded(
               flex: 4,
@@ -86,9 +87,7 @@ class ProductCard extends StatelessWidget {
                             product.name,
                             style: getBoldStyle(
                               fontFamily: FontConstant.cairo,
-                              fontSize: isSmallScreen
-                                  ? FontSize.size10
-                                  : FontSize.size14,
+                              fontSize: _getTitleFontSize(size),
                             ),
                             maxLines: 1,
                             overflow: TextOverflow.clip,
@@ -97,12 +96,12 @@ class ProductCard extends StatelessWidget {
                         if (product.hasDiscount)
                           Container(
                             padding: EdgeInsets.symmetric(
-                              horizontal: size.width * 0.015,
-                              vertical: size.height * 0.005,
+                              horizontal: _getHorizontalPadding(size),
+                              vertical: _getVerticalPadding(size),
                             ),
                             decoration: BoxDecoration(
                               color: Colors.red.shade50,
-                              borderRadius: BorderRadius.circular(4),
+                              borderRadius: BorderRadius.circular(_getBorderRadius(size) * 0.3),
                               border: Border.all(
                                 color: Colors.red.shade200,
                                 width: 0.5,
@@ -112,14 +111,14 @@ class ProductCard extends StatelessWidget {
                               '${product.discountPercentage}%',
                               style: getBoldStyle(
                                 fontFamily: FontConstant.cairo,
-                                fontSize: FontSize.size12,
+                                fontSize: _getDiscountFontSize(size),
                                 color: Colors.red.shade700,
                               ),
                             ),
                           ),
                       ],
                     ),
-                    const SizedBox(height: 8),
+                    SizedBox(height: _getSpacing(size)),
                     if (product.hasDiscount)
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.end,
@@ -128,18 +127,16 @@ class ProductCard extends StatelessWidget {
                             '${product.discountPrice?.toStringAsFixed(2)} EGP',
                             style: getBoldStyle(
                               fontFamily: FontConstant.cairo,
-                              fontSize: isSmallScreen
-                                  ? FontSize.size12
-                                  : FontSize.size16,
+                              fontSize: _getPriceFontSize(size),
                               color: Colors.green.shade700,
                             ),
                           ),
-                          const SizedBox(width: 4),
+                          SizedBox(width: _getSpacing(size) * 0.5),
                           Text(
                             '${product.price}',
                             style: TextStyle(
                               fontFamily: FontConstant.cairo,
-                              fontSize: FontSize.size14,
+                              fontSize: _getOldPriceFontSize(size),
                               color: Colors.grey.shade700,
                               decoration: TextDecoration.lineThrough,
                               decorationColor: Colors.grey.shade600,
@@ -153,23 +150,22 @@ class ProductCard extends StatelessWidget {
                         '${product.price.toStringAsFixed(2)} EGP',
                         style: getBoldStyle(
                           fontFamily: FontConstant.cairo,
-                          fontSize:
-                              isSmallScreen ? FontSize.size12 : FontSize.size16,
+                          fontSize: _getPriceFontSize(size),
                         ),
                       ),
-                    const SizedBox(height: 8),
+                    SizedBox(height: _getSpacing(size)),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         if (product.isOrganic)
                           Container(
                             padding: EdgeInsets.symmetric(
-                              horizontal: size.width * 0.03,
-                              vertical: size.height * 0.004,
+                              horizontal: _getHorizontalPadding(size),
+                              vertical: _getVerticalPadding(size),
                             ),
                             decoration: BoxDecoration(
                               color: Colors.green.shade50,
-                              borderRadius: BorderRadius.circular(4),
+                              borderRadius: BorderRadius.circular(_getBorderRadius(size) * 0.3),
                               border: Border.all(
                                 color: Colors.green.shade100,
                                 width: 0.5,
@@ -179,15 +175,15 @@ class ProductCard extends StatelessWidget {
                               children: [
                                 Icon(
                                   Icons.eco_outlined,
-                                  size: size.width * 0.04,
+                                  size: _getIconSize(size),
                                   color: TColors.primary,
                                 ),
-                                const SizedBox(width: 4),
+                                SizedBox(width: _getSpacing(size) * 0.5),
                                 Text(
                                   'Organic',
                                   style: getBoldStyle(
                                     fontFamily: FontConstant.cairo,
-                                    fontSize: FontSize.size12,
+                                    fontSize: _getOrganicFontSize(size),
                                     color: Colors.green.shade700,
                                   ),
                                 ),
@@ -211,7 +207,6 @@ class ProductCard extends StatelessWidget {
                               );
 
                               final cartCubit = context.read<CartCubit>();
-
                               cartCubit.addItem(cartItem);
 
                               ScaffoldMessenger.of(context).showSnackBar(
@@ -224,8 +219,7 @@ class ProductCard extends StatelessWidget {
                             } catch (e) {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
-                                  content:
-                                      Text('حدث خطأ أثناء الإضافة إلى السلة'),
+                                  content: Text('حدث خطأ أثناء الإضافة إلى السلة'),
                                   backgroundColor: Colors.red,
                                   duration: Duration(seconds: 2),
                                 ),
@@ -234,16 +228,16 @@ class ProductCard extends StatelessWidget {
                           },
                           child: Container(
                             padding: EdgeInsets.symmetric(
-                              horizontal: size.width * 0.03,
-                              vertical: size.height * 0.004,
+                              horizontal: _getHorizontalPadding(size),
+                              vertical: _getVerticalPadding(size),
                             ),
                             decoration: BoxDecoration(
                               color: TColors.primary,
-                              borderRadius: BorderRadius.circular(12),
+                              borderRadius: BorderRadius.circular(_getBorderRadius(size)),
                             ),
                             child: Icon(
                               Icons.add,
-                              size: size.width * 0.05,
+                              size: _getIconSize(size),
                               color: Colors.white,
                             ),
                           ),
@@ -258,5 +252,74 @@ class ProductCard extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  // Responsive helper methods
+  double _getBorderRadius(Size size) => size.width * 0.03;
+  double _getSpacing(Size size) => size.height * 0.01;
+  double _getHorizontalPadding(Size size) => size.width * 0.03;
+  double _getVerticalPadding(Size size) => size.height * 0.005;
+
+  double _getTitleFontSize(Size size) {
+    if (size.width < 360) {
+      return FontSize.size12;
+    } else if (size.width < 600) {
+      return FontSize.size14;
+    }
+    return FontSize.size16;
+  }
+
+  double _getPriceFontSize(Size size) {
+    if (size.width < 360) {
+      return FontSize.size14;
+    } else if (size.width < 600) {
+      return FontSize.size16;
+    }
+    return FontSize.size18;
+  }
+
+  double _getOldPriceFontSize(Size size) {
+    if (size.width < 360) {
+      return FontSize.size12;
+    } else if (size.width < 600) {
+      return FontSize.size14;
+    }
+    return FontSize.size16;
+  }
+
+  double _getDiscountFontSize(Size size) {
+    if (size.width < 360) {
+      return FontSize.size10;
+    } else if (size.width < 600) {
+      return FontSize.size12;
+    }
+    return FontSize.size14;
+  }
+
+  double _getOrganicFontSize(Size size) {
+    if (size.width < 360) {
+      return FontSize.size10;
+    } else if (size.width < 600) {
+      return FontSize.size12;
+    }
+    return FontSize.size14;
+  }
+
+  double _getIconSize(Size size) {
+    if (size.width < 360) {
+      return size.width * 0.04;
+    } else if (size.width < 600) {
+      return size.width * 0.05;
+    }
+    return size.width * 0.06;
+  }
+
+  double _getErrorIconSize(Size size) {
+    if (size.width < 360) {
+      return 24;
+    } else if (size.width < 600) {
+      return 32;
+    }
+    return 40;
   }
 }

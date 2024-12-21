@@ -1,4 +1,6 @@
 import 'dart:math';
+
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -55,13 +57,13 @@ class _HomeTopSliderState extends State<HomeTopSlider> {
               CarouselSlider.builder(
                 carouselController: _carouselController,
                 options: CarouselOptions(
-                  height: size.height * 0.18,
+                  height: _getCarouselHeight(size),
                   autoPlay: true,
                   autoPlayInterval: const Duration(seconds: 5),
                   autoPlayAnimationDuration: const Duration(milliseconds: 900),
                   autoPlayCurve: Curves.fastOutSlowIn,
                   pauseAutoPlayOnTouch: true,
-                  viewportFraction: 0.80,
+                  viewportFraction: _getViewportFraction(size),
                   enlargeCenterPage: true,
                   onPageChanged: (index, reason) {
                     _currentPageNotifier.value = index; // تحديث الصفحة الحالية
@@ -134,7 +136,7 @@ class _HomeTopSliderState extends State<HomeTopSlider> {
                             child: Transform.rotate(
                               angle: -pi / 4,
                               child: Container(
-                                padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 5),
+                                padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 4),
                                 decoration: BoxDecoration(
                                   color: Colors.red,
                                   boxShadow: [
@@ -149,7 +151,7 @@ class _HomeTopSliderState extends State<HomeTopSlider> {
                                   '${state.offers[index].offerPrice} EGP',
                                   style: getBoldStyle(
                                     fontFamily: FontConstant.cairo,
-                                    fontSize: FontSize.size14,
+                                    fontSize: _getOfferPriceFontSize(size),
                                     color: Colors.white,
                                   ),
                                 ),
@@ -169,19 +171,21 @@ class _HomeTopSliderState extends State<HomeTopSlider> {
                                   state.offers[index].title,
                                   style: getBoldStyle(
                                     color: Colors.white,
-                                    fontSize: FontSize.size18,
+                                    fontSize: _getTitleFontSize(size),
                                     fontFamily: FontConstant.cairo,
+                                    
                                   ),
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
                                 ),
-                                const SizedBox(height: 4),
+                                SizedBox(height: size.height * 0.01),
                                 Text(
                                   state.offers[index].subtitle,
                                   style: getMediumStyle(
                                     color: TColors.secondary,
-                                    fontSize: FontSize.size14,
+                                    fontSize: _getSubtitleFontSize(size),
                                     fontFamily: FontConstant.cairo,
+                                
                                   ),
                                   maxLines: 2,
                                   overflow: TextOverflow.ellipsis,
@@ -224,7 +228,7 @@ class _HomeTopSliderState extends State<HomeTopSlider> {
                                           'التفاصيل',
                                           style: getSemiBoldStyle(
                                             color: Colors.white,
-                                            fontSize: FontSize.size12,
+                                            fontSize: _getDetailsFontSize(size),
                                             fontFamily: FontConstant.cairo,
                                           ),
                                         ),
@@ -262,5 +266,75 @@ class _HomeTopSliderState extends State<HomeTopSlider> {
         }
       },
     );
+  }
+
+  double _getCarouselHeight(Size size) {
+    if (size.width < 600) {
+      return size.height * 0.17;  // Smaller screens
+    } else if (size.width < 1200) {
+      return size.height * 0.25;  // Medium screens
+    }
+    return size.height * 0.28;    // Large screens
+  }
+
+  double _getViewportFraction(Size size) {
+    if (size.width < 600) {
+      return 0.85;  // More visible area on small screens
+    } else if (size.width < 1200) {
+      return 0.80;  // Balanced view for medium screens
+    }
+    return 0.75;    // Show more cards on large screens
+  }
+
+  double _getHorizontalPadding(Size size) {
+    return size.width * 0.05;  // 3% of screen width
+  }
+
+  double _getVerticalPadding(Size size) {
+    return size.height * 0.01;  // 1% of screen height
+  }
+
+  double _getTitleFontSize(Size size) {
+    if (size.width < 360) {
+      return FontSize.size16;
+    } else if (size.width < 600) {
+      return FontSize.size18;
+    } else if (size.width < 1200) {
+      return FontSize.size20;
+    }
+    return FontSize.size22;
+  }
+
+  double _getSubtitleFontSize(Size size) {
+    if (size.width < 360) {
+      return FontSize.size14;
+    } else if (size.width < 600) {
+      return FontSize.size16;
+    } else if (size.width < 1200) {
+      return FontSize.size18;
+    }
+    return FontSize.size20;
+  }
+
+  double _getOfferPriceFontSize(Size size) {
+    if (size.width < 360) {
+      return FontSize.size12;
+    } else if (size.width < 600) {
+      return FontSize.size14;
+    } else if (size.width < 1200) {
+      return FontSize.size16;
+    }
+    return FontSize.size18;
+  }
+
+  double _getDetailsFontSize(Size size) {
+    if (size.width < 360) {
+      return FontSize.size10;
+    } else if (size.width < 600) {
+      return FontSize.size12;
+    } else if (size.width < 1200) {
+      return FontSize.size14;
+    }
+    return FontSize.size16;
   }
 }

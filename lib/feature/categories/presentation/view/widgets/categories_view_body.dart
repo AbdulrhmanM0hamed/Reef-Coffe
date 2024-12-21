@@ -10,12 +10,17 @@ class CategoriesViewBodyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+    
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+      padding: EdgeInsets.symmetric(
+        horizontal: size.width * 0.04,
+        vertical: size.height * 0.02,
+      ),
       child: Column(
         children: [
           const CustomSearchTextField(),
-          const SizedBox(height: 16),
+          SizedBox(height: size.height * 0.02),
           Expanded(
             child: BlocBuilder<CategoriesCubit, CategoriesState>(
               builder: (context, state) {
@@ -25,11 +30,11 @@ class CategoriesViewBodyApp extends StatelessWidget {
                   return Center(child: Text(state.message));
                 } else if (state is CategoriesLoaded) {
                   return GridView.builder(
-                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      crossAxisSpacing: 8,
-                      mainAxisSpacing: 8,
-                      childAspectRatio: 1.5,
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: _getCrossAxisCount(size),
+                      crossAxisSpacing: size.width * 0.02,
+                      mainAxisSpacing: size.height * 0.02,
+                      childAspectRatio: _getAspectRatio(size),
                     ),
                     itemCount: state.categories.length,
                     itemBuilder: (context, index) {
@@ -41,12 +46,34 @@ class CategoriesViewBodyApp extends StatelessWidget {
                     },
                   );
                 }
-                return const Center(child: Text("لا توجد فئات"));
+                return const Center(child: Text("لا توجد فئات"));
               },
             ),
           ),
         ],
       ),
     );
+  }
+
+  int _getCrossAxisCount(Size size) {
+    if (size.width < 360) {
+      return 1;
+    } else if (size.width < 600) {
+      return 2;
+    } else if (size.width < 900) {
+      return 3;
+    }
+    return 4;
+  }
+
+  double _getAspectRatio(Size size) {
+    if (size.width < 360) {
+      return 1.2;
+    } else if (size.width < 600) {
+      return 1.5;
+    } else if (size.width < 900) {
+      return 1.3;
+    }
+    return 1.4;
   }
 }

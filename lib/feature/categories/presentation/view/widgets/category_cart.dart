@@ -31,6 +31,8 @@ class CategoryCart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+    
     return GestureDetector(
       onTap: () {
         Navigator.push(
@@ -46,7 +48,7 @@ class CategoryCart extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
           color: cardColor,
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(size.width * 0.03),
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -54,18 +56,18 @@ class CategoryCart extends StatelessWidget {
             Expanded(
               flex: 5,
               child: Container(
-                width: 170,
-                padding: const EdgeInsets.all(8),
+                width: size.width * 0.4,
+                padding: EdgeInsets.all(size.width * 0.02),
                 child: ClipRRect(
-                  borderRadius: BorderRadius.circular(12.0),
+                  borderRadius: BorderRadius.circular(size.width * 0.03),
                   child: CachedNetworkImage(
                     imageUrl: category.imageUrl,
                     fit: BoxFit.cover,
                     errorWidget: (context, error, stackTrace) {
-                      return const Icon(
+                      return Icon(
                         Icons.error_outline,
                         color: Colors.grey,
-                        size: 32,
+                        size: size.width * 0.08,
                       );
                     },
                   ),
@@ -77,8 +79,7 @@ class CategoryCart extends StatelessWidget {
                 category.name,
                 style: getBoldStyle(
                   fontFamily: FontConstant.cairo,
-                  fontSize: FontSize.size16,
-               
+                  fontSize: _getTitleFontSize(size),
                 ),
               ),
             ),
@@ -86,5 +87,14 @@ class CategoryCart extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  double _getTitleFontSize(Size size) {
+    if (size.width < 360) {
+      return FontSize.size14;
+    } else if (size.width < 600) {
+      return FontSize.size16;
+    }
+    return FontSize.size18;
   }
 }

@@ -7,6 +7,7 @@ import 'package:hyper_market/feature/auth/presentation/view/signin_view.dart';
 import 'package:hyper_market/feature/auth/presentation/view/signup_view.dart';
 import 'package:hyper_market/feature/auth/presentation/view/verification_code_view.dart';
 import 'package:hyper_market/feature/details/presentation/view/details_view.dart';
+import 'package:hyper_market/feature/details/presentation/view/product_reviews_view.dart';
 import 'package:hyper_market/feature/favorites/presentation/cubit/favorite_cubit.dart';
 import 'package:hyper_market/feature/favorites/presentation/view/favorites_view.dart';
 import 'package:hyper_market/feature/home/presentation/view/home_view.dart';
@@ -70,7 +71,11 @@ Route<dynamic> onGenratedRoutes(RouteSettings settings) {
           child: const FavoritesView(),
         ),
       );
-     
+    case ProductReviewsView.routeName:
+      final productId = settings.arguments as String;
+      return MaterialPageRoute(
+        builder: (context) => ProductReviewsView(productId: productId),
+      );
      
     default:
       return MaterialPageRoute(

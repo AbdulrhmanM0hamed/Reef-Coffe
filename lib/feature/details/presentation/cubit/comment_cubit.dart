@@ -9,27 +9,26 @@ part 'comment_state.dart';
 
 class CommentCubit extends Cubit<CommentState> {
   final CommentRepository commentRepository;
+  String? _currentProductId;
 
   CommentCubit({
     required this.commentRepository,
-  }) : super(CommentInitial()) {
-  }
+  }) : super(CommentInitial());
 
   Future<void> getProductComments(String productId) async {
     if (state is CommentLoading) return;
+    if (_currentProductId == productId && state is CommentsLoaded) return;
 
     emit(CommentLoading());
-    dev.log('Getting comments for product: $productId');
+    _currentProductId = productId;
     
     final result = await commentRepository.getProductComments(productId);
     
     result.fold(
       (failure) {
-        dev.log('Error getting comments: ${failure.message}');
         emit(CommentError(message: failure.message));
       },
       (comments) {
-        dev.log('Got ${comments.length} comments');
         emit(CommentsLoaded(comments: comments));
       },
     );
@@ -37,61 +36,45 @@ class CommentCubit extends Cubit<CommentState> {
 
   Future<void> addComment(String productId, String comment) async {
     emit(CommentLoading());
-    dev.log('Adding comment for product: $productId');
     
     final result = await commentRepository.addComment(productId, comment);
     
     result.fold(
       (failure) {
-        dev.log('Error adding comment: ${failure.message}');
         emit(CommentError(message: failure.message));
       },
       (_) async {
-        dev.log('Comment added successfully');
-        final commentsResult = await commentRepository.getProductComments(productId);
-        commentsResult.fold(
-          (failure) => emit(CommentError(message: failure.message)),
-          (comments) => emit(CommentsLoaded(comments: comments)),
-        );
+        await getProductComments(productId);
       },
     );
   }
 
   Future<void> updateComment(String productId, String comment) async {
     emit(CommentLoading());
-    dev.log('Updating comment for product: $productId');
     
     final result = await commentRepository.updateComment(productId, comment);
     
     result.fold(
       (failure) {
-        dev.log('Error updating comment: ${failure.message}');
         emit(CommentError(message: failure.message));
       },
-      (updatedComment) async {
-        dev.log('Comment updated successfully');
-        final commentsResult = await commentRepository.getProductComments(productId);
-        commentsResult.fold(
-          (failure) => emit(CommentError(message: failure.message)),
-          (comments) {
-            dev.log('Got updated comments list: ${comments.length} comments');
-            emit(CommentsLoaded(comments: comments));
-          },
-        );
+      (_) async {
+        await getProductComments(productId);
       },
     );
   }
 
-  Future<void> hasUserCommented(String productId) async {
-    if (isClosed) return;
-
+  Future<void> checkUserComment(String productId) async {
+    emit(CommentLoading());
+    
     final result = await commentRepository.hasUserCommented(productId);
+    
     result.fold(
       (failure) {
-        if (!isClosed) emit(CommentError(message: failure.message));
+        emit(CommentError(message: failure.message));
       },
       (hasCommented) {
-        if (!isClosed) emit(UserCommentStatus(hasCommented: hasCommented));
+        emit(UserCommentStatus(hasCommented: hasCommented));
       },
     );
   }
