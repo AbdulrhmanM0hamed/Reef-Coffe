@@ -347,7 +347,6 @@ class _SpecialOfferViewBodyState extends State<SpecialOfferViewBody> {
         return;
       }
 
-      print('Debug: Creating cart item for offer: ${widget.offer.title}');
       final cartItem = CartItem(
         id: widget.offer.id,
         productId: widget.offer.id,
@@ -357,10 +356,8 @@ class _SpecialOfferViewBodyState extends State<SpecialOfferViewBody> {
         quantity: _quantity,
       );
 
-      print('Debug: About to add item to cart');
       getIt<CartCubit>().addItem(cartItem);
     } catch (e) {
-      print('Debug: Error in special offer details: $e');
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('حدث خطأ أثناء إضافة العرض إلى السلة'),
