@@ -81,11 +81,11 @@ class _ProductReviewsViewState extends State<ProductReviewsView> {
       builder: (context, state) {
         final size = MediaQuery.of(context).size;
         final textScaleFactor = MediaQuery.of(context).textScaleFactor;
-        
+
         if (state is RatingLoading) {
           return _buildRatingBarShimmer();
         }
-        
+
         if (state is ProductRatingLoaded) {
           return Container(
             margin: EdgeInsets.symmetric(
@@ -199,12 +199,14 @@ class _ProductReviewsViewState extends State<ProductReviewsView> {
   Widget buildRatingBars(ProductRatingLoaded state) {
     final size = MediaQuery.of(context).size;
     final textScaleFactor = MediaQuery.of(context).textScaleFactor;
-    
+
     return Column(
       children: List.generate(5, (index) {
         final ratingLevel = 5 - index;
-        final ratingCount = (state.ratingCounts[ratingLevel.toString()] as num?)?.toInt() ?? 0;
-        final percentage = state.count > 0 ? (ratingCount / state.count) * 100 : 0.0;
+        final ratingCount =
+            (state.ratingCounts[ratingLevel.toString()] as num?)?.toInt() ?? 0;
+        final percentage =
+            state.count > 0 ? (ratingCount / state.count) * 100 : 0.0;
 
         return Padding(
           padding: EdgeInsets.symmetric(vertical: size.height * 0.005),
@@ -239,10 +241,12 @@ class _ProductReviewsViewState extends State<ProductReviewsView> {
                     tween: Tween<double>(begin: 0, end: percentage / 100),
                     builder: (context, value, _) => LinearProgressIndicator(
                       value: value,
-                      backgroundColor: Theme.of(context).brightness == Brightness.dark
-                          ? Colors.grey[800]
-                          : Colors.grey[300],
-                      valueColor: AlwaysStoppedAnimation<Color>(Colors.amber[700]!),
+                      backgroundColor:
+                          Theme.of(context).brightness == Brightness.dark
+                              ? Colors.grey[800]
+                              : Colors.grey[300],
+                      valueColor:
+                          AlwaysStoppedAnimation<Color>(Colors.amber[700]!),
                       minHeight: size.height * 0.01,
                     ),
                   ),
@@ -280,7 +284,7 @@ class _ProductReviewsViewState extends State<ProductReviewsView> {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final textScaleFactor = MediaQuery.of(context).textScaleFactor;
-    
+
     return MultiBlocProvider(
       providers: [
         BlocProvider.value(value: _commentCubit),
@@ -326,16 +330,25 @@ class _ProductReviewsViewState extends State<ProductReviewsView> {
                               Text(
                                 'لا يوجد تعليقات حتى الآن',
                                 style: TextStyle(
-                                  color: Theme.of(context).textTheme.bodyLarge?.color,
+                                  color: Theme.of(context)
+                                      .textTheme
+                                      .bodyLarge
+                                      ?.color,
                                   fontSize: 16 * textScaleFactor,
                                 ),
                               ),
                               if (!_hasExistingComment) ...[
                                 SizedBox(height: size.height * 0.02),
                                 ElevatedButton.icon(
-                                  onPressed: () => _showAddCommentDialog(context),
+                                  onPressed: () =>
+                                      _showAddCommentDialog(context),
                                   icon: const Icon(Icons.add_comment),
-                                  label:  Text('أضف تعليق' , style: getBoldStyle(fontFamily: FontConstant.cairo , fontSize: 16 * textScaleFactor),),
+                                  label: Text(
+                                    'أضف تعليق',
+                                    style: getBoldStyle(
+                                        fontFamily: FontConstant.cairo,
+                                        fontSize: 16 * textScaleFactor),
+                                  ),
                                   style: ElevatedButton.styleFrom(
                                     padding: EdgeInsets.symmetric(
                                       horizontal: size.width * 0.05,
@@ -355,10 +368,12 @@ class _ProductReviewsViewState extends State<ProductReviewsView> {
                       return ListView.separated(
                         padding: EdgeInsets.all(size.width * 0.04),
                         itemCount: comments.length,
-                        separatorBuilder: (context, index) => SizedBox(height: size.height * 0.01),
+                        separatorBuilder: (context, index) =>
+                            SizedBox(height: size.height * 0.01),
                         itemBuilder: (context, index) {
                           final comment = comments[index];
-                          final isCurrentUserComment = comment.userId == _currentUserId;
+                          final isCurrentUserComment =
+                              comment.userId == _currentUserId;
 
                           return Card(
                             elevation: 2,
@@ -373,8 +388,10 @@ class _ProductReviewsViewState extends State<ProductReviewsView> {
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(12),
                                 border: Border.all(
-                                  color: isCurrentUserComment 
-                                      ? Theme.of(context).primaryColor.withOpacity(0.2)
+                                  color: isCurrentUserComment
+                                      ? Theme.of(context)
+                                          .primaryColor
+                                          .withOpacity(0.2)
                                       : Colors.transparent,
                                 ),
                               ),
@@ -384,14 +401,17 @@ class _ProductReviewsViewState extends State<ProductReviewsView> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Row(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
                                         // User Avatar
                                         CircleAvatar(
                                           radius: size.width * 0.05,
-                                          backgroundColor: _getAvatarColor(comment.userName),
+                                          backgroundColor:
+                                              _getAvatarColor(comment.userName),
                                           child: Text(
-                                            comment.userName.characters.first.toUpperCase(),
+                                            comment.userName.characters.first
+                                                .toUpperCase(),
                                             style: TextStyle(
                                               color: Colors.white,
                                               fontSize: 16 * textScaleFactor,
@@ -403,67 +423,106 @@ class _ProductReviewsViewState extends State<ProductReviewsView> {
                                         // Comment Content
                                         Expanded(
                                           child: Column(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
                                             children: [
                                               Row(
-                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
                                                 children: [
                                                   Expanded(
                                                     child: Text(
                                                       comment.userName,
                                                       style: getBoldStyle(
-                                                        fontFamily: FontConstant.cairo,
-                                                        fontSize: 16 * textScaleFactor,
-                                                        color: Theme.of(context).textTheme.titleMedium?.color,
+                                                        fontFamily:
+                                                            FontConstant.cairo,
+                                                        fontSize: 16 *
+                                                            textScaleFactor,
+                                                        color: Theme.of(context)
+                                                            .textTheme
+                                                            .titleMedium
+                                                            ?.color,
                                                       ),
                                                     ),
                                                   ),
                                                   if (isCurrentUserComment)
                                                     Container(
                                                       decoration: BoxDecoration(
-                                                        color: Theme.of(context).primaryColor.withOpacity(0.1),
-                                                        borderRadius: BorderRadius.circular(8),
+                                                        color: Theme.of(context)
+                                                            .primaryColor
+                                                            .withOpacity(0.1),
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(8),
                                                       ),
                                                       child: IconButton(
                                                         icon: Icon(
                                                           Icons.edit,
-                                                          size: 20 * textScaleFactor,
-                                                          color: Theme.of(context).primaryColor,
+                                                          size: 20 *
+                                                              textScaleFactor,
+                                                          color:
+                                                              Theme.of(context)
+                                                                  .primaryColor,
                                                         ),
-                                                        onPressed: () => _showEditCommentDialog(context, comment),
-                                                        tooltip: 'تعديل التعليق',
-                                                        constraints: BoxConstraints(
-                                                          minWidth: size.width * 0.08,
-                                                          minHeight: size.width * 0.08,
+                                                        onPressed: () =>
+                                                            _showEditCommentDialog(
+                                                                context,
+                                                                comment),
+                                                        tooltip:
+                                                            'تعديل التعليق',
+                                                        constraints:
+                                                            BoxConstraints(
+                                                          minWidth:
+                                                              size.width * 0.08,
+                                                          minHeight:
+                                                              size.width * 0.08,
                                                         ),
                                                       ),
                                                     ),
                                                 ],
                                               ),
-                                              SizedBox(height: size.height * 0.01),
+                                              SizedBox(
+                                                  height: size.height * 0.01),
                                               Text(
                                                 comment.comment,
                                                 style: TextStyle(
-                                                  fontSize: 14 * textScaleFactor,
-                                                  color: Theme.of(context).textTheme.bodyMedium?.color,
+                                                  fontSize:
+                                                      14 * textScaleFactor,
+                                                  color: Theme.of(context)
+                                                      .textTheme
+                                                      .bodyMedium
+                                                      ?.color,
                                                   height: 1.3,
                                                 ),
                                               ),
-                                              SizedBox(height: size.height * 0.01),
+                                              SizedBox(
+                                                  height: size.height * 0.01),
                                               Row(
                                                 children: [
                                                   Icon(
                                                     Icons.access_time,
                                                     size: 14 * textScaleFactor,
-                                                    color: Theme.of(context).textTheme.bodySmall?.color,
+                                                    color: Theme.of(context)
+                                                        .textTheme
+                                                        .bodySmall
+                                                        ?.color,
                                                   ),
-                                                  SizedBox(width: size.width * 0.01),
+                                                  SizedBox(
+                                                      width: size.width * 0.01),
                                                   Text(
-                                                    timeago.format(comment.createdAt, locale: 'ar'),
+                                                    timeago.format(
+                                                        comment.createdAt,
+                                                        locale: 'ar'),
                                                     style: getRegularStyle(
-                                                      fontFamily: FontConstant.cairo,
-                                                      fontSize: 12 * textScaleFactor,
-                                                      color: Theme.of(context).textTheme.bodySmall?.color,
+                                                      fontFamily:
+                                                          FontConstant.cairo,
+                                                      fontSize:
+                                                          12 * textScaleFactor,
+                                                      color: Theme.of(context)
+                                                          .textTheme
+                                                          .bodySmall
+                                                          ?.color,
                                                     ),
                                                   ),
                                                 ],
@@ -488,29 +547,26 @@ class _ProductReviewsViewState extends State<ProductReviewsView> {
             ],
           ),
         ),
-        floatingActionButton: !_hasExistingComment
-            ? FloatingActionButton(
-                onPressed: () => _showAddCommentDialog(context),
-                child: const Icon(Icons.add_comment),
-              )
-            : null,
       ),
     );
   }
 
   Widget _buildCommentsShimmer() {
     final size = MediaQuery.of(context).size;
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+
     return ListView.separated(
       padding: EdgeInsets.all(size.width * 0.04),
       itemCount: 5,
-      separatorBuilder: (context, index) => SizedBox(height: size.height * 0.01),
+      separatorBuilder: (context, index) =>
+          SizedBox(height: size.height * 0.01),
       itemBuilder: (context, index) => Shimmer.fromColors(
-        baseColor: Colors.grey[300]!,
-        highlightColor: Colors.grey[100]!,
+        baseColor: isDarkMode ? Colors.grey[800]! : Colors.grey[300]!,
+        highlightColor: isDarkMode ? Colors.grey[600]! : Colors.grey[100]!,
         child: Container(
           height: size.height * 0.15,
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: isDarkMode ? Colors.grey[900] : Colors.white,
             borderRadius: BorderRadius.circular(12),
           ),
         ),
@@ -518,42 +574,82 @@ class _ProductReviewsViewState extends State<ProductReviewsView> {
     );
   }
 
+  bool _isValidComment(String comment) {
+    if (comment.length > 35) {
+      return false;
+    }
+
+    RegExp gibberishPattern = RegExp(r'[bcdfghjklmnpqrstvwxyzBCDFGHJKLMNPQRSTVWXYZ]{5,}');
+    if (gibberishPattern.hasMatch(comment)) {
+      return false;
+    }
+
+    return true;
+  }
+
   void _showAddCommentDialog(BuildContext context) {
     final commentController = TextEditingController();
+    final size = MediaQuery.of(context).size;
+    final textScaleFactor = MediaQuery.of(context).textScaler;
 
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('إضافة تعليق'),
-        content: TextField(
-          controller: commentController,
-          decoration: const InputDecoration(
-            hintText: 'اكتب تعليقك هنا',
-            border: OutlineInputBorder(),
-          ),
-          maxLines: 3,
+        title: Text(
+          'إضافة تعليق',
+          style: getBoldStyle(fontFamily: FontConstant.cairo),
+        ),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            TextField(
+              controller: commentController,
+              decoration: const InputDecoration(
+                hintText: 'اكتب تعليقك هنا',
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(12)),
+                ),
+              ),
+              maxLines: 3,
+            ),
+          ],
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child:  Text('إلغاء' , style: getBoldStyle(fontFamily: FontConstant.cairo ),),
+            child: Text(
+              'إلغاء',
+              style: getBoldStyle(fontFamily: FontConstant.cairo),
+            ),
           ),
           ElevatedButton(
             onPressed: () async {
-              if (commentController.text.isNotEmpty) {
-                Navigator.pop(context);
-                await _commentCubit.addComment(
-                  widget.productId,
-                  commentController.text,
-                );
-                if (mounted) {
-                  setState(() {
-                    _hasExistingComment = true;
-                  });
+              final comment = commentController.text.trim();
+              if (comment.isNotEmpty) {
+                if (!_isValidComment(comment)) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('التعليق غير صالح. يجب أن يكون أقل من 25 حرف ولا يحتوي على نص عشوائي'),
+                    ),
+                  );
+                  return;
+                }
+                
+                if (!_hasExistingComment) {
+                  await _commentCubit.addComment(
+                    widget.productId,
+                    comment,
+                  );
+                  if (context.mounted) {
+                    Navigator.pop(context);
+                  }
                 }
               }
             },
-            child: const Text('إضافة'),
+            child: Text(
+              'إضافة',
+              style: getBoldStyle(fontFamily: FontConstant.cairo),
+            ),
           ),
         ],
       ),
@@ -562,43 +658,56 @@ class _ProductReviewsViewState extends State<ProductReviewsView> {
 
   void _showEditCommentDialog(BuildContext context, Comment comment) {
     final commentController = TextEditingController(text: comment.comment);
-    final scaffoldMessenger = ScaffoldMessenger.of(context);
 
     showDialog(
       context: context,
-      builder: (dialogContext) => AlertDialog(
-        title: const Text('تعديل التعليق'),
+      builder: (context) => AlertDialog(
+        title: Text(
+          'تعديل التعليق',
+          style: getBoldStyle(fontFamily: FontConstant.cairo),
+        ),
         content: TextField(
-          autofocus: true,
           controller: commentController,
           decoration: const InputDecoration(
             hintText: 'اكتب تعليقك هنا',
-            border: OutlineInputBorder(),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.all(Radius.circular(12)),
+            ),
           ),
           maxLines: 3,
         ),
         actions: [
           TextButton(
-            onPressed: () => Navigator.pop(dialogContext),
-            child: const Text('إلغاء'),
+            onPressed: () => Navigator.pop(context),
+            child: Text(
+              'إلغاء',
+              style: getBoldStyle(fontFamily: FontConstant.cairo),
+            ),
           ),
           ElevatedButton(
             onPressed: () async {
-              if (commentController.text.isNotEmpty) {
-                Navigator.pop(dialogContext);
+              final newComment = commentController.text.trim();
+              if (newComment.isNotEmpty) {
+                if (!_isValidComment(newComment)) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('التعليق غير صالح. يجب أن يكون أقل من 25 حرف ولا يحتوي على نص عشوائي'),
+                    ),
+                  );
+                  return;
+                }
+
                 await _commentCubit.updateComment(
                   widget.productId,
-                  commentController.text,
+                  
+                  newComment,
                 );
-                scaffoldMessenger.showSnackBar(
-                  const SnackBar(
-                    content: Text('تم تحديث التعليق بنجاح'),
-                    duration: Duration(seconds: 2),
-                  ),
-                );
+                if (context.mounted) {
+                  Navigator.pop(context);
+                }
               }
             },
-            child: const Text('تحديث'),
+            child: Text('تحديث', style: getBoldStyle(fontFamily: FontConstant.cairo)),
           ),
         ],
       ),
@@ -617,7 +726,7 @@ class _ProductReviewsViewState extends State<ProductReviewsView> {
       Colors.indigo,
       Colors.red,
     ];
-    
+
     int hash = userName.hashCode;
     return colors[hash.abs() % colors.length];
   }

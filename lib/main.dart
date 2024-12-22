@@ -46,7 +46,7 @@ void main() async {
 
     runApp(const MyApp());
   } catch (e) {
-    debugPrint('Error initializing app: $e');
+    debugPrint('حدث خطأ في التطبيق: $e');
     await Prefs.clearInvalidData();
     runApp(const MyApp());
   }

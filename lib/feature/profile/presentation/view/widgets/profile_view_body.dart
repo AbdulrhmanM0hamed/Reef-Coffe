@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hyper_market/core/services/service_locator.dart';
 import 'package:hyper_market/core/services/shared_preferences.dart';
+import 'package:hyper_market/core/utils/common/elvated_button.dart';
 import 'package:hyper_market/core/utils/constants/colors.dart';
 import 'package:hyper_market/core/utils/constants/constants.dart';
 import 'package:hyper_market/core/utils/constants/font_manger.dart';
@@ -58,13 +59,7 @@ class ProfileViewBody extends StatelessWidget {
                   );
                 },
               ),
-              ProfileMenuItem(
-                icon: Icons.payment_outlined,
-                title: 'المدفوعات',
-                onTap: () {
-                  // Navigate to payments
-                },
-              ),
+
               ProfileMenuItem(
                 icon: Icons.favorite_border,
                 title: 'المفضلة',
@@ -110,59 +105,99 @@ class ProfileViewBody extends StatelessWidget {
                   // Navigate to about
                 },
               ),
-              const SizedBox(height: 24),
+              const SizedBox(height: 50),
 
               // Logout Button
               SizedBox(
                 width: double.infinity,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: TColors.primary.withOpacity(.3),
-                    padding: const EdgeInsets.all(16),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                  ),
+                child: CustomElevatedButton(
                   onPressed: () async {
-                    // Get current user ID before clearing data
-                    final userDataJson = await Prefs.getString(KUserData);
-                    if (userDataJson != null && userDataJson.isNotEmpty) {
-                      try {
-                        final userData = json.decode(userDataJson);
-                        final user = UserEntity.fromJson(userData);
-                        // Clear user specific favorites
-                        await Prefs.setString(
-                            '${KUserFavorites}${user.id}', '[]');
-                      } catch (e) {
-                        debugPrint('Error clearing favorites: $e');
-                      }
-                    }
-
-                    // Clear all user data
-                    (
-                      Prefs.setBool(KUserLogout, true),
-                      Prefs.setBool(KIsloginSuccess, false),
-                      Prefs.setString(KUserData, ''),
-                      Prefs.setBool(KIsloginSuccess, false),
+                    final shouldLogout = await showDialog<bool>(
+                      context: context,
+                      builder: (context) => AlertDialog(
+                        title: Text(
+                          'تأكيد تسجيل الخروج',
+                          style: getBoldStyle(
+                            fontFamily: FontConstant.cairo,
+                            fontSize: FontSize.size18,
+                            color:
+                                Theme.of(context).brightness == Brightness.dark
+                                    ? TColors.white
+                                    : TColors.darkerGrey,
+                          ),
+                        ),
+                        content: Text(
+                          'هل أنت متأكد أنك تريد تسجيل الخروج؟',
+                          style: getRegularStyle(
+                            fontFamily: FontConstant.cairo,
+                            fontSize: FontSize.size14,
+                            color:
+                                Theme.of(context).brightness == Brightness.dark
+                                    ? TColors.white
+                                    : TColors.darkerGrey,
+                          ),
+                        ),
+                        actions: [
+                          TextButton(
+                            onPressed: () =>
+                                Navigator.of(context).pop(false), // Cancel
+                            child: Text(
+                              'إلغاء',
+                              style: getBoldStyle(
+                                fontFamily: FontConstant.cairo,
+                                fontSize: FontSize.size16,
+                                color: TColors.darkerGrey,
+                              ),
+                            ),
+                          ),
+                          TextButton(
+                            onPressed: () =>
+                                Navigator.of(context).pop(true), // Confirm
+                            child: Text(
+                              'تأكيد',
+                              style: getBoldStyle(
+                                fontFamily: FontConstant.cairo,
+                                fontSize: FontSize.size16,
+                                color: Colors.red,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     );
 
-                    // Clear user session
-                    if (context.mounted) {
-                      context.read<SignInCubit>().signOut();
-                      Navigator.of(context)
-                          .pushReplacementNamed(SigninView.routeName);
+                    if (shouldLogout == true) {
+                      // Get current user ID before clearing data
+                      final userDataJson = await Prefs.getString(KUserData);
+                      if (userDataJson != null && userDataJson.isNotEmpty) {
+                        try {
+                          final userData = json.decode(userDataJson);
+                          final user = UserEntity.fromJson(userData);
+                          // Clear user specific favorites
+                          await Prefs.setString(
+                              '${KUserFavorites}${user.id}', '[]');
+                        } catch (e) {
+                          debugPrint('Error clearing favorites: $e');
+                        }
+                      }
+
+                      // Clear all user data
+                      (
+                        Prefs.setBool(KUserLogout, true),
+                        Prefs.setBool(KIsloginSuccess, false),
+                        Prefs.setString(KUserData, ''),
+                        Prefs.setBool(KIsloginSuccess, false),
+                      );
+
+                      // Clear user session
+                      if (context.mounted) {
+                        context.read<SignInCubit>().signOut();
+                        Navigator.of(context)
+                            .pushReplacementNamed(SigninView.routeName);
+                      }
                     }
                   },
-                  child: Text(
-                    'تسجيل الخروج',
-                    style: getBoldStyle(
-                      fontFamily: FontConstant.cairo,
-                      fontSize: FontSize.size16,
-                      color: Theme.of(context).brightness == Brightness.dark
-                          ? TColors.white
-                          : TColors.darkerGrey,
-                    ),
-                  ),
+                  buttonText: 'تسجيل الخروج',
                 ),
               ),
             ],

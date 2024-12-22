@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:hyper_market/core/services/service_locator.dart';
 import 'package:hyper_market/core/utils/constants/colors.dart';
 import 'package:hyper_market/core/utils/constants/font_manger.dart';
 import 'package:hyper_market/core/utils/constants/styles_manger.dart';
@@ -102,8 +101,8 @@ class CartPage extends StatelessWidget {
                           'المجموع',
                           style: getBoldStyle(
                               fontFamily: FontConstant.cairo,
-                              fontSize: FontSize.size18,
-                              color: TColors.darkGrey),
+                              fontSize: FontSize.size20,
+                              color: TColors.primary),
                         ),
                         Text(
                           '${cartCubit.getTotal()} ج.م',
@@ -111,7 +110,7 @@ class CartPage extends StatelessWidget {
                               fontFamily: FontConstant.cairo,
                               fontSize:
                                   MediaQuery.of(context).size.width * 0.047,
-                              color: TColors.secondary),
+                              ),
                         ),
                       ],
                     ),

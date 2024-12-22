@@ -32,6 +32,7 @@ import 'package:hyper_market/feature/orders/presentation/cubit/orders_cubit.dart
 import 'package:hyper_market/feature/products/data/datasources/product_remote_data_source.dart';
 import 'package:hyper_market/feature/products/data/repositories/product_repository_impl.dart';
 import 'package:hyper_market/feature/products/domain/repositories/product_repository.dart';
+import 'package:hyper_market/feature/products/presentation/cubit/products_cubit.dart';
 import 'package:hyper_market/feature/home/data/datasources/special_offers_remote_data_source.dart';
 import 'package:hyper_market/feature/home/data/repositories/special_offers_repository_impl.dart';
 import 'package:hyper_market/feature/home/domain/repositories/special_offers_repository.dart';
@@ -166,5 +167,8 @@ void setupServiceLocator() {
   getIt.registerLazySingleton<CommentRepository>(
     () => CommentRepositoryImpl(supabaseClient: getIt()),
   );
+
+  // Product Dependencies
+  getIt.registerLazySingleton(() => ProductsCubit(getIt<ProductRepository>()));
 
 }

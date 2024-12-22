@@ -9,6 +9,7 @@ import 'package:hyper_market/feature/home/presentation/view/widgets/custom_text_
 import 'package:hyper_market/feature/home/presentation/view/widgets/exclusive_offer_list_view%20.dart';
 import 'package:hyper_market/feature/home/presentation/view/widgets/home_top_slider.dart';
 import 'package:hyper_market/feature/home/presentation/view/widgets/outline_of_products.dart';
+import 'package:hyper_market/feature/products/presentation/cubit/products_cubit.dart';
 
 class HomeViewBody extends StatefulWidget {
   final String userName;
