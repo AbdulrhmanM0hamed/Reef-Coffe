@@ -92,6 +92,7 @@ void didUpdateWidget(CommentsTextWidget oldWidget) {
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
+              Icon(Icons.comment_outlined, size: 22),
               Text(
                 'التعليقات',
                 style: getBoldStyle(

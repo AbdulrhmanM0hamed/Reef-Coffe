@@ -23,11 +23,22 @@ class _SignupViewBodyState extends State<SignupViewBody> {
   late String email, password, userName, phoneNumber;
   bool isAgreed = false;
 
-  bool _validateEmail(String email) {
-    final emailRegex = RegExp(
+  String? _validateEmail(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'البريد الإلكتروني مطلوب';
+    }
+
+    // تعبير منتظم أكثر مرونة للتحقق من صحة البريد الإلكتروني
+    final emailRegExp = RegExp(
       r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$',
+      caseSensitive: false,
     );
-    return emailRegex.hasMatch(email);
+
+    if (!emailRegExp.hasMatch(value)) {
+      return 'البريد الإلكتروني غير صحيح';
+    }
+
+    return null;
   }
 
   @override
@@ -65,15 +76,7 @@ class _SignupViewBodyState extends State<SignupViewBody> {
                 onSaved: (value) => email = value!,
                 hintText: S.current!.email,
                 suffixIcon: const Icon(Icons.email),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'الرجاء إدخال بريدك الإلكتروني';
-                  }
-                  if (!_validateEmail(value)) {
-                    return 'البريد الإلكتروني غير صحيح';
-                  }
-                  return null;
-                },
+                validator: _validateEmail,
               ),
               SizedBox(height: screenHeight * 0.02),
               CustomPhoneField(

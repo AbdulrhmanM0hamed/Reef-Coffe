@@ -175,6 +175,16 @@ class AuthRepositoryImpl implements AuthRepository {
       return Left(ServerFailure(message: e.message));
     }
   }
+  
+  @override
+  Future<Either<Failure, String?>> getCurrentUserEmail() async {
+      try {
+      final name = await remoteDataSource.getCurrentUserEmail();
+      return Right(name);
+    } on CustomException catch (e) {
+      return Left(ServerFailure(message: e.message));
+    }
+  }
 
   // @override
   // Future<void> sendOTP(String phoneNumber) async {

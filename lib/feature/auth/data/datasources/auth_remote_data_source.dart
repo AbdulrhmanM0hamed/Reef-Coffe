@@ -17,6 +17,7 @@ abstract class AuthRemoteDataSource {
   Future<void> resetPassword(String email);
   Future<bool> isEmailRegistered(String email);
   Future<String?> getCurrentUserName();
+  Future<String?> getCurrentUserEmail();
   Future<String?> getUserPhoneNumber(String email);
   // Future<void> verifyPhoneNumber(String phoneNumber);
   // Future<void> sendOTP(String phoneNumber);
@@ -487,6 +488,27 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         throw CustomException(message: message);
       }
       throw const CustomException(message: 'حدث خطأ في تحديث كلمة المرور');
+    }
+  }
+  
+  @override
+  Future<String?> getCurrentUserEmail() async {
+       try {
+      final user = supabaseClient.auth.currentUser;
+
+      if (user != null) {
+        final response = await supabaseClient
+            .from('profiles')
+            .select('email')
+            .eq('id', user.id)
+            .single();
+        
+        return response['email'] as String?;
+      }
+
+      return null;
+    } catch (e) {
+      throw CustomException(message: e.toString());
     }
   }
 }

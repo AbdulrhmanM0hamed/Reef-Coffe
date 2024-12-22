@@ -13,11 +13,15 @@ class UserLoadingState extends UserState {}
 
 class UserLoadedState extends UserState {
   final String name;
+  final String email;
 
-  const UserLoadedState(this.name);
+  const UserLoadedState({
+    required this.name,
+    required this.email,
+  });
 
   @override
-  List<Object?> get props => [name];
+  List<Object?> get props => [name, email];
 }
 
 class UserErrorState extends UserState {

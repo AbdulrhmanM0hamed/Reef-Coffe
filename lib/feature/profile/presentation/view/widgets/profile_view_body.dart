@@ -15,12 +15,17 @@ import 'package:hyper_market/feature/favorites/presentation/cubit/favorite_cubit
 import 'package:hyper_market/feature/favorites/presentation/view/favorites_view.dart';
 import 'package:hyper_market/feature/orders/presentation/cubit/orders_cubit.dart';
 import 'package:hyper_market/feature/orders/presentation/view/orders_view.dart';
+import 'package:hyper_market/feature/profile/presentation/cubit/theme_cubit.dart';
 import 'package:hyper_market/feature/profile/presentation/view/widgets/profiel_menu_switch.dart';
 import 'package:hyper_market/feature/profile/presentation/view/widgets/profile_header.dart';
 import 'package:hyper_market/feature/profile/presentation/view/widgets/profile_menu_item.dart';
 
 class ProfileViewBody extends StatelessWidget {
-  const ProfileViewBody({Key? key}) : super(key: key);
+  const ProfileViewBody(
+      {Key? key, required this.userName, required this.userEmail})
+      : super(key: key);
+  final String userName;
+  final String userEmail;
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +45,7 @@ class ProfileViewBody extends StatelessWidget {
           child: Column(
             children: [
               // Profile Header
-              const ProfileHeader(),
+              ProfileHeader(userName: userName, userEmail: userEmail),
               const SizedBox(height: 24),
 
               // Profile Menu Items
@@ -75,6 +80,18 @@ class ProfileViewBody extends StatelessWidget {
                   );
                 },
               ),
+              BlocBuilder<ThemeCubit, ThemeState>(
+                builder: (context, state) {
+                  return ProfileMenuSwitch(
+                    icon: state.isDark ? Icons.dark_mode : Icons.light_mode,
+                    title: state.isDark ? 'الوضع الليلي' : 'الوضع النهاري',
+                    value: state.isDark,
+                    onChanged: (value) {
+                      context.read<ThemeCubit>().toggleTheme();
+                    },
+                  );
+                },
+              ),
               ProfileMenuSwitch(
                 icon: Icons.notifications_outlined,
                 title: 'الاشعارات',
@@ -83,14 +100,14 @@ class ProfileViewBody extends StatelessWidget {
                   // Handle notifications toggle
                 },
               ),
-              ProfileMenuSwitch(
-                icon: Icons.dark_mode_outlined,
-                title: 'الوضع الليلي',
-                value: Theme.of(context).brightness == Brightness.dark,
-                onChanged: (value) {
-                  // Handle theme toggle
-                },
-              ),
+              // ProfileMenuSwitch(
+              //   icon: Icons.dark_mode_outlined,
+              //   title: 'الوضع الليلي',
+              //   value: Theme.of(context).brightness == Brightness.dark,
+              //   onChanged: (value) {
+              //     // Handle theme toggle
+              //   },
+              // ),
               ProfileMenuItem(
                 icon: Icons.help_outline,
                 title: 'المساعدة',

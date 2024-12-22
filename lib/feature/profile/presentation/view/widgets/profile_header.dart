@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
 class ProfileHeader extends StatelessWidget {
-  const ProfileHeader({super.key});
+  const ProfileHeader({super.key, required this.userName, required this.userEmail});
+  final String userEmail;
+  final String userName; // = 'John Doe';
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +20,7 @@ class ProfileHeader extends StatelessWidget {
           ),
           const SizedBox(height: 10), 
           Text(
-            'عبدالرحمن محمد',
+            userName,
             style: TextStyle(
              
               fontSize: size.width * 0.05,
@@ -27,7 +29,7 @@ class ProfileHeader extends StatelessWidget {
           ),
           const SizedBox(height: 5),
           Text(
-            'abdo@gmail.com',
+             userEmail,
             style: TextStyle(
               
               fontSize: size.width * 0.035,

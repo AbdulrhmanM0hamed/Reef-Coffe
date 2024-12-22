@@ -9,8 +9,9 @@ import 'package:hyper_market/feature/profile/presentation/view/widgets/profile_v
 
 class ProfileView extends StatelessWidget {
   static const String routeName = '/profile';
-
-  const ProfileView({super.key});
+  final String userName;
+  final String userEmail;
+  const ProfileView({super.key, required this.userName, required this.userEmail});
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +32,7 @@ class ProfileView extends StatelessWidget {
             ),
             centerTitle: true,
           ),
-          body: const ProfileViewBody(),
+          body:  ProfileViewBody(userName:userName , userEmail: userEmail),
         ),
       ),
     );

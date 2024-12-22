@@ -11,9 +11,10 @@ import 'package:hyper_market/core/services/supabase/supabase_initialize.dart';
 import 'package:hyper_market/core/utils/helper/on_genrated_routes.dart';
 import 'package:hyper_market/core/utils/theme/theme.dart';
 import 'package:hyper_market/feature/cart/presentation/cubit/cart_cubit.dart';
-import 'package:hyper_market/feature/details/presentation/cubit/comments_cubit.dart';
+import 'package:hyper_market/feature/profile/presentation/cubit/theme_cubit.dart';
 import 'package:hyper_market/feature/splash/view/splash_view.dart';
 import 'package:hyper_market/generated/l10n.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
   
@@ -63,23 +64,30 @@ class MyApp extends StatelessWidget {
         BlocProvider(
           create: (context) => CartCubit(),
         ),
-     
+        BlocProvider(
+          create: (context) => ThemeCubit(prefs:   SharedPreferences.getInstance()),
+        ),
       ],
-      child: MaterialApp(
-        theme: TAppTheme.lightTheme,
-        darkTheme: TAppTheme.darkTheme,
-        themeMode: ThemeMode.system,
-        debugShowCheckedModeBanner: false,
-        localizationsDelegates: const [
-          S.delegate,
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
-        ],
-        supportedLocales: S.delegate.supportedLocales,
-        locale: const Locale('ar'),
-        onGenerateRoute: onGenratedRoutes,
-        initialRoute: SplashView.routeName,
+      child: BlocBuilder<ThemeCubit, ThemeState>(
+        builder: (context, state) {
+          return MaterialApp(
+            title: 'Hyper Market',
+            debugShowCheckedModeBanner: false,
+            theme: state.isDark ? TAppTheme.darkTheme : TAppTheme.lightTheme,
+            darkTheme: TAppTheme.darkTheme,
+            themeMode: state.isDark ? ThemeMode.dark : ThemeMode.light,
+            localizationsDelegates: const [
+              S.delegate,
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
+            supportedLocales: S.delegate.supportedLocales,
+            locale: const Locale('ar'),
+            onGenerateRoute: onGenratedRoutes,
+            initialRoute: SplashView.routeName,
+          );
+        },
       ),
     );
   }

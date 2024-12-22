@@ -30,7 +30,8 @@ class _HomeViewState extends State<HomeView> {
         BlocProvider.value(value: getIt<CartCubit>()),
         BlocProvider.value(value: getIt<FavoriteCubit>()),
         BlocProvider(
-          create: (context) => UserCubit(authRepository: getIt())..getCurrentUserName(),
+          create: (context) =>
+              UserCubit(authRepository: getIt())..getCurrentUserData(),
         ),
       ],
       child: Scaffold(
@@ -65,7 +66,17 @@ class _HomeViewState extends State<HomeView> {
               ),
               CategoriesViewApp(),
               CartPage(),
-              ProfileView()
+              BlocBuilder<UserCubit, UserState>(
+                builder: (context, state) {
+                  if (state is UserLoadedState) {
+                    return ProfileView(
+                      userName: state.name,
+                      userEmail: state.email,
+                    );
+                  }
+                  return HomeViewBody(userName: 'زائر');
+                },
+              ),
             ],
           ),
         ),
