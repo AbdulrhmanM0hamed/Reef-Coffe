@@ -107,7 +107,7 @@ class SpecialOfferDetails extends StatelessWidget {
                                 style: getMediumStyle(
                                   fontFamily: FontConstant.cairo,
                                   fontSize: FontSize.size16,
-                                  color: TColors.secondary,
+                                  color: TColors.darkerGrey,
                                 ),
                               ),
                             ],

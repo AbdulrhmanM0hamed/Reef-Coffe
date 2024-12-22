@@ -71,40 +71,40 @@ class _SplashViewBodyState extends State<SplashViewBody>
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    SvgPicture.asset(AssetsManager.logo),
+                    SvgPicture.asset(
+                      AssetsManager.logo,
+                      height: 100,
+                    ),
+                    const SizedBox(width: 12),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          "ريف القهوة",
+                          style: getBoldStyle(
+                              fontFamily: FontConstant.almarai,
+                              fontSize: FontSize.size24,
+                              color: TColors.primary),
+                        ),
+                        Text(
+                          "لتقديم الوجبات",
+                          style: getBoldStyle(
+                            fontFamily: FontConstant.almarai,
+                            fontSize: FontSize.size16,
+                            color:
+                                Theme.of(context).brightness == Brightness.dark
+                                    ? TColors.white
+                                    : TColors.darkerGrey,
+                          ),
+                        ),
+                      ],
+                    ),
                   ],
                 ),
               ),
             );
           },
-        ),
-        FadeTransition(
-          opacity: _fadeAnimation,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              RichText(
-                text: TextSpan(
-                  children: [
-                    TextSpan(
-                      text: "هايير ", // النص الأول
-                      style: getBoldStyle(
-                          fontFamily: FontConstant.cairo,
-                          fontSize: FontSize.size30,
-                          color: TColors.primary),
-                    ),
-                    TextSpan(
-                      text: "ماركت", // النص الثاني
-                      style: getBoldStyle(
-                          fontFamily: FontConstant.cairo,
-                          fontSize: FontSize.size30,
-                          color: TColors.secondary),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
         ),
       ],
     );

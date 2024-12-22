@@ -182,7 +182,7 @@ class _HomeTopSliderState extends State<HomeTopSlider> {
                                 Text(
                                   state.offers[index].subtitle,
                                   style: getMediumStyle(
-                                    color: TColors.secondary,
+                                    color: TColors.primary,
                                     fontSize: _getSubtitleFontSize(size),
                                     fontFamily: FontConstant.cairo,
                                 

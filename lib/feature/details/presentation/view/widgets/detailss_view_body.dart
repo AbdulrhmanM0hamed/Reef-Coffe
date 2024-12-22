@@ -6,9 +6,9 @@ import 'package:hyper_market/core/utils/constants/font_manger.dart';
 import 'package:hyper_market/core/utils/constants/styles_manger.dart';
 import 'package:hyper_market/feature/cart/data/models/cart_item_model.dart';
 import 'package:hyper_market/feature/cart/presentation/cubit/cart_cubit.dart';
-import 'package:hyper_market/feature/details/presentation/cubit/comment_cubit.dart';
+import 'package:hyper_market/feature/details/presentation/cubit/comments_cubit.dart';
 import 'package:hyper_market/feature/details/presentation/cubit/rating_cubit.dart';
-import 'package:hyper_market/feature/details/presentation/view/widgets/comments_text_widget.dart';
+import 'package:hyper_market/feature/details/presentation/view/widgets/comments_textt_widget.dart';
 import 'package:hyper_market/feature/details/presentation/view/widgets/price_with_additons.dart';
 import 'package:hyper_market/feature/details/presentation/view/widgets/product_image_section.dart';
 import 'package:hyper_market/feature/details/presentation/view/widgets/product_info_section.dart';
@@ -31,7 +31,30 @@ class DetailsViewBody extends StatefulWidget {
 }
 
 class _DetailsViewBodyState extends State<DetailsViewBody> {
+  late CommentCubit _commentCubit;
   int _quantity = 1;
+
+  @override
+  void initState() {
+    super.initState();
+    _commentCubit = getIt<CommentCubit>();
+    _commentCubit.getProductComments(widget.product.id!);
+  }
+
+  @override
+void didUpdateWidget(DetailsViewBody oldWidget) {
+  super.didUpdateWidget(oldWidget);
+  if (oldWidget.product.id != widget.product.id) {
+    // إعادة تحميل التعليقات عند تغيير المنتج
+    _commentCubit.getProductComments(widget.product.id!);
+    _commentCubit.getProductComments(widget.product.id!);
+  }
+}
+  @override
+  void dispose() {
+    _commentCubit.getProductComments(widget.product.id!);
+    super.dispose();
+  }
 
   void _updateQuantity(int quantity) {
     setState(() {
@@ -41,16 +64,30 @@ class _DetailsViewBodyState extends State<DetailsViewBody> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => getIt<CommentCubit>()..getProductComments(widget.product.id!),
-      child: LayoutBuilder(
-        builder: (context, constraints) {
-          final screenWidth = constraints.maxWidth;
-          final screenHeight = constraints.maxHeight;
-          final isSmallScreen = screenWidth < 600;
+    return BlocProvider.value(
+      value: _commentCubit,
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            create: (context) => getIt<RatingCubit>()..loadProductRating(widget.product.id!),
+          ),
+        ],
+        child: BlocListener<CommentCubit, CommentState>(
+          listener: (context, state) {
+            if (state is CommentsLoaded) {
+              // تم تحميل التعليقات بنجاح
+            }
+          },
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              final screenWidth = constraints.maxWidth;
+              final screenHeight = constraints.maxHeight;
+              final isSmallScreen = screenWidth < 600;
 
-          return _buildMainContent(context, screenWidth, screenHeight, isSmallScreen);
-        },
+              return _buildMainContent(context, screenWidth, screenHeight, isSmallScreen);
+            },
+          ),
+        ),
       ),
     );
   }

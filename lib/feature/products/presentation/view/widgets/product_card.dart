@@ -128,7 +128,7 @@ class ProductCard extends StatelessWidget {
                             style: getBoldStyle(
                               fontFamily: FontConstant.cairo,
                               fontSize: _getPriceFontSize(size),
-                              color: Colors.green.shade700,
+                              color: Colors.red.shade700,
                             ),
                           ),
                           SizedBox(width: _getSpacing(size) * 0.5),
@@ -164,10 +164,10 @@ class ProductCard extends StatelessWidget {
                               vertical: _getVerticalPadding(size),
                             ),
                             decoration: BoxDecoration(
-                              color: Colors.green.shade50,
+                              color: TColors.primary.withOpacity(.03),
                               borderRadius: BorderRadius.circular(_getBorderRadius(size) * 0.3),
                               border: Border.all(
-                                color: Colors.green.shade100,
+                                color: TColors.primary..withOpacity(.5),
                                 width: 0.5,
                               ),
                             ),
@@ -180,11 +180,11 @@ class ProductCard extends StatelessWidget {
                                 ),
                                 SizedBox(width: _getSpacing(size) * 0.5),
                                 Text(
-                                  'Organic',
+                                  'صحى',
                                   style: getBoldStyle(
                                     fontFamily: FontConstant.cairo,
                                     fontSize: _getOrganicFontSize(size),
-                                    color: Colors.green.shade700,
+                                    color: TColors.primary,
                                   ),
                                 ),
                               ],
@@ -236,7 +236,7 @@ class ProductCard extends StatelessWidget {
                               borderRadius: BorderRadius.circular(_getBorderRadius(size)),
                             ),
                             child: Icon(
-                              Icons.add,
+                              Icons.add_shopping_cart_outlined,
                               size: _getIconSize(size),
                               color: Colors.white,
                             ),

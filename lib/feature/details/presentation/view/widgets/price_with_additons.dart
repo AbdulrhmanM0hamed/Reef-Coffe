@@ -54,7 +54,7 @@ class _PriceWithButton_add_minState extends State<PriceWithButton_add_min> {
                 style: getBoldStyle(
                   fontFamily: FontConstant.cairo,
                   fontSize: sizeWidth * 0.04,
-                  color: Colors.green.shade700,
+                  color: Colors.red.shade700,
                 ),
               ),
               Text(
@@ -76,7 +76,7 @@ class _PriceWithButton_add_minState extends State<PriceWithButton_add_min> {
             style: getBoldStyle(
               fontFamily: FontConstant.cairo,
               fontSize: sizeWidth * 0.04,
-              color: TColors.secondary,
+              color: Colors.red,
             ),
           ),
         AddAndDeleteItem(

@@ -28,14 +28,14 @@ class LogoWithAppName extends StatelessWidget {
               text: TextSpan(
                 children: [
                   TextSpan(
-                    text: StringManager.hyper, // النص الأول
+                    text: 'ريف', // النص الأول
                     style: getBoldStyle(
                         fontFamily: FontConstant.cairo,
                         fontSize: size.height * 0.035,
                         color: TColors.primary),
                   ),
                   TextSpan(
-                    text: StringManager.market, // النص الثاني
+                    text: ' القهوة', // النص الثاني
                     style: getBoldStyle(
                         fontFamily: FontConstant.cairo,
                         fontSize: size.height * 0.035,
@@ -45,7 +45,7 @@ class LogoWithAppName extends StatelessWidget {
               ),
             ),
             Text(
-              StringManager.startShopping,
+              'لتقديم الوجبات',
               style: getBoldStyle(
                   fontFamily: FontConstant.cairo,
                   color: TColors.darkGrey,

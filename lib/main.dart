@@ -11,6 +11,7 @@ import 'package:hyper_market/core/services/supabase/supabase_initialize.dart';
 import 'package:hyper_market/core/utils/helper/on_genrated_routes.dart';
 import 'package:hyper_market/core/utils/theme/theme.dart';
 import 'package:hyper_market/feature/cart/presentation/cubit/cart_cubit.dart';
+import 'package:hyper_market/feature/details/presentation/cubit/comments_cubit.dart';
 import 'package:hyper_market/feature/splash/view/splash_view.dart';
 import 'package:hyper_market/generated/l10n.dart';
 
@@ -62,6 +63,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(
           create: (context) => CartCubit(),
         ),
+     
       ],
       child: MaterialApp(
         theme: TAppTheme.lightTheme,

@@ -9,35 +9,65 @@ class ProductsCubit extends Cubit<ProductsState> {
   String _currentQuery = '';
   ProductsCubit(this.productRepository) : super(ProductsInitial());
   Future<void> getProductsByCategory(String? categoryId) async {
+    if (isClosed) return;
     if (categoryId == null) return;
     
     emit(ProductsLoading());
+
+    if (isClosed) return;
+
     final result = await productRepository.getProductsByCategory(categoryId);
+
+    if (isClosed) return;
+
     result.fold(
-      (failure) => emit(ProductsError(failure.message)),
+      (failure) {
+        if (!isClosed) {
+          emit(ProductsError(failure.message));
+        }
+      },
       (products) {
-        _allProducts = products;
-        emit(ProductsLoaded(products));
+        if (!isClosed) {
+          _allProducts = products;
+          emit(ProductsLoaded(products));
+        }
       },
     );
   }
 
   Future<void> getAllProducts() async {
+    if (isClosed) return;
+    
     emit(ProductsLoading());
+
+    if (isClosed) return;
+
     final result = await productRepository.getAllProducts();
+
+    if (isClosed) return;
+
     result.fold(
-      (failure) => emit(ProductsError(failure.message)),
+      (failure) {
+        if (!isClosed) {
+          emit(ProductsError(failure.message));
+        }
+      },
       (products) {
-        _allProducts = products;
-        emit(ProductsLoaded(products));
+        if (!isClosed) {
+          _allProducts = products;
+          emit(ProductsLoaded(products));
+        }
       },
     );
   }
 
   void searchProducts(String query) {
+    if (isClosed) return;
     _currentQuery = query.toLowerCase();
     if (_currentQuery.isEmpty) {
-      emit(ProductsLoaded(_allProducts));
+      if (!isClosed) {
+        emit(ProductsLoaded(_allProducts));
+      }
       return;
     }
 
@@ -47,7 +77,9 @@ class ProductsCubit extends Cubit<ProductsState> {
       return name.contains(_currentQuery) || description.contains(_currentQuery);
     }).toList();
 
-    emit(ProductsLoaded(filteredProducts));
+    if (!isClosed) {
+      emit(ProductsLoaded(filteredProducts));
+    }
   }
 
   void filterProducts({
@@ -56,6 +88,7 @@ class ProductsCubit extends Cubit<ProductsState> {
     required bool isNatural,
     required bool hasDiscount,
   }) {
+    if (isClosed) return;
     var filteredProducts = _allProducts.where((product) {
       bool priceInRange = product.price >= minPrice && product.price <= maxPrice;
       bool naturalMatch = !isNatural || product.isOrganic;
@@ -70,6 +103,8 @@ class ProductsCubit extends Cubit<ProductsState> {
       }).toList();
     }
 
-    emit(ProductsLoaded(filteredProducts));
+    if (!isClosed) {
+      emit(ProductsLoaded(filteredProducts));
+    }
   }
 }

@@ -25,6 +25,15 @@ class _PasswordFieldState extends State<PasswordField> {
       obsacureText: _obscureText, // تمرير قيمة _obscureText
       onSaved: widget.onSaved, // تمرير onSaved
       hintText: widget.hintText,
+      validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'يرجى إدخال كلمة المرور';
+                  }
+                  if (value.length < 6) {
+                    return 'كلمة المرور يجب ان تكون 6 حروف على الاقل';
+                  }
+                  return null;
+                },
       suffixIcon: GestureDetector(
         onTap: () {
           setState(() {

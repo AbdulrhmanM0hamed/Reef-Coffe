@@ -76,7 +76,7 @@ class _OnBoardingViewBodyState extends State<OnBoardingViewBody> {
                             duration: Duration(milliseconds: 800),
                             child: const OutlineWidget(
                               image: AssetsManager.organicFood,
-                              title: StringManager.organicFood,
+                              title: 'وجبات صحية',
                             ),
                           ),
                           Divider(
@@ -143,14 +143,14 @@ class _OnBoardingViewBodyState extends State<OnBoardingViewBody> {
                         color: TColors.primary),
                   ),
                   TextSpan(
-                    text: StringManager.hyper, // النص الأول
+                    text: 'ريف ' , // النص الأول
                     style: getBoldStyle(
                         fontFamily: FontConstant.cairo,
                         fontSize: size.height * 0.025,
                         color: TColors.primary),
                   ),
                   TextSpan(
-                    text: StringManager.market, // النص الثاني
+                    text: 'القهوة', // النص الثاني
                     style: getBoldStyle(
                         fontFamily: FontConstant.cairo,
                         fontSize: size.height * 0.025,

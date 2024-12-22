@@ -19,7 +19,7 @@ class SignUpViewBodyBlocConsumer extends StatelessWidget {
               context, SigninView.routeName, (route) => false);
           showSuccessSnackBar(
             context,
-            'تم إنشاء الحساب بنجاح. يرجى تفعيل بريدك الإلكتروني للمتابعة',
+            'تم إنشاء الحساب بنجاح',
           );
         }
         if (state is SignUpErrorState) {

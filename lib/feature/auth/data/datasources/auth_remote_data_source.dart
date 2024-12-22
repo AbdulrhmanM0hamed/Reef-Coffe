@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:hyper_market/core/error/excptions.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -60,7 +62,11 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     }
   }
 
+
+
+
   @override
+
   Future<User> signUpWithEmail(
     String email,
     String password,
@@ -68,45 +74,42 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     String phoneNumber,
   ) async {
     try {
-      // 1. Create auth user
+      
+      // Create auth user
       final response = await supabaseClient.auth.signUp(
-        data: {
-          'display_name': name,
-          'phone': phoneNumber,
-        },
         email: email,
         password: password,
       );
 
       if (response.user == null) {
-        throw const CustomException(message: 'فشل في إنشاء الحساب');
+        throw const AuthException('حدث خطأ في إنشاء الحساب');
       }
+      
 
-      // 2. Create profile
-      await supabaseClient.from('profiles').insert({
-        'id': response.user!.id,
-        'name': name,
-        'phone_number': phoneNumber,
-        'email': email,
-        "provider": response.user!.appMetadata['provider'],
-      });
+      // Create profile
+      try {
+        await supabaseClient.from('profiles').insert({
+          'id': response.user!.id,
+          'name': name,
+          'email': email,
+          'phone_number': phoneNumber,
+        });
+      } catch (e) {
+        throw e;
+      }
 
       return response.user!;
+      
+    } on AuthException catch (e) {
+      throw AuthException(e.message);
     } catch (e) {
-      if (e is AuthException) {
-        String message = e.message;
-        if (e.message.contains("User already registered")) {
-          message = "البريد الإلكتروني مسجل مسبقاً";
-        } else if (e.message.contains("Password should be at least 6 characters")) {
-          message = "كلمة المرور يجب أن تكون 6 أحرف على الأقل";
-        } else if (e.message.contains("Invalid email")) {
-          message = "البريد الإلكتروني غير صالح";
-        }
-        throw CustomException(message: message);
-      }
-      throw const CustomException(message: 'حدث خطأ في إنشاء الحساب');
+      throw const AuthException('حدث خطأ في إنشاء الحساب');
     }
   }
+
+
+
+
 
   @override
   Future<User> signInWithGoogle() async {

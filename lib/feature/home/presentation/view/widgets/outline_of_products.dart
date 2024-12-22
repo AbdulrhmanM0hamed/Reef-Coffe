@@ -24,7 +24,7 @@ class OutLineOfProducts extends StatelessWidget {
               style: getSemiBoldStyle(
                   fontFamily: FontConstant.cairo,
                   fontSize: FontSize.size18,
-                  color: TColors.secondary)),
+                  color: TColors.primary)),
         ),
       ],
     );

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 class FontConstant {
   static const String cairo = "Cairo";
+  static const String almarai = "Almarai";
 }
 
 class FontWeightManger {

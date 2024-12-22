@@ -31,6 +31,7 @@ class _CustomBottomNavBarState extends State<CustomBottomNavBar> {
       },
       items: <BottomNavyBarItem>[
         bottomNavBarIcon(
+
           'assets/images/vuesax/outline/homeOutline.svg',
           'assets/images/vuesax/bold/home2.svg',
           'الرئيسية',
@@ -39,7 +40,7 @@ class _CustomBottomNavBarState extends State<CustomBottomNavBar> {
         bottomNavBarIcon(
           'assets/images/vuesax/outline/products.svg',
           'assets/images/vuesax/bold/products.svg',
-          'المنتجات',
+          'التصنيفات',
           widget.currentIndex == 1,
         ),
         bottomNavBarIcon(

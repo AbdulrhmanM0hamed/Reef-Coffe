@@ -23,6 +23,13 @@ class _SignupViewBodyState extends State<SignupViewBody> {
   late String email, password, userName, phoneNumber;
   bool isAgreed = false;
 
+  bool _validateEmail(String email) {
+    final emailRegex = RegExp(
+      r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$',
+    );
+    return emailRegex.hasMatch(email);
+  }
+
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
@@ -43,22 +50,40 @@ class _SignupViewBodyState extends State<SignupViewBody> {
                 onSaved: (value) => userName = value!,
                 hintText: S.current!.fullName,
                 suffixIcon: const Icon(Icons.person),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'الرجاء إدخال اسمك الكامل';
+                  }
+                  if (value.length < 4) {
+                    return 'الاسم يجب أن يكون 4 أحرف على الأقل';
+                  }
+                  return null;
+                },
               ),
               SizedBox(height: screenHeight * 0.02),
               CustomTextFormField(
                 onSaved: (value) => email = value!,
                 hintText: S.current!.email,
                 suffixIcon: const Icon(Icons.email),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'الرجاء إدخال بريدك الإلكتروني';
+                  }
+                  if (!_validateEmail(value)) {
+                    return 'البريد الإلكتروني غير صحيح';
+                  }
+                  return null;
+                },
               ),
               SizedBox(height: screenHeight * 0.02),
               CustomPhoneField(
-            
                 onSaved: (value) => phoneNumber = value!,
               ),
               SizedBox(height: screenHeight * 0.02),
               PasswordField(
                 hintText: S.current!.password,
                 onSaved: (value) => password = value!,
+               
               ),
               SizedBox(height: screenHeight * 0.03),
               Row(

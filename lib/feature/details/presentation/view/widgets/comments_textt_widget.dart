@@ -3,9 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hyper_market/core/utils/constants/colors.dart';
 import 'package:hyper_market/core/utils/constants/font_manger.dart';
 import 'package:hyper_market/core/utils/constants/styles_manger.dart';
-import 'package:hyper_market/feature/details/presentation/cubit/comment_cubit.dart';
-import 'package:hyper_market/feature/details/presentation/view/product_reviews_view.dart';
-import 'package:hyper_market/feature/details/presentation/view/widgets/details_view_body.dart';
+import 'package:hyper_market/feature/details/presentation/cubit/comments_cubit.dart';
+import 'package:hyper_market/feature/details/presentation/view/product_reviewss_view.dart';
+import 'package:hyper_market/feature/details/presentation/view/widgets/detailss_view_body.dart';
 
 class CommentsTextWidget extends StatefulWidget {
   const CommentsTextWidget({
@@ -28,33 +28,39 @@ class _CommentsTextWidgetState extends State<CommentsTextWidget> {
   void initState() {
     super.initState();
     _productId = widget.widget.product.id!;
-    _loadComments();
+    _loadComments(); // جلب التعليقات الأولية
   }
 
   @override
-  void didUpdateWidget(CommentsTextWidget oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    final newProductId = widget.widget.product.id!;
-    if (_productId != newProductId) {
-      _productId = newProductId;
-      _loadComments();
-    }
-  }
 
-  void _loadComments() {
-    if (!mounted) return;
-    final commentCubit = context.read<CommentCubit>();
-    commentCubit.getProductComments(_productId);
-  }
+void didUpdateWidget(CommentsTextWidget oldWidget) {
+  super.didUpdateWidget(oldWidget);
 
+  final newProductId = widget.widget.product.id!;
+  if (_productId != newProductId) {
+    _productId = newProductId;
+    _loadComments(); 
+  }
+}
+
+
+ void _loadComments() {
+  if (!mounted) return;
+
+  final commentCubit = context.read<CommentCubit>();
+ 
+  commentCubit.getProductComments(_productId); 
+}
+
+  @override
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<CommentCubit, CommentState>(
       builder: (context, state) {
-        Widget? trailing;
-        
-        if (state is CommentLoading) {
-          trailing = SizedBox(
+        Widget trailing;
+
+        if (state is CommentLoading ) {
+          trailing = const SizedBox(
             width: 16,
             height: 16,
             child: CircularProgressIndicator(
@@ -71,6 +77,8 @@ class _CommentsTextWidgetState extends State<CommentsTextWidget> {
               color: TColors.primary,
             ),
           );
+        } else {
+          return Text('0');// الحالة الافتراضية
         }
 
         return TextButton(
@@ -92,10 +100,8 @@ class _CommentsTextWidgetState extends State<CommentsTextWidget> {
                   color: TColors.primary,
                 ),
               ),
-              if (trailing != null) ...[
-                const SizedBox(width: 4),
-                trailing,
-              ],
+              const SizedBox(width: 4),
+              trailing, // عرض العدد أو المؤشر
             ],
           ),
         );

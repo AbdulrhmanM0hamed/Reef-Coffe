@@ -20,7 +20,7 @@ import 'package:hyper_market/feature/details/domain/usecases/add_rating.dart';
 import 'package:hyper_market/feature/details/domain/usecases/check_user_rating.dart';
 import 'package:hyper_market/feature/details/domain/usecases/get_product_rating.dart';
 import 'package:hyper_market/feature/details/domain/usecases/update_rating.dart';
-import 'package:hyper_market/feature/details/presentation/cubit/comment_cubit.dart';
+import 'package:hyper_market/feature/details/presentation/cubit/comments_cubit.dart';
 import 'package:hyper_market/feature/details/presentation/cubit/rating_cubit.dart';
 import 'package:hyper_market/feature/favorites/presentation/cubit/favorite_cubit.dart';
 import 'package:hyper_market/feature/orders/data/datasources/order_remote_data_source.dart';

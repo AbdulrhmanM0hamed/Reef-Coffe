@@ -4,9 +4,10 @@ import 'package:flutter/services.dart';
 import 'package:hyper_market/core/services/service_locator.dart';
 import 'package:hyper_market/feature/cart/presentation/cubit/cart_cubit.dart';
 import 'package:hyper_market/feature/details/presentation/cubit/rating_cubit.dart';
+import 'package:hyper_market/feature/details/presentation/view/widgets/detailss_view_body.dart';
 import 'package:hyper_market/feature/favorites/presentation/cubit/favorite_cubit.dart';
-import 'package:hyper_market/feature/details/presentation/cubit/comment_cubit.dart';
-import 'package:hyper_market/feature/details/presentation/view/widgets/details_view_body.dart';
+import 'package:hyper_market/feature/details/presentation/cubit/comments_cubit.dart';
+import 'package:hyper_market/feature/details/presentation/view/widgets/detailss_view_body.dart';
 import 'package:hyper_market/feature/products/domain/entities/product.dart';
 
 class DetailsView extends StatelessWidget {

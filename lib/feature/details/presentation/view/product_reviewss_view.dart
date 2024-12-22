@@ -5,7 +5,7 @@ import 'package:hyper_market/core/utils/common/custom_app_bar.dart';
 import 'package:hyper_market/core/utils/constants/font_manger.dart';
 import 'package:hyper_market/core/utils/constants/styles_manger.dart';
 import 'package:hyper_market/feature/details/domain/entities/comment.dart';
-import 'package:hyper_market/feature/details/presentation/cubit/comment_cubit.dart';
+import 'package:hyper_market/feature/details/presentation/cubit/comments_cubit.dart';
 import 'package:hyper_market/feature/details/presentation/cubit/rating_cubit.dart';
 import 'package:shimmer/shimmer.dart';
 import 'dart:developer' as dev;
