@@ -12,7 +12,7 @@ import 'package:hyper_market/feature/home/presentation/cubit/special_offers_cubi
 import 'package:hyper_market/feature/home/presentation/cubit/special_offers_state.dart';
 import 'package:hyper_market/feature/home/presentation/view/widgets/content_carsoul_cart_shimmer.dart';
 import 'package:hyper_market/feature/home/presentation/view/widgets/dots_carsoul.dart';
-import 'package:hyper_market/feature/special_offers/presentation/view/special_offer_details.dart';
+import 'package:hyper_market/feature/special_offers/presentation/view/special_offer_view.dart';
 import 'package:page_transition/page_transition.dart';
 
 class HomeTopSlider extends StatefulWidget {
@@ -78,7 +78,7 @@ class _HomeTopSliderState extends State<HomeTopSlider> {
                         context,
                         PageTransition(
                           type: PageTransitionType.rightToLeft,
-                          child: SpecialOfferDetails(offer: state.offers[index]),
+                          child: SpecialOfferView(offer: state.offers[index]),
                         ),
                       );
                     },
@@ -210,7 +210,7 @@ class _HomeTopSliderState extends State<HomeTopSlider> {
                                       context,
                                       PageTransition(
                                         type: PageTransitionType.fade,
-                                        child: SpecialOfferDetails(
+                                        child: SpecialOfferView(
                                             offer: state.offers[index]),
                                       ),
                                     );

@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:hyper_market/core/error/excptions.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -17,7 +18,6 @@ abstract class AuthRemoteDataSource {
   Future<bool> isEmailRegistered(String email);
   Future<String?> getCurrentUserName();
   Future<String?> getUserPhoneNumber(String email);
-  
   // Future<void> verifyPhoneNumber(String phoneNumber);
   // Future<void> sendOTP(String phoneNumber);
   // Future<bool> verifyOTP(String phoneNumber, String otp);
@@ -68,44 +68,44 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   @override
 
   Future<User> signUpWithEmail(
-    String email,
-    String password,
-    String name,
-    String phoneNumber,
-  ) async {
-    try {
-      
-      // Create auth user
-      final response = await supabaseClient.auth.signUp(
-        email: email,
-        password: password,
-      );
+  String email,
+  String password,
+  String name,
+  String phoneNumber,
+) async {
+  try {
+    
+    // Create auth user
+    final response = await supabaseClient.auth.signUp(
+      email: email,
+      password: password,
+    );
 
-      if (response.user == null) {
-        throw const AuthException('حدث خطأ في إنشاء الحساب');
-      }
-      
-
-      // Create profile
-      try {
-        await supabaseClient.from('profiles').insert({
-          'id': response.user!.id,
-          'name': name,
-          'email': email,
-          'phone_number': phoneNumber,
-        });
-      } catch (e) {
-        throw e;
-      }
-
-      return response.user!;
-      
-    } on AuthException catch (e) {
-      throw AuthException(e.message);
-    } catch (e) {
+    if (response.user == null) {
       throw const AuthException('حدث خطأ في إنشاء الحساب');
     }
+
+    
+    // Create profile
+    try {
+      await supabaseClient.from('profiles').insert({
+        'id': response.user!.id,
+        'name': name,
+        'email': email,
+        'phone_number': phoneNumber,
+      });
+    } catch (e) {
+      throw e;
+    }
+
+    return response.user!;
+  } on AuthException catch (e) {
+    debugPrint('AuthException occurred: ${e.message}');
+    throw AuthException(e.message);
+  } catch (e) {
+    throw const AuthException('حدث خطأ في إنشاء الحساب');
   }
+}
 
 
 

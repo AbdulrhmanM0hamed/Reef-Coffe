@@ -21,17 +21,21 @@ class CartCubit extends Cubit<CartState> {
   void addItem(CartItem item) {
     try {
       print('Debug: Adding item to cart: ${item.name}');
+      print('Debug: Item details - ID: ${item.id}, Price: ${item.price}, Quantity: ${item.quantity}');
+      
       if (item.price == null || item.price! <= 0) {
+        print('Debug: Invalid price detected: ${item.price}');
         throw Exception('Invalid price for item: ${item.name}');
       }
 
       if (item.quantity <= 0) {
+        print('Debug: Invalid quantity detected: ${item.quantity}');
         throw Exception('Invalid quantity for item: ${item.name}');
       }
 
-      final existingIndex =
-          _items.indexWhere((i) => i.productId == item.productId);
+      final existingIndex = _items.indexWhere((i) => i.productId == item.productId);
       print('Debug: Existing item index: $existingIndex');
+      print('Debug: Current cart items: ${_items.map((e) => '${e.name} (${e.quantity})').join(', ')}');
       
       if (existingIndex != -1) {
         print('Debug: Updating existing item quantity');
@@ -42,28 +46,37 @@ class CartCubit extends Cubit<CartState> {
       }
 
       print('Debug: Cart items after update: ${_items.length}');
-      emit(CartUpdated(List.from(_items)));
+      print('Debug: Updated cart contents: ${_items.map((e) => '${e.name} (${e.quantity})').join(', ')}');
+      
+      // Force a state update by creating a new list
+      emit(CartUpdated([..._items]));
     } catch (e) {
       print('Error adding item to cart: $e');
-      throw e;
+      rethrow;
     }
   }
 
   void removeItem(String productId) {
-    _items.removeWhere((item) => item.productId == productId);
+    List<CartItem> updatedItems = List.from(_items);
+    updatedItems.removeWhere((item) => item.productId == productId);
+    _items.clear();
+    _items.addAll(updatedItems);
     emit(CartUpdated(List.from(_items)));
   }
 
   void updateQuantity(String productId, int quantity) {
-    final index = _items.indexWhere((item) => item.productId == productId);
+    List<CartItem> updatedItems = List.from(_items);
+    final index = updatedItems.indexWhere((item) => item.productId == productId);
     if (index >= 0) {
       if (quantity <= 0) {
-        _items.removeAt(index);
+        updatedItems.removeAt(index);
       } else {
-        _items[index].quantity = quantity;
+        updatedItems[index].quantity = quantity;
       }
-      emit(CartUpdated(List.from(_items)));
     }
+    _items.clear();
+    _items.addAll(updatedItems);
+    emit(CartUpdated(List.from(_items)));
   }
 
   void clearCart() {

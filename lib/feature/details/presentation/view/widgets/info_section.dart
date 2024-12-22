@@ -53,40 +53,40 @@ import 'package:hyper_market/core/utils/constants/styles_manger.dart';
 //     );
 //   }
 
-class CalendarWithNumber extends StatelessWidget {
-  final String number;
+// class CalendarWithNumber extends StatelessWidget {
+//   final String number;
 
-  const CalendarWithNumber({Key? key, required this.number}) : super(key: key);
+//   const CalendarWithNumber({Key? key, required this.number}) : super(key: key);
 
-  @override
-  Widget build(BuildContext context) {
-    return Stack(
-      alignment: Alignment.center,
-      children: [
-        SvgPicture.asset(
-          'assets/images/calener.svg',
-          width: 40,
-          height: 40,
-          colorFilter: ColorFilter.mode(
-            TColors.primary,
-            BlendMode.srcIn,
-          ),
-        ),
-        Positioned(
-          top: 15,
-          child: Text(
-            number,
-            style: getBoldStyle(
-              fontFamily: FontConstant.cairo,
-              fontSize: 14,
-              color: TColors.primary,
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return Stack(
+//       alignment: Alignment.center,
+//       children: [
+//         SvgPicture.asset(
+//           'assets/images/calener.svg',
+//           width: 40,
+//           height: 40,
+//           colorFilter: ColorFilter.mode(
+//             TColors.primary,
+//             BlendMode.srcIn,
+//           ),
+//         ),
+//         Positioned(
+//           top: 15,
+//           child: Text(
+//             number,
+//             style: getBoldStyle(
+//               fontFamily: FontConstant.cairo,
+//               fontSize: 14,
+//               color: TColors.primary,
+//             ),
+//           ),
+//         ),
+//       ],
+//     );
+//   }
+// }
 
 class buildInfoCard extends StatelessWidget {
   const buildInfoCard({

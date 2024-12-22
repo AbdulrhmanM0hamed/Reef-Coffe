@@ -34,10 +34,24 @@ class CartPage extends StatelessWidget {
           )
         ],
       ),
-      body: BlocBuilder<CartCubit, CartState>(
+      body: BlocConsumer<CartCubit, CartState>(
+        listener: (context, state) {
+          print('Debug: Cart state changed: $state');
+          if (state is CartUpdated) {
+            print('Debug: Cart items in state: ${state.items.length}');
+            print('Debug: Cart items: ${state.items.map((e) => '${e.name} (${e.quantity})').join(', ')}');
+          }
+        },
         builder: (context, state) {
-          final cartCubit = context.read<CartCubit>();
-          final items = cartCubit.getItems();
+          print('Debug: Building cart page with state: $state');
+          
+          // Get items directly from state if available
+          final items = state is CartUpdated 
+              ? state.items 
+              : context.read<CartCubit>().getItems();
+              
+          print('Debug: Cart items count: ${items.length}');
+          
           if (items.isEmpty) {
             return Center(
               child: Row(
@@ -105,7 +119,7 @@ class CartPage extends StatelessWidget {
                               color: TColors.primary),
                         ),
                         Text(
-                          '${cartCubit.getTotal()} ج.م',
+                          '${context.read<CartCubit>().getTotal()} ج.م',
                           style: getBoldStyle(
                               fontFamily: FontConstant.cairo,
                               fontSize:

@@ -30,8 +30,8 @@ class ProductDetialsGridView extends StatelessWidget {
       children: [
         buildInfoCard(
           mainText: '${product.caloriesPer100g}',
-          subText: 'سعرة حرارية',
-          extraText: 'لكل وجبة',
+          subText: ' ',
+          extraText: 'سعرة حرارية',
           iconInfo: SvgPicture.asset(
             'assets/images/calory.svg',
             width: isSmallScreen ? 40 : 45,
@@ -61,9 +61,9 @@ class ProductDetialsGridView extends StatelessWidget {
           ),
         ),
         buildInfoCard(
-          mainText: '${10}',
-          subText: 'جرام',
-          extraText: 'وزن الوجبة',
+          mainText: '${product.expiryNumber}',
+          subText: '',
+          extraText: 'جرام',
           iconInfo: SvgPicture.asset(
             'assets/images/weight.svg',
             width: isSmallScreen ? 40 : 45,
