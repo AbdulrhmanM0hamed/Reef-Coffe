@@ -92,7 +92,7 @@ class _OfferQuantitySelectorState extends State<OfferQuantitySelector> {
           ),
         ),
         Text(
-          '${widget.offer.offerPrice} جنيه',
+          '${widget.offer.offerPrice * quantity } جنيه',
           style: getBoldStyle(
             fontFamily: FontConstant.cairo,
             fontSize: isSmallScreen ? FontSize.size18 : FontSize.size20,

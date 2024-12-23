@@ -101,7 +101,7 @@ void didUpdateWidget(CommentsTextWidget oldWidget) {
                 ),
               ),
               const SizedBox(width: 4),
-              trailing, // عرض العدد أو المؤشر
+              trailing,
             ],
           ),
         );

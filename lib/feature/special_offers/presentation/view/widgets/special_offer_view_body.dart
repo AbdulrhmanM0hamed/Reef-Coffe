@@ -40,7 +40,7 @@ class _SpecialOfferViewBodyState extends State<SpecialOfferViewBody> {
           Transform.translate(
             offset: const Offset(0, -40),
             child: Container(
-              padding: const EdgeInsets.only(top: 30, right: 30, left: 30),
+              padding: const EdgeInsets.only(top: 30, right: 16, left: 16),
               decoration: BoxDecoration(
                 color: Theme.of(context).brightness == Brightness.dark
                     ? const Color.fromARGB(255, 19, 19, 19)
@@ -306,7 +306,7 @@ class _SpecialOfferViewBodyState extends State<SpecialOfferViewBody> {
     return Column(
       children: [
         OfferQuantitySelector(
-          offer: widget.offer,
+          offer: widget.offer , 
           onQuantityChanged: _updateQuantity,
         ),
         const SizedBox(height: 16),
@@ -320,9 +320,9 @@ class _SpecialOfferViewBodyState extends State<SpecialOfferViewBody> {
       listener: (context, state) {
         if (state is CartUpdated) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('تم إضافة العرض إلى السلة بنجاح'),
-              backgroundColor: TColors.success,
+             SnackBar(
+              content: Text('تم إضافة العرض إلى السلة بنجاح' , style: getRegularStyle(fontFamily: FontConstant.cairo ,fontSize: FontSize.size16,color: Colors.white),),
+              backgroundColor: TColors.primary,
             ),
           );
         }
