@@ -4,6 +4,7 @@ import 'package:hyper_market/feature/categories/presentation/cubit/categories_cu
 import 'package:hyper_market/feature/categories/presentation/cubit/categories_state.dart';
 import 'package:hyper_market/feature/categories/presentation/view/widgets/category_cart.dart';
 import 'package:hyper_market/feature/home/presentation/view/widgets/custom_text_field.dart';
+import 'package:hyper_market/core/error/network_error_handler.dart';
 
 class CategoriesViewBodyApp extends StatelessWidget {
   const CategoriesViewBodyApp({super.key});
@@ -27,7 +28,10 @@ class CategoriesViewBodyApp extends StatelessWidget {
                 if (state is CategoriesLoading) {
                   return const Center(child: CircularProgressIndicator());
                 } else if (state is CategoriesError) {
-                  return Center(child: Text(state.message));
+                  return NetworkErrorHandler.buildErrorWidget(
+                    state.message,
+                    () => context.read<CategoriesCubit>().getAllCategories(),
+                  );
                 } else if (state is CategoriesLoaded) {
                   return GridView.builder(
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(

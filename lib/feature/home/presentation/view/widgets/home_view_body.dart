@@ -9,6 +9,7 @@ import 'package:hyper_market/feature/home/presentation/view/widgets/custom_text_
 import 'package:hyper_market/feature/home/presentation/view/widgets/exclusive_offer_list_view%20.dart';
 import 'package:hyper_market/feature/home/presentation/view/widgets/home_top_slider.dart';
 import 'package:hyper_market/feature/home/presentation/view/widgets/outline_of_products.dart';
+import 'package:hyper_market/feature/home/presentation/view/widgets/supplements_section.dart';
 import 'package:hyper_market/feature/products/presentation/cubit/products_cubit.dart';
 
 class HomeViewBody extends StatefulWidget {
@@ -34,51 +35,67 @@ class _HomeViewBodyState extends State<HomeViewBody> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
-      child: SingleChildScrollView(
-        child: Column(
-          children: [
-            CustomAnimations.fadeIn(
-              duration: const Duration(milliseconds: 800),
-              child: CustomHomeAppBar(userName: widget.userName),
-            ),
-            const SizedBox(height: 20),
-            CustomAnimations.slideFromTop(
-              duration: const Duration(milliseconds: 900),
-              child: const CustomSearchTextField(),
-            ),
-            const SizedBox(height: 20),
-            CustomAnimations.slideFromTop(
-              duration: const Duration(milliseconds: 1000),
-              child: BlocProvider(
-                create: (context) =>
-                    getIt<SpecialOffersCubit>()..loadSpecialOffers(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => getIt<SpecialOffersCubit>()..loadSpecialOffers(),
+        ),
+        BlocProvider(
+          create: (context) => getIt<ProductsCubit>()..getAllProducts(),
+        ),
+      ],
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              CustomAnimations.fadeIn(
+                duration: const Duration(milliseconds: 800),
+                child: CustomHomeAppBar(userName: widget.userName),
+              ),
+              const SizedBox(height: 20),
+              CustomAnimations.slideFromTop(
+                duration: const Duration(milliseconds: 900),
+                child: const CustomSearchTextField(),
+              ),
+              const SizedBox(height: 20),
+              CustomAnimations.slideFromTop(
+                duration: const Duration(milliseconds: 1000),
                 child: HomeTopSlider(),
               ),
-            ),
-            const SizedBox(height: 4),
-            CustomAnimations.slideFromTop(
-              duration: const Duration(milliseconds: 1100),
-              child: const OutLineOfProducts(title: "عروض حصرية"),
-            ),
-            const SizedBox(height: 16),
-            CustomAnimations.slideFromRight(
-              duration: const Duration(milliseconds: 1200),
-              child: ExclusiveOfferSection(),
-            ),
-            const SizedBox(height: 16),
-            CustomAnimations.slideFromLeft(
-              duration: const Duration(milliseconds: 1300),
-              child: const OutLineOfProducts(title: "الأكثر مبيعا"),
-            ),
-            const SizedBox(height: 16),
-            CustomAnimations.slideFromRight(
-              duration: const Duration(milliseconds: 1400),
-              child: BestSellingProductsListView(),
-            ),
-            const SizedBox(height: 20),
-          ],
+              const SizedBox(height: 4),
+              CustomAnimations.slideFromTop(
+                duration: const Duration(milliseconds: 1100),
+                child: const OutLineOfProducts(title: "عروض حصرية"),
+              ),
+              const SizedBox(height: 16),
+              CustomAnimations.slideFromRight(
+                duration: const Duration(milliseconds: 1200),
+                child: ExclusiveOfferSection(),
+              ),
+              const SizedBox(height: 16),
+              CustomAnimations.slideFromLeft(
+                duration: const Duration(milliseconds: 1300),
+                child: const OutLineOfProducts(title: "المكملات الغذائية"),
+              ),
+              const SizedBox(height: 16),
+              CustomAnimations.slideFromRight(
+                duration: const Duration(milliseconds: 1400),
+                child: const SupplementsSection(),
+              ),
+              const SizedBox(height: 16),
+              CustomAnimations.slideFromLeft(
+                duration: const Duration(milliseconds: 1500),
+                child: const OutLineOfProducts(title: "الأكثر طلباً "),
+              ),
+              const SizedBox(height: 16),
+              CustomAnimations.slideFromRight(
+                duration: const Duration(milliseconds: 1600),
+                child: BestSellingProductsListView(),
+              ),
+              const SizedBox(height: 20),
+            ],
+          ),
         ),
       ),
     );

@@ -6,6 +6,7 @@ import 'package:hyper_market/core/utils/constants/styles_manger.dart';
 import 'package:hyper_market/feature/cart/presentation/cubit/cart_cubit.dart';
 import 'package:hyper_market/feature/products/presentation/view/widgets/show_filter.dart';
 import 'package:hyper_market/feature/products/presentation/view/widgets/text_filed_productview.dart';
+import 'package:hyper_market/core/error/network_error_handler.dart';
 import '../../cubit/products_cubit.dart';
 import '../../cubit/products_state.dart';
 import 'product_card.dart';
@@ -18,56 +19,59 @@ class ProductsViewBody extends StatelessWidget {
       listener: (context, state) {
         // Handle cart state changes if needed
       },
-      child: Column(
-        children: [
-          // Search and Filter Bar
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Row(
+      child: BlocBuilder<ProductsCubit, ProductsState>(
+        builder: (context, state) {
+          if (state is ProductsLoading) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (state is ProductsError) {
+            return NetworkErrorHandler.buildErrorWidget(
+              state.message,
+              () => context.read<ProductsCubit>().getAllProducts(),
+            );
+          } else if (state is ProductsLoaded) {
+            if (state.products.isEmpty) {
+              return Center(
+                child: Text(
+                  'لا توجد منتجات',
+                  style: getRegularStyle(
+                    fontFamily: FontConstant.cairo,
+                    fontSize: FontSize.size16,
+                    color: Colors.grey,
+                  ),
+                ),
+              );
+            }
+            return Column(
               children: [
-               const Expanded(
-                  child: CustomTextFieldProductsView(),
-                ),
-                const SizedBox(width: 12),
-                Container(
-                  decoration: BoxDecoration(
-                    color: TColors.darkGrey,
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: IconButton(
-                    onPressed: () => showFilterSheet(context),
-                    icon: const Icon(
-                      Icons.filter_list,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-
-          // Products Grid
-          Expanded(
-            child: BlocBuilder<ProductsCubit, ProductsState>(
-              builder: (context, state) {
-                if (state is ProductsLoading) {
-                  return const Center(child: CircularProgressIndicator());
-                } else if (state is ProductsError) {
-                  return Center(child: Text(state.message));
-                } else if (state is ProductsLoaded) {
-                  if (state.products.isEmpty) {
-                    return Center(
-                      child: Text(
-                        'لا توجد منتجات',
-                        style: getRegularStyle(
-                          fontFamily: FontConstant.cairo,
-                          fontSize: FontSize.size16,
-                          color: Colors.grey,
+                // Search and Filter Bar
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Row(
+                    children: [
+                      const Expanded(
+                        child: CustomTextFieldProductsView(),
+                      ),
+                      const SizedBox(width: 12),
+                      Container(
+                        decoration: BoxDecoration(
+                          color: TColors.darkGrey,
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: IconButton(
+                          onPressed: () => showFilterSheet(context),
+                          icon: const Icon(
+                            Icons.filter_list,
+                            color: Colors.white,
+                          ),
                         ),
                       ),
-                    );
-                  }
-                  return GridView.builder(
+                    ],
+                  ),
+                ),
+
+                // Products Grid
+                Expanded(
+                  child: GridView.builder(
                     padding: const EdgeInsets.all(16),
                     gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,
@@ -79,13 +83,13 @@ class ProductsViewBody extends StatelessWidget {
                     itemBuilder: (context, index) {
                       return ProductCard(product: state.products[index]);
                     },
-                  );
-                }
-                return const SizedBox();
-              },
-            ),
-          ),
-        ],
+                  ),
+                ),
+              ],
+            );
+          }
+          return const SizedBox();
+        },
       ),
     );
   }

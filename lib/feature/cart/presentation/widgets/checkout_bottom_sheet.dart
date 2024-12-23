@@ -61,9 +61,6 @@ class _CheckoutBottomSheetState extends State<CheckoutBottomSheet> {
       return 'من فضلك ادخل رقم الهاتف';
     }
     // Phone number validation for 12 digits
-    if (!RegExp(r'^\d{12}$').hasMatch(value)) {
-      return 'رقم الهاتف يجب أن يكون 12 رقم';
-    }
     return null;
   }
 

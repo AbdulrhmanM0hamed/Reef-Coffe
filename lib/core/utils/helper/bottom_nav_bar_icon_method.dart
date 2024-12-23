@@ -63,11 +63,11 @@ double _getIconSize(Size size) {
 
 double _getFontSize(Size size) {
   if (size.width < 360) {
-    return FontSize.size10;
+    return FontSize.size9;
   } else if (size.width < 600) {
-    return FontSize.size12;
+    return FontSize.size11;
   }
-  return FontSize.size14;
+  return FontSize.size13;
 }
 
 double _getPadding(Size size) {

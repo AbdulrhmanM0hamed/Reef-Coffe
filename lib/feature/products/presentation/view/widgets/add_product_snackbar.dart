@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hyper_market/core/utils/constants/colors.dart';
 import 'package:hyper_market/core/utils/constants/font_manger.dart';
 import 'package:hyper_market/core/utils/constants/styles_manger.dart';
+import 'package:hyper_market/feature/cart/presentation/pages/cart_page.dart';
 import 'package:hyper_market/feature/products/domain/entities/product.dart';
 
 class AddProductSnackbar extends StatelessWidget {
@@ -28,9 +29,8 @@ class AddProductSnackbar extends StatelessWidget {
             text: product.name,
             style: getBoldStyle(
               fontFamily: FontConstant.cairo,
-              color: TColors
-                  .pound, 
-              fontSize: FontSize.size16,
+              
+              fontSize: FontSize.size14,
             ),
           ),
           TextSpan(

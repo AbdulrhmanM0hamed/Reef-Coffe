@@ -8,7 +8,7 @@ class AddAndDeleteItem extends StatelessWidget {
   final int number;
   final VoidCallback onPressedAdd;
   final VoidCallback onPressedDel;
-  static const int maxQuantity = 10;
+  static const int maxQuantity = 30;
 
   const AddAndDeleteItem({
     Key? key,

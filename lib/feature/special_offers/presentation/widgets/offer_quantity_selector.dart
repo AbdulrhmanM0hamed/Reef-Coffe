@@ -20,7 +20,7 @@ class OfferQuantitySelector extends StatefulWidget {
 
 class _OfferQuantitySelectorState extends State<OfferQuantitySelector> {
   int quantity = 1;
-  static const int maxQuantity = 10;
+  static const int maxQuantity = 30;
 
   void _incrementQuantity() {
     if (quantity < maxQuantity) {

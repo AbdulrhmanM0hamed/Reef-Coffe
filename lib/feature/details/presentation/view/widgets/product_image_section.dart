@@ -32,7 +32,7 @@ class ProductImageSection extends StatelessWidget {
                 imageUrl: imageUrl,
                 height: screenHeight * 0.4,
                 width: double.infinity,
-                fit: BoxFit.cover,
+                fit: BoxFit.contain,
                 errorWidget: (context, error, stackTrace) {
                   return Icon(
                     Icons.error_outline,

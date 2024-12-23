@@ -48,6 +48,9 @@ void setupServiceLocator() {
   getIt.registerLazySingleton<LocalStorageService>(() => LocalStorageService());
   getIt.registerLazySingleton<NotificationService>(() => NotificationService());
 
+  // Cart
+  getIt.registerLazySingleton<CartCubit>(() => CartCubit());
+
   // Categories
   getIt.registerLazySingleton<CategoryRemoteDataSource>(
     () => CategoryRemoteDataSourceImpl(getIt<SupabaseService>()),
@@ -105,9 +108,6 @@ void setupServiceLocator() {
   getIt.registerLazySingleton<ResetPasswordCubit>(
     () => ResetPasswordCubit(authRepository: getIt<AuthRepository>()),
   );
-
-  // Cart
-  getIt.registerLazySingleton(() => CartCubit());
 
   // Favorites
   getIt.registerLazySingleton(() => FavoriteCubit());

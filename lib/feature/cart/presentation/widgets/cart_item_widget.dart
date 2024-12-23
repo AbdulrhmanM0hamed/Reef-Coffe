@@ -29,7 +29,7 @@ class CartItemWidget extends StatelessWidget {
             Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(12),
-                color: Colors.white,
+                color: Theme.of(context).brightness == Brightness.dark ? Colors.grey[800] : Colors.white,
                 boxShadow: [
                   BoxShadow(
                     color: Colors.grey.withOpacity(0.1),
@@ -45,7 +45,7 @@ class CartItemWidget extends StatelessWidget {
                   imageUrl: item.image,
                   width: 100,
                   height: 100,
-                  fit: BoxFit.cover,
+                  fit: BoxFit.contain,
                   placeholder: (context, url) => Container(
                     color: Colors.grey[100],
                     child: const Center(

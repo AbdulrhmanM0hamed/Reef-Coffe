@@ -180,15 +180,7 @@ class _CustomSearchTextFieldState extends State<CustomSearchTextField> {
                   ),
                 ),
               ),
-              suffixIcon: SizedBox(
-                width: 20,
-                child: Center(
-                  child: SvgPicture.asset(
-                    "assets/images/filter.svg",
-                    width: 25,
-                  ),
-                ),
-              ),
+           
             ),
           ),
         ),

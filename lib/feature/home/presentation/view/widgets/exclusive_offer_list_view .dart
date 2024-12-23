@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hyper_market/core/services/service_locator.dart';
+import 'package:hyper_market/core/errors/network_error_handler.dart';
 import 'package:hyper_market/feature/products/presentation/cubit/products_cubit.dart';
 import 'package:hyper_market/feature/products/presentation/cubit/products_state.dart';
 import 'package:hyper_market/feature/products/presentation/view/widgets/product_card.dart';
@@ -16,10 +17,17 @@ class ExclusiveOfferSection extends StatelessWidget {
       child: BlocBuilder<ProductsCubit, ProductsState>(
         builder: (context, state) {
           if (state is ProductsError) {
-            return Center(child: Text(state.message));
+            return NetworkErrorHandler.buildErrorWidget(
+              state.message,
+              () => context.read<ProductsCubit>().getAllProducts(),
+            );
           } else if (state is ProductsLoaded) {
             final discountedProducts = state.products
-                .where((product) => product.hasDiscount && (product.discountPrice ?? 0) > 0)
+                .where((product) => 
+                  product.hasDiscount && 
+                  (product.discountPrice ?? 0) > 0 &&
+                  product.categoryId != 'd2f39e30-74ad-43f2-a5c5-ff9bf518b351'
+                )
                 .toList();
 
             if (discountedProducts.isEmpty) {

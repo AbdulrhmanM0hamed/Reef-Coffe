@@ -61,11 +61,11 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(
-          create: (context) => CartCubit(),
+        BlocProvider.value(
+          value: getIt<CartCubit>(),
         ),
         BlocProvider(
-          create: (context) => ThemeCubit(prefs:   SharedPreferences.getInstance()),
+          create: (context) => ThemeCubit(prefs: SharedPreferences.getInstance()),
         ),
       ],
       child: BlocBuilder<ThemeCubit, ThemeState>(

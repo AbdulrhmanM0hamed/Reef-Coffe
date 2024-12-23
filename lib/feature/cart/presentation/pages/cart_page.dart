@@ -10,6 +10,7 @@ import '../widgets/cart_item_widget.dart';
 
 class CartPage extends StatelessWidget {
   const CartPage({Key? key}) : super(key: key);
+  static const String routeName = 'cart_page';
 
   @override
   Widget build(BuildContext context) {
@@ -36,21 +37,16 @@ class CartPage extends StatelessWidget {
       ),
       body: BlocConsumer<CartCubit, CartState>(
         listener: (context, state) {
-          print('Debug: Cart state changed: $state');
           if (state is CartUpdated) {
-            print('Debug: Cart items in state: ${state.items.length}');
-            print('Debug: Cart items: ${state.items.map((e) => '${e.name} (${e.quantity})').join(', ')}');
           }
         },
         builder: (context, state) {
-          print('Debug: Building cart page with state: $state');
           
           // Get items directly from state if available
           final items = state is CartUpdated 
               ? state.items 
               : context.read<CartCubit>().getItems();
               
-          print('Debug: Cart items count: ${items.length}');
           
           if (items.isEmpty) {
             return Center(

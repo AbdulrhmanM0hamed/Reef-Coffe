@@ -32,6 +32,38 @@ class _SpecialOfferViewBodyState extends State<SpecialOfferViewBody> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    
+    // Convert UTC time to local time and ensure 24-hour format
+    final DateTime validUntilLocal = widget.offer.validUntil.toLocal();
+    final DateTime now = DateTime.now();
+    
+    // Convert both times to 24-hour format for comparison
+    final bool isOfferExpired = DateTime(
+      now.year,
+      now.month,
+      now.day,
+      now.hour,
+      now.minute,
+    ).isAfter(DateTime(
+      validUntilLocal.year,
+      validUntilLocal.month,
+      validUntilLocal.day,
+      validUntilLocal.hour,
+      validUntilLocal.minute,
+    ));
+
+    if (isOfferExpired) {
+      return Center(
+        child: Text(
+          'العرض غير متاح حاليا',
+          style: getBoldStyle(
+            fontFamily: FontConstant.cairo,
+            fontSize: FontSize.size20,
+            color: TColors.primary,
+          ),
+        ),
+      );
+    }
 
     return SingleChildScrollView(
       child: Column(
@@ -90,7 +122,7 @@ class _SpecialOfferViewBodyState extends State<SpecialOfferViewBody> {
               tag: 'offer_image_${widget.offer.id}',
               child: CachedNetworkImage(
                 imageUrl: widget.offer.image1,
-                fit: BoxFit.cover,
+                fit: BoxFit.contain,
                 placeholder: (context, url) => const Center(
                   child: CircularProgressIndicator(),
                 ),

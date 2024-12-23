@@ -6,6 +6,7 @@ import 'package:hyper_market/feature/auth/presentation/view/new_password_view.da
 import 'package:hyper_market/feature/auth/presentation/view/signin_view.dart';
 import 'package:hyper_market/feature/auth/presentation/view/signup_view.dart';
 import 'package:hyper_market/feature/auth/presentation/view/verification_code_view.dart';
+import 'package:hyper_market/feature/cart/presentation/pages/cart_page.dart';
 import 'package:hyper_market/feature/details/presentation/view/details_view.dart';
 import 'package:hyper_market/feature/details/presentation/view/product_reviewss_view.dart';
 import 'package:hyper_market/feature/favorites/presentation/cubit/favorite_cubit.dart';
@@ -75,7 +76,11 @@ Route<dynamic> onGenratedRoutes(RouteSettings settings) {
       return MaterialPageRoute(
         builder: (context) => ProductReviewsView(productId: productId),
       );
-     
+    case CartPage.routeName:
+      return MaterialPageRoute(
+        builder: (context) => const CartPage(),
+      );
+
     default:
       return MaterialPageRoute(
         builder: (context) => const SplashView(),

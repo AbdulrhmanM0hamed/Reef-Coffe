@@ -8,7 +8,6 @@ import 'package:hyper_market/feature/details/domain/entities/comment.dart';
 import 'package:hyper_market/feature/details/presentation/cubit/comments_cubit.dart';
 import 'package:hyper_market/feature/details/presentation/cubit/rating_cubit.dart';
 import 'package:shimmer/shimmer.dart';
-import 'dart:developer' as dev;
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
@@ -365,179 +364,207 @@ class _ProductReviewsViewState extends State<ProductReviewsView> {
                         );
                       }
 
-                      return ListView.separated(
-                        padding: EdgeInsets.all(size.width * 0.04),
-                        itemCount: comments.length,
-                        separatorBuilder: (context, index) =>
-                            SizedBox(height: size.height * 0.01),
-                        itemBuilder: (context, index) {
-                          final comment = comments[index];
-                          final isCurrentUserComment =
-                              comment.userId == _currentUserId;
+                      return Column(
+                        children: [
+                          Expanded(
+                            child: ListView.separated(
+                              padding: EdgeInsets.all(size.width * 0.04),
+                              itemCount: comments.length,
+                              separatorBuilder: (context, index) =>
+                                  SizedBox(height: size.height * 0.01),
+                              itemBuilder: (context, index) {
+                                final comment = comments[index];
+                                final isCurrentUserComment =
+                                    comment.userId == _currentUserId;
 
-                          return Card(
-                            elevation: 2,
-                            margin: EdgeInsets.symmetric(
-                              horizontal: size.width * 0.02,
-                              vertical: size.height * 0.005,
-                            ),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(12),
-                                border: Border.all(
-                                  color: isCurrentUserComment
-                                      ? Theme.of(context)
-                                          .primaryColor
-                                          .withOpacity(0.2)
-                                      : Colors.transparent,
-                                ),
-                              ),
-                              child: Padding(
-                                padding: EdgeInsets.all(size.width * 0.04),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Row(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        // User Avatar
-                                        CircleAvatar(
-                                          radius: size.width * 0.05,
-                                          backgroundColor:
-                                              _getAvatarColor(comment.userName),
-                                          child: Text(
-                                            comment.userName.characters.first
-                                                .toUpperCase(),
-                                            style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 16 * textScaleFactor,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                        ),
-                                        SizedBox(width: size.width * 0.03),
-                                        // Comment Content
-                                        Expanded(
-                                          child: Column(
+                                return Card(
+                                  elevation: 2,
+                                  margin: EdgeInsets.symmetric(
+                                    horizontal: size.width * 0.02,
+                                    vertical: size.height * 0.005,
+                                  ),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(12),
+                                      border: Border.all(
+                                        color: isCurrentUserComment
+                                            ? Theme.of(context)
+                                                .primaryColor
+                                                .withOpacity(0.2)
+                                            : Colors.transparent,
+                                      ),
+                                    ),
+                                    child: Padding(
+                                      padding: EdgeInsets.all(size.width * 0.04),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Row(
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
                                             children: [
-                                              Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
-                                                children: [
-                                                  Expanded(
-                                                    child: Text(
-                                                      comment.userName,
-                                                      style: getBoldStyle(
-                                                        fontFamily:
-                                                            FontConstant.cairo,
-                                                        fontSize: 16 *
-                                                            textScaleFactor,
-                                                        color: Theme.of(context)
-                                                            .textTheme
-                                                            .titleMedium
-                                                            ?.color,
-                                                      ),
-                                                    ),
+                                              // User Avatar
+                                              CircleAvatar(
+                                                radius: size.width * 0.05,
+                                                backgroundColor:
+                                                    _getAvatarColor(comment.userName),
+                                                child: Text(
+                                                  comment.userName.characters.first
+                                                      .toUpperCase(),
+                                                  style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 16 * textScaleFactor,
+                                                    fontWeight: FontWeight.bold,
                                                   ),
-                                                  if (isCurrentUserComment)
-                                                    Container(
-                                                      decoration: BoxDecoration(
-                                                        color: Theme.of(context)
-                                                            .primaryColor
-                                                            .withOpacity(0.1),
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(8),
-                                                      ),
-                                                      child: IconButton(
-                                                        icon: Icon(
-                                                          Icons.edit,
-                                                          size: 20 *
-                                                              textScaleFactor,
-                                                          color:
-                                                              Theme.of(context)
-                                                                  .primaryColor,
-                                                        ),
-                                                        onPressed: () =>
-                                                            _showEditCommentDialog(
-                                                                context,
-                                                                comment),
-                                                        tooltip:
-                                                            'تعديل التعليق',
-                                                        constraints:
-                                                            BoxConstraints(
-                                                          minWidth:
-                                                              size.width * 0.08,
-                                                          minHeight:
-                                                              size.width * 0.08,
-                                                        ),
-                                                      ),
-                                                    ),
-                                                ],
-                                              ),
-                                              SizedBox(
-                                                  height: size.height * 0.01),
-                                              Text(
-                                                comment.comment,
-                                                style: TextStyle(
-                                                  fontSize:
-                                                      14 * textScaleFactor,
-                                                  color: Theme.of(context)
-                                                      .textTheme
-                                                      .bodyMedium
-                                                      ?.color,
-                                                  height: 1.3,
                                                 ),
                                               ),
-                                              SizedBox(
-                                                  height: size.height * 0.01),
-                                              Row(
-                                                children: [
-                                                  Icon(
-                                                    Icons.access_time,
-                                                    size: 14 * textScaleFactor,
-                                                    color: Theme.of(context)
-                                                        .textTheme
-                                                        .bodySmall
-                                                        ?.color,
-                                                  ),
-                                                  SizedBox(
-                                                      width: size.width * 0.01),
-                                                  Text(
-                                                    timeago.format(
-                                                        comment.createdAt,
-                                                        locale: 'ar'),
-                                                    style: getRegularStyle(
-                                                      fontFamily:
-                                                          FontConstant.cairo,
-                                                      fontSize:
-                                                          12 * textScaleFactor,
-                                                      color: Theme.of(context)
-                                                          .textTheme
-                                                          .bodySmall
-                                                          ?.color,
+                                              SizedBox(width: size.width * 0.03),
+                                              // Comment Content
+                                              Expanded(
+                                                child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                      children: [
+                                                        Expanded(
+                                                          child: Text(
+                                                            comment.userName,
+                                                            style: getBoldStyle(
+                                                              fontFamily:
+                                                                  FontConstant.cairo,
+                                                              fontSize: 16 *
+                                                                  textScaleFactor,
+                                                              color: Theme.of(context)
+                                                                  .textTheme
+                                                                  .titleMedium
+                                                                  ?.color,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        if (isCurrentUserComment)
+                                                          Container(
+                                                            decoration: BoxDecoration(
+                                                              color: Theme.of(context)
+                                                                  .primaryColor
+                                                                  .withOpacity(0.1),
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(8),
+                                                            ),
+                                                            child: IconButton(
+                                                              icon: Icon(
+                                                                Icons.edit,
+                                                                size: 20 *
+                                                                    textScaleFactor,
+                                                                color:
+                                                                    Theme.of(context)
+                                                                        .primaryColor,
+                                                              ),
+                                                              onPressed: () =>
+                                                                  _showEditCommentDialog(
+                                                                      context,
+                                                                      comment),
+                                                              tooltip:
+                                                                  'تعديل التعليق',
+                                                              constraints:
+                                                                  BoxConstraints(
+                                                                minWidth:
+                                                                    size.width * 0.08,
+                                                                minHeight:
+                                                                    size.width * 0.08,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                      ],
                                                     ),
-                                                  ),
-                                                ],
+                                                    SizedBox(
+                                                        height: size.height * 0.01),
+                                                    Text(
+                                                      comment.comment,
+                                                      style: TextStyle(
+                                                        fontSize:
+                                                            14 * textScaleFactor,
+                                                        color: Theme.of(context)
+                                                            .textTheme
+                                                            .bodyMedium
+                                                            ?.color,
+                                                        height: 1.3,
+                                                      ),
+                                                    ),
+                                                    SizedBox(
+                                                        height: size.height * 0.01),
+                                                    Row(
+                                                      children: [
+                                                        Icon(
+                                                          Icons.access_time,
+                                                          size: 14 * textScaleFactor,
+                                                          color: Theme.of(context)
+                                                              .textTheme
+                                                              .bodySmall
+                                                              ?.color,
+                                                        ),
+                                                        SizedBox(
+                                                            width: size.width * 0.01),
+                                                        Text(
+                                                          timeago.format(
+                                                              comment.createdAt,
+                                                              locale: 'ar'),
+                                                          style: getRegularStyle(
+                                                            fontFamily:
+                                                                FontConstant.cairo,
+                                                            fontSize:
+                                                                12 * textScaleFactor,
+                                                            color: Theme.of(context)
+                                                                .textTheme
+                                                                .bodySmall
+                                                                ?.color,
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ],
+                                                ),
                                               ),
                                             ],
                                           ),
-                                        ),
-                                      ],
+                                        ],
+                                      ),
                                     ),
-                                  ],
+                                  ),
+                                );
+                              },
+                            ),
+                          ),
+                          if (_currentUserId != null && !_hasExistingComment)
+                            Padding(
+                              padding: EdgeInsets.all(size.width * 0.04),
+                              child: ElevatedButton(
+                                onPressed: () => _showAddCommentDialog(context),
+                                style: ElevatedButton.styleFrom(
+                                  minimumSize: Size(size.width * 0.9, size.height * 0.06),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                ),
+                                child: Text(
+                                  'إضافة تعليق',
+                                  style: getMediumStyle(
+                                    fontFamily: FontConstant.cairo,
+                                    fontSize: 16 * textScaleFactor,
+                                    color: Colors.white,
+                                  ),
                                 ),
                               ),
                             ),
-                          );
-                        },
+                        ],
                       );
                     }
                     return const SizedBox();
@@ -699,7 +726,7 @@ class _ProductReviewsViewState extends State<ProductReviewsView> {
 
                 await _commentCubit.updateComment(
                   widget.productId,
-                  
+                  // comment.id,
                   newComment,
                 );
                 if (context.mounted) {

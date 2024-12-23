@@ -1,4 +1,6 @@
 import 'package:dartz/dartz.dart';
+import 'package:hyper_market/core/error/excptions.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../../../core/error/sevcice_failure.dart';
 import '../../domain/entities/product.dart';
 import '../../domain/repositories/product_repository.dart';
@@ -15,6 +17,11 @@ class ProductRepositoryImpl implements ProductRepository {
       final products = await remoteDataSource.getProductsByCategory(categoryId);
       return Right(products);
     } catch (e) {
+      if (e is PostgrestException) {
+        if (e.message.contains('SocketException')) {
+          throw CustomException(message: 'تحقق من اتصالك بالانترنت');
+        }
+      }
       return Left(ServerFailure(message: e.toString()));
     }
   }
@@ -25,6 +32,11 @@ class ProductRepositoryImpl implements ProductRepository {
       final products = await remoteDataSource.getAllProducts();
       return Right(products);
     } catch (e) {
+      if (e is PostgrestException) {
+        if (e.message.contains('SocketException')) {
+          throw CustomException(message: 'تحقق من اتصالك بالانترنت');
+        }
+      }
       return Left(ServerFailure(message: e.toString()));
     }
   }

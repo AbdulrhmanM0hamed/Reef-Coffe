@@ -1,4 +1,6 @@
 import 'package:hyper_market/core/error/excptions.dart';
+import 'package:hyper_market/core/error/network_error_handler.dart';
+import 'dart:io';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../models/special_offer_model.dart';
 
@@ -25,7 +27,7 @@ class SpecialOffersRemoteDataSourceImpl
           .map((offer) => SpecialOfferModel.fromJson(offer))
           .toList();
     } catch (e) {
-      throw CustomException(message: e.toString());
+      throw CustomException(message: NetworkErrorHandler.getErrorMessage(e));
     }
   }
 }

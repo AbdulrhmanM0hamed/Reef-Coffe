@@ -16,7 +16,7 @@ class ArrowBackWidget extends StatelessWidget {
       ),
       child: Container(
         decoration: BoxDecoration(
-            color: Colors.white, borderRadius: BorderRadius.circular(16)),
+            color: TColors.white, borderRadius: BorderRadius.circular(16)),
         child: IconButton(
           icon: const Icon(
             Icons.arrow_back_ios_new_outlined,

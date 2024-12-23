@@ -5,6 +5,7 @@ import 'package:hyper_market/core/utils/constants/font_manger.dart';
 import 'package:hyper_market/core/utils/constants/styles_manger.dart';
 import 'package:hyper_market/feature/favorites/presentation/cubit/favorite_cubit.dart';
 import 'package:hyper_market/feature/products/presentation/view/widgets/product_card.dart';
+import 'package:hyper_market/feature/cart/presentation/cubit/cart_cubit.dart';
 
 class FavoritesView extends StatelessWidget {
   static const String routeName = 'favorites';
@@ -13,8 +14,11 @@ class FavoritesView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider.value(
-      value: getIt<FavoriteCubit>(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider.value(value: getIt<FavoriteCubit>()),
+        BlocProvider.value(value: getIt<CartCubit>()),
+      ],
       child: Scaffold(
         appBar: AppBar(
           leading: IconButton(

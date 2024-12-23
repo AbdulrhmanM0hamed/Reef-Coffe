@@ -27,8 +27,9 @@ class _ForgetPasswordViewBodyState extends State<ForgetPasswordViewBody> {
   bool showPhoneField = false;
 
   bool _validateEmail(String email) {
+    // Simpler email validation that allows more email formats while maintaining basic structure
     final emailRegex = RegExp(
-      r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$',
+      r'^[^@\s]+@[^@\s]+\.[^@\s]+$',
     );
     return emailRegex.hasMatch(email);
   }

@@ -54,12 +54,14 @@ class ProductCard extends StatelessWidget {
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(_getBorderRadius(size)),
                   child: Container(
-                    decoration: const BoxDecoration(
-                      color: Colors.white,
+                    decoration:  BoxDecoration(
+                      color: Theme.of(context).brightness == Brightness.dark
+                          ? Colors.grey[900]
+                          : Colors.white,
                     ),
                     child: CachedNetworkImage(
                       imageUrl: product.imageUrl ?? '',
-                      fit: BoxFit.cover,
+                      fit: BoxFit.contain,
                       errorWidget: (context, error, stackTrace) {
                         return Icon(
                           Icons.error_outline,
@@ -228,7 +230,7 @@ class ProductCard extends StatelessWidget {
                           },
                           child: Container(
                             padding: EdgeInsets.symmetric(
-                              horizontal: _getHorizontalPadding(size),
+                              horizontal: MediaQuery.of(context).size.width * 0.030,
                               vertical: _getVerticalPadding(size),
                             ),
                             decoration: BoxDecoration(
@@ -257,8 +259,8 @@ class ProductCard extends StatelessWidget {
   // Responsive helper methods
   double _getBorderRadius(Size size) => size.width * 0.03;
   double _getSpacing(Size size) => size.height * 0.01;
-  double _getHorizontalPadding(Size size) => size.width * 0.03;
-  double _getVerticalPadding(Size size) => size.height * 0.005;
+  double _getHorizontalPadding(Size size) => size.width * 0.015;
+  double _getVerticalPadding(Size size) => size.height * 0.004;
 
   double _getTitleFontSize(Size size) {
     if (size.width < 360) {
