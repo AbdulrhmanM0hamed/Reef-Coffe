@@ -1,5 +1,5 @@
 import 'package:hyper_market/core/error/excptions.dart';
-import 'package:hyper_market/core/error/network_error_handler.dart';
+import 'package:hyper_market/core/errors/network_error_handler.dart';
 import 'dart:io';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../models/special_offer_model.dart';

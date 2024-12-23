@@ -93,7 +93,7 @@ class VerificationCodeViewBody extends StatelessWidget {
                             EdgeInsets.symmetric(horizontal: spacing),
                         inactiveFillColor: Colors.white,
                         selectedFillColor: Colors.white,
-                        activeColor: TColors.primary,
+                        activeColor: TColors.white,
                         inactiveColor: Colors.grey,
                         selectedColor: TColors.secondary,
                       ),

@@ -1,28 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hyper_market/core/error/network_error_handler.dart';
-import 'package:hyper_market/core/services/service_locator.dart';
-import 'package:hyper_market/feature/home/presentation/view/widgets/supplements_product_card.dart';
-import 'package:hyper_market/feature/home/presentation/view/widgets/supplements_product_card_shimmer.dart';
 import 'package:hyper_market/feature/products/presentation/cubit/products_cubit.dart';
 import 'package:hyper_market/feature/products/presentation/cubit/products_state.dart';
+import 'supplements_product_card.dart';
 
 class SupplementsSection extends StatelessWidget {
-  const SupplementsSection({super.key});
+  const SupplementsSection({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 100,
+      height: 100, 
       child: BlocBuilder<ProductsCubit, ProductsState>(
         builder: (context, state) {
-          if (state is ProductsError) {
-            return NetworkErrorHandler.buildErrorWidget(
-              state.message,
-              () => context.read<ProductsCubit>().getAllProducts(),
-              
-            );
-          } else if (state is ProductsLoaded) {
+          if (state is ProductsLoaded) {
             final supplements = state.products
                 .where((product) => product.categoryId == 'd2f39e30-74ad-43f2-a5c5-ff9bf518b351')
                 .toList();
@@ -47,20 +38,11 @@ class SupplementsSection extends StatelessWidget {
               },
             );
           }
-          // Show shimmer loading
-          return ListView.builder(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            scrollDirection: Axis.horizontal,
-            itemCount: 5,
-            itemBuilder: (context, index) {
-              return const Padding(
-                padding: EdgeInsets.only(right: 16),
-                child: SupplementProductCardShimmer(),
-              );
-            },
+          return const Center(
+            child: CircularProgressIndicator(),
           );
         },
-    ),
+      ),
     );
   }
 }

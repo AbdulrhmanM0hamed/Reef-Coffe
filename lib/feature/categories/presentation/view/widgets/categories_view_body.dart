@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hyper_market/core/errors/network_error_handler.dart';
 import 'package:hyper_market/feature/categories/presentation/cubit/categories_cubit.dart';
 import 'package:hyper_market/feature/categories/presentation/cubit/categories_state.dart';
 import 'package:hyper_market/feature/categories/presentation/view/widgets/category_cart.dart';
 import 'package:hyper_market/feature/home/presentation/view/widgets/custom_text_field.dart';
-import 'package:hyper_market/core/error/network_error_handler.dart';
 
 class CategoriesViewBodyApp extends StatelessWidget {
   const CategoriesViewBodyApp({super.key});

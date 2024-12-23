@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hyper_market/core/services/service_locator.dart';
 import 'package:hyper_market/core/utils/common/elvated_button.dart';
 import 'package:hyper_market/core/utils/common/password_field.dart';
+import 'package:hyper_market/core/utils/constants/font_manger.dart';
+import 'package:hyper_market/core/utils/constants/styles_manger.dart';
 import 'package:hyper_market/feature/auth/presentation/controller/reset_password/reset_password_cubit.dart';
 import 'package:hyper_market/feature/auth/presentation/controller/reset_password/reset_password_state.dart';
 
@@ -45,7 +47,7 @@ class NewPasswordView extends StatelessWidget {
               }
             },
             child: Scaffold(
-              appBar: AppBar(title: const Text('تعيين كلمة المرور الجديدة')),
+              appBar: AppBar( centerTitle: true, title:  Text('تعيين كلمة المرور الجديدة' , style: getBoldStyle(fontFamily: FontConstant.cairo, fontSize: FontSize.size20),)),
               body: Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Form(
