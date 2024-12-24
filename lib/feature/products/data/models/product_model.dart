@@ -19,7 +19,7 @@ class ProductModel extends Product {
     int ratingCount = 0,
     double caloriesPer100g = 0.0,
     String expiryName = '',
-    double expiryNumber = 0.0,
+    double weight = 0.0,
   }) : super(
           id: id,
           name: name,
@@ -38,7 +38,7 @@ class ProductModel extends Product {
           ratingCount: ratingCount,
           caloriesPer100g: caloriesPer100g,
           expiryName: expiryName,
-          expiryNumber: expiryNumber,
+          weight: weight,
         );
 
   factory ProductModel.fromJson(Map<String, dynamic> json) {
@@ -60,7 +60,7 @@ class ProductModel extends Product {
       ratingCount: json['rating_count'] as int? ?? 0,
       caloriesPer100g: (json['calories_per_100g'] as num?)?.toDouble() ?? 0.0,
       expiryName: json['expiry_name'] as String? ?? '',
-      expiryNumber: (json['expiry_number'] as num?)?.toDouble() ?? 0.0,
+      weight: (json['weight'] as num?)?.toDouble() ?? 0.0,
     );
   }
 
@@ -83,7 +83,7 @@ class ProductModel extends Product {
       'rating_count': ratingCount,
       'calories_per_100g': caloriesPer100g,
       'expiry_name': expiryName,
-      'expiry_number': expiryNumber,
+      'expiry_number': weight,
     };
   }
 }

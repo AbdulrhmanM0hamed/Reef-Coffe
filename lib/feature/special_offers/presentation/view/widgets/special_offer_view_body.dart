@@ -201,7 +201,7 @@ class _SpecialOfferViewBodyState extends State<SpecialOfferViewBody> {
             borderRadius: BorderRadius.circular(20),
           ),
           child: Text(
-            '${widget.offer.offerPrice} جنيه',
+            '${widget.offer.offerPrice} ريال',
             style: getBoldStyle(
               fontFamily: FontConstant.cairo,
               fontSize: FontSize.size18,

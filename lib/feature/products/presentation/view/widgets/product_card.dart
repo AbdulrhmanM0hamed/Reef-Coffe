@@ -126,7 +126,7 @@ class ProductCard extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
                           Text(
-                            '${product.discountPrice?.toStringAsFixed(2)} EGP',
+                            '${product.discountPrice?.toStringAsFixed(2)} ريال',
                             style: getBoldStyle(
                               fontFamily: FontConstant.cairo,
                               fontSize: _getPriceFontSize(size),
@@ -149,7 +149,7 @@ class ProductCard extends StatelessWidget {
                       )
                     else
                       Text(
-                        '${product.price.toStringAsFixed(2)} EGP',
+                        '${product.price.toStringAsFixed(2)} ريال',
                         style: getBoldStyle(
                           fontFamily: FontConstant.cairo,
                           fontSize: _getPriceFontSize(size),

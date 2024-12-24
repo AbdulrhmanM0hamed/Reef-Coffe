@@ -48,7 +48,7 @@ class _PriceWithButton_add_minState extends State<PriceWithButton_add_min> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                '${widget.product.discountPrice?.toStringAsFixed(2)} جنيه',
+                '${widget.product.discountPrice?.toStringAsFixed(2)} ريال',
                 style: getBoldStyle(
                   fontFamily: FontConstant.cairo,
                   fontSize: sizeWidth * 0.04,
@@ -56,7 +56,7 @@ class _PriceWithButton_add_minState extends State<PriceWithButton_add_min> {
                 ),
               ),
               Text(
-                '${widget.product.price.toStringAsFixed(2)} جنيه',
+                '${widget.product.price.toStringAsFixed(2)} ريال',
                 style: TextStyle(
                   fontFamily: FontConstant.cairo,
                   fontSize: sizeWidth * 0.035,
@@ -70,7 +70,7 @@ class _PriceWithButton_add_minState extends State<PriceWithButton_add_min> {
           )
         else
           Text(
-            '${widget.product.price.toStringAsFixed(2)} جنيه',
+            '${widget.product.price.toStringAsFixed(2)} ريال',
             style: getBoldStyle(
               fontFamily: FontConstant.cairo,
               fontSize: sizeWidth * 0.04,

@@ -61,7 +61,7 @@ class ProductDetialsGridView extends StatelessWidget {
           ),
         ),
         buildInfoCard(
-          mainText: '${product.expiryNumber}',
+          mainText: '${product.weight}',
           subText: '',
           extraText: 'جرام',
           iconInfo: SvgPicture.asset(

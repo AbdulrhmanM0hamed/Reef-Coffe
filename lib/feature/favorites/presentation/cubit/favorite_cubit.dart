@@ -110,7 +110,7 @@ class FavoriteCubit extends Cubit<FavoriteState> {
           ratingCount: product.ratingCount,
           caloriesPer100g: product.caloriesPer100g,
           expiryName: product.expiryName,
-          expiryNumber: product.expiryNumber,
+          weight: product.weight,
         );
         _favorites.add(productModel);
       }
@@ -145,7 +145,7 @@ class FavoriteCubit extends Cubit<FavoriteState> {
       ratingCount: e.ratingCount,
       caloriesPer100g: e.caloriesPer100g,
       expiryName: e.expiryName,
-      expiryNumber: e.expiryNumber,
+      weight: e.weight,
     )).toList());
   }
 }

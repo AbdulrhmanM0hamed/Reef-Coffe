@@ -148,7 +148,7 @@ class _HomeTopSliderState extends State<HomeTopSlider> {
                                   ],
                                 ),
                                 child: Text(
-                                  '${state.offers[index].offerPrice} EGP',
+                                  '${state.offers[index].offerPrice} ريال',
                                   style: getBoldStyle(
                                     fontFamily: FontConstant.cairo,
                                     fontSize: _getOfferPriceFontSize(size),

@@ -18,7 +18,7 @@ class Product extends Equatable {
   final int ratingCount;
   final double caloriesPer100g;
   final String expiryName;
-  final double expiryNumber;
+  final double weight;
 
   const Product({
     this.id,
@@ -38,7 +38,7 @@ class Product extends Equatable {
     this.ratingCount = 0,
     this.caloriesPer100g = 0.0,
     this.expiryName = '',
-    this.expiryNumber = 0.0,
+    this.weight = 0.0,
   });
   
 
@@ -61,6 +61,6 @@ class Product extends Equatable {
         ratingCount,
         caloriesPer100g,
         expiryName,
-        expiryNumber,
+        weight,
       ];
 }

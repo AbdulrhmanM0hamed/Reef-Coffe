@@ -113,7 +113,7 @@ class SupplementProductCard extends StatelessWidget {
                                   children: [
                                     if (product.hasDiscount && product.discountPrice != null) ...[
                                       Text(
-                                        '${product.discountPrice} جنيه',
+                                        '${product.discountPrice} ريال',
                                         style: getBoldStyle(
                                           fontFamily: FontConstant.cairo,
                                           fontSize: isSmallScreen ? FontSize.size14 : FontSize.size16,
@@ -124,7 +124,7 @@ class SupplementProductCard extends StatelessWidget {
                                      
                                     ] else
                                       Text(
-                                        '${product.price} جنيه',
+                                        '${product.price} ريال',
                                         style: getBoldStyle(
                                           fontFamily: FontConstant.cairo,
                                           fontSize: isSmallScreen ? FontSize.size14 : FontSize.size16,
@@ -200,7 +200,7 @@ class SupplementProductCard extends StatelessWidget {
                           ),
                         ),
                         const Text(
-                          ' جنيه',
+                          ' ريال',
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 10,
