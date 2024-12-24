@@ -25,7 +25,7 @@ class SupplementsSection extends StatelessWidget {
             }
 
             return ListView.builder(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
+              padding: const EdgeInsets.symmetric(horizontal: 4),
               scrollDirection: Axis.horizontal,
               itemCount: supplements.length,
               itemBuilder: (context, index) {
