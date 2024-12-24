@@ -3,7 +3,6 @@ import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/widgets.dart';
 import 'package:hyper_market/core/services/service_locator.dart';
 import 'package:hyper_market/core/services/supabase/supabase_initialize.dart';
-import 'package:hyper_market/core/utils/constants/constants.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

@@ -23,7 +23,6 @@ class SupplementsSection extends StatelessWidget {
                 child: Text('لا توجد مكملات غذائية متوفرة'),
               );
             }
-
             return ListView.builder(
               padding: const EdgeInsets.symmetric(horizontal: 4),
               scrollDirection: Axis.horizontal,
