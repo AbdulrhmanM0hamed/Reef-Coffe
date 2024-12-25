@@ -1,138 +1,165 @@
-// import 'dart:convert';
-// import 'dart:io';
-// import 'package:flutter/foundation.dart';
-// import 'package:hyper_market/core/services/service_locator.dart';
-// import 'package:hyper_market/core/services/supabase/supabase_initialize.dart';
-// import 'package:onesignal_flutter/onesignal_flutter.dart';
-// import 'package:supabase_flutter/supabase_flutter.dart';
-// import 'package:http/http.dart' as http;
+import 'dart:ui';
 
-// class NotificationService {
-//   final _client = getIt<SupabaseService>().client;
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:hyper_market/feature/notifications/data/models/notification_model.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+import 'dart:convert';
+
+class NotificationService {
+  static final FlutterLocalNotificationsPlugin _notifications =
+      FlutterLocalNotificationsPlugin();
+  static const String _notificationsKey = 'notifications';
   
-//   Future<void> initialize() async {
-//     debugPrint('🔔 Initializing NotificationService...');
-    
-//     // Initialize OneSignal with high priority settings
-//     OneSignal.Debug.setLogLevel(OSLogLevel.verbose);
-//     OneSignal.initialize("b0e37948-f397-43c0-9c5a-06d80a592c8a");
-    
-//     // Configure notification settings for all states
-//     await OneSignal.Notifications.requestPermission(true);
-    
-//     // Set up notification handlers for different app states
-//     OneSignal.Notifications.addForegroundWillDisplayListener((event) {
-//       debugPrint('🔔 Notification will display in foreground: ${event.notification.additionalData}');
-//       event.notification.display();
-//     });
-    
-//     OneSignal.Notifications.addClickListener((event) {
-//       debugPrint('🔔 Notification clicked: ${event.notification.additionalData}');
-//       _handleNotificationClick(event.notification);
-//     });
-    
-//     _setupOrderStatusListener();
-//     debugPrint('🔔 NotificationService initialized successfully');
-//   }
+  static RealtimeChannel? _orderChannel;
 
-//   void _handleNotificationClick(OSNotification notification) {
-//     try {
-//       final data = notification.additionalData;
-//       if (data != null && data['order_id'] != null) {
-//         // Handle navigation or any other action based on notification data
-//         debugPrint('🔔 Handling notification click for order: ${data['order_id']}');
-//       }
-//     } catch (e) {
-//       debugPrint('❌ Error handling notification click: $e');
-//     }
-//   }
+  static Future<void> init() async {
+    const androidSettings = AndroidInitializationSettings('@mipmap/ic_launcher');
+    const iosSettings = DarwinInitializationSettings();
 
-//   void _setupOrderStatusListener() {
-//     debugPrint('🔔 Setting up order status listener...');
-//     final supabase = Supabase.instance.client;
-    
-//     supabase
-//         .channel('public:orders')
-//         .onPostgresChanges(
-//           event: PostgresChangeEvent.update,
-//           schema: 'public',
-//           table: 'orders',
-//           callback: (payload) async {
-//             debugPrint('🔔 Order status changed: ${payload.newRecord}');
-            
-//             final userId = supabase.auth.currentUser?.id;
-//             final orderUserId = payload.newRecord['user_id'] as String?;
-//             final status = payload.newRecord['status'] as String?;
-            
-//             debugPrint('🔔 Current user: $userId, Order user: $orderUserId');
-            
-//             if (userId != null && userId == orderUserId && status != null) {
-//               final playerId = OneSignal.User.pushSubscription.id;
-//               debugPrint('🔔 Current OneSignal Player ID: $playerId');
-              
-//               if (playerId != null) {
-//                 try {
-//                   final response = await http.post(
-//                     Uri.parse('https://onesignal.com/api/v1/notifications'),
-//                     headers: {
-//                       'accept': 'application/json',
-//                       'Content-Type': 'application/json',
-//                       'Authorization': 'os_v2_app_wdrxsshts5b4bhc2a3mauwjmrj5k5rnn5ayen3f6xbz63lyz56hvs2rd4clmzo3bvo5cesqbwsgep3baiynaz4avs7czblmaubw564a'
-//                     },
-//                     body: jsonEncode({
-//                       'app_id': 'b0e37948-f397-43c0-9c5a-06d80a592c8a',
-//                       'include_player_ids': [playerId],
-//                       'contents': {'en': _getStatusMessage(status)},
-//                       'headings': {'en': 'تحديث حالة الطلب'},
-//                       'data': {'order_id': payload.newRecord['id']},
-//                       'priority': 10,
-//                       'android_group': 'order_status',
-//                       'android_group_message': {'en': 'تحديثات الطلبات'},
-//                       'android_sound': 'notification',
-//                       'android_visibility': 1,
-//                       'collapse_id': 'order_${payload.newRecord['id']}',
-//                       'ttl': 86400
-//                     }),
-//                   );
-                  
-//                   debugPrint('🔔 Request Headers: ${response.request?.headers}');
-//                   debugPrint('🔔 Response Status Code: ${response.statusCode}');
-//                   final responseData = jsonDecode(response.body);
-//                   debugPrint('🔔 OneSignal Response: $responseData');
-                  
-//                   if (response.statusCode != 200) {
-//                     debugPrint('❌ Error sending notification: ${response.body}');
-//                   } else {
-//                     debugPrint('✅ Notification sent successfully');
-//                   }
-//                 } catch (e) {
-//                   debugPrint('❌ Error sending notification: $e');
-//                 }
-//               } else {
-//                 debugPrint('❌ No OneSignal Player ID found');
-//               }
-//             }
-//           },
-//         )
-//         .subscribe();
-    
-//     debugPrint('🔔 Order status listener set up successfully');
-//   }
+    const initializationSettings = InitializationSettings(
+      android: androidSettings,
+      iOS: iosSettings,
+    );
 
-//   String _getStatusMessage(String status) {
-//     switch (status) {
-//       case 'pending':
-//         return 'تم استلام طلبك وفي انتظار المراجعة';
-//       case 'processing':
-//         return 'جاري تجهيز طلبك';
-//       case 'completed':
-//         return 'تم اكتمال طلبك بنجاح';
-//       case 'cancelled':
-//         return 'تم إلغاء الطلب';
-//       case 'delivered':
-//         return 'تم توصيل طلبك بنجاح';
-//       default:
-//         return 'تم تحديث حالة طلبك إلى: $status';
-//     }
-//   }
-// }
+    await _notifications.initialize(
+      initializationSettings,
+      onDidReceiveNotificationResponse: (details) async {
+        if (details.payload != null) {
+          // يمكنك التنقل إلى صفحة تفاصيل الطلب هنا
+        }
+      },
+    );
+  }
+
+  static Future<void> dispose() async {
+    await _orderChannel?.unsubscribe();
+  }
+
+  static Future<void> showNotification({
+    required String title,
+    required String body,
+    String? payload,
+  }) async {
+    try {
+      // إعدادات الإشعار للأندرويد
+      final androidDetails = AndroidNotificationDetails(
+        'order_updates_channel',
+        'تحديثات الطلبات',
+        channelDescription: 'إشعارات خاصة بتحديثات حالة الطلبات',
+        importance: Importance.max,
+        priority: Priority.high,
+        enableVibration: true,
+        enableLights: true,
+        color: const Color.fromARGB(255, 76, 175, 80),
+        ledColor: const Color.fromARGB(255, 76, 175, 80),
+        ledOnMs: 1000,
+        ledOffMs: 500,
+        icon: '@mipmap/ic_launcher',
+        largeIcon: const DrawableResourceAndroidBitmap('@mipmap/ic_launcher'),
+        styleInformation: const MediaStyleInformation(
+          htmlFormatContent: true,
+          htmlFormatTitle: true,
+        ),
+      );
+
+      // إعدادات الإشعار للـ iOS
+      const iosDetails = DarwinNotificationDetails(
+        presentAlert: true,
+        presentBadge: true,
+        presentSound: true,
+        badgeNumber: 1,
+        interruptionLevel: InterruptionLevel.active,
+        categoryIdentifier: 'order_updates',
+      );
+
+      final notificationDetails = NotificationDetails(
+        android: androidDetails,
+        iOS: iosDetails,
+      );
+
+      // إنشاء معرف فريد للإشعار
+      final id = DateTime.now().millisecondsSinceEpoch % 100000;
+
+      // عرض الإشعار
+      await _notifications.show(
+        id,
+        '<b>$title</b>',  // تنسيق العنوان بخط عريض
+        '<span style="color: #666666">$body</span>',  // تنسيق النص بلون رمادي
+        notificationDetails,
+        payload: payload,
+      );
+    } catch (e) {
+      print('Error showing notification: $e');
+    }
+  }
+
+  static Future<void> _saveNotification(NotificationModel notification) async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final notifications = await getNotifications();
+      notifications.insert(0, notification);
+
+      // تحويل القائمة إلى JSON string
+      final String jsonString = jsonEncode(
+        notifications.map((n) => n.toJson()).toList(),
+      );
+      
+      await prefs.setString(_notificationsKey, jsonString);
+    } catch (e) {
+      print('Error saving notification: $e');
+    }
+  }
+
+  static Future<List<NotificationModel>> getNotifications() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final String? notificationsJson = prefs.getString(_notificationsKey);
+
+      if (notificationsJson == null || notificationsJson.isEmpty) {
+        return [];
+      }
+
+      final List<dynamic> decoded = jsonDecode(notificationsJson);
+      return decoded
+          .map((item) => NotificationModel.fromJson(item as Map<String, dynamic>))
+          .toList();
+    } catch (e) {
+      print('Error getting notifications: $e');
+      return [];
+    }
+  }
+
+  static Future<void> markAsRead(String notificationId) async {
+    final prefs = await SharedPreferences.getInstance();
+    final notifications = await getNotifications();
+
+    final index = notifications.indexWhere((n) => n.id == notificationId);
+    if (index != -1) {
+      notifications[index] = NotificationModel(
+        id: notifications[index].id,
+        title: notifications[index].title,
+        body: notifications[index].body,
+        timestamp: notifications[index].timestamp,
+        isRead: true,
+      );
+
+      await prefs.setString(
+        _notificationsKey,
+        jsonEncode(notifications.map((n) => n.toJson()).toList()),
+      );
+    }
+  }
+
+  static Future<void> clearAllNotifications() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.remove(_notificationsKey);
+      
+      // حذف جميع الإشعارات المعروضة
+      await _notifications.cancelAll();
+    } catch (e) {
+      print('Error clearing notifications: $e');
+    }
+  }
+}

@@ -78,7 +78,7 @@ class ProductsCubit extends Cubit<ProductsState> {
       // تطبيق نفس المعالجة على اسم المنتج والوصف
       final normalizedName = _normalizeArabicText(product.name.toLowerCase());
       final normalizedDescription = product.description != null 
-          ? _normalizeArabicText(product.description!.toLowerCase())
+          ? _normalizeArabicText(product.description.toLowerCase())
           : '';
           
       // البحث عن تطابق جزئي

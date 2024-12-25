@@ -11,6 +11,9 @@ import 'package:hyper_market/feature/home/presentation/view/widgets/home_top_sli
 import 'package:hyper_market/feature/home/presentation/view/widgets/outline_of_products.dart';
 import 'package:hyper_market/feature/home/presentation/view/widgets/supplements_section.dart';
 import 'package:hyper_market/feature/products/presentation/cubit/products_cubit.dart';
+import 'package:hyper_market/feature/home/presentation/view/pages/exclusive_offers_page.dart';
+import 'package:hyper_market/feature/home/presentation/view/pages/supplements_page.dart';
+import 'package:hyper_market/feature/home/presentation/view/pages/best_selling_page.dart';
 
 class HomeViewBody extends StatefulWidget {
   final String userName;
@@ -64,9 +67,21 @@ class _HomeViewBodyState extends State<HomeViewBody> {
                 child: HomeTopSlider(),
               ),
               const SizedBox(height: 4),
-              CustomAnimations.slideFromTop(
+              CustomAnimations.slideFromRight(
                 duration: const Duration(milliseconds: 1100),
-                child: const OutLineOfProducts(title: "عروض حصرية"),
+                child: OutLineOfProducts(
+                  title: "عروض حصرية",
+                  onSeeMorePressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => CustomAnimations.fadeIn(
+                            duration: const Duration(milliseconds: 250),
+                            child: const ExclusiveOffersPage()),
+                      ),
+                    );
+                  },
+                ),
               ),
               const SizedBox(height: 16),
               CustomAnimations.slideFromRight(
@@ -76,7 +91,20 @@ class _HomeViewBodyState extends State<HomeViewBody> {
               const SizedBox(height: 16),
               CustomAnimations.slideFromLeft(
                 duration: const Duration(milliseconds: 1300),
-                child: const OutLineOfProducts(title: "المكملات الغذائية"),
+                child: OutLineOfProducts(
+                  title: "المكملات الغذائية",
+                  onSeeMorePressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => CustomAnimations.fadeIn(
+                          duration: const Duration(milliseconds: 250),
+                          child: const SupplementsPage(),
+                        ),
+                      ),
+                    );
+                  },
+                ),
               ),
               const SizedBox(height: 16),
               CustomAnimations.slideFromRight(
@@ -86,7 +114,20 @@ class _HomeViewBodyState extends State<HomeViewBody> {
               const SizedBox(height: 16),
               CustomAnimations.slideFromLeft(
                 duration: const Duration(milliseconds: 1500),
-                child: const OutLineOfProducts(title: "الأكثر طلباً "),
+                child: OutLineOfProducts(
+                  title: "الأكثر طلباً",
+                  onSeeMorePressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => CustomAnimations.fadeIn(
+                          duration: const Duration(milliseconds: 250),
+                          child: const BestSellingPage(),
+                        ),
+                      ),
+                    );
+                  },
+                ),
               ),
               const SizedBox(height: 16),
               CustomAnimations.slideFromRight(

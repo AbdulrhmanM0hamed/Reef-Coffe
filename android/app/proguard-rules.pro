@@ -60,3 +60,9 @@
 # Debugging
 -keepattributes LineNumberTable,SourceFile
 -renamesourcefileattribute SourceFile
+
+# Google Play Core
+-keep class com.google.android.play.core.** { *; }
+-keep class com.google.android.play.core.splitcompat.** { *; }
+-keep class com.google.android.play.core.splitinstall.** { *; }
+-keep class com.google.android.play.core.tasks.** { *; }

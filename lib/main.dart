@@ -9,6 +9,8 @@ import 'package:hyper_market/core/services/supabase/supabase_initialize.dart';
 import 'package:hyper_market/core/utils/helper/on_genrated_routes.dart';
 import 'package:hyper_market/core/utils/theme/theme.dart';
 import 'package:hyper_market/feature/cart/presentation/cubit/cart_cubit.dart';
+import 'package:hyper_market/feature/notifications/data/repositories/notification_repository_impl.dart';
+import 'package:hyper_market/feature/notifications/presentation/cubit/notifications_cubit.dart';
 import 'package:hyper_market/feature/profile/presentation/cubit/theme_cubit.dart';
 import 'package:hyper_market/feature/splash/view/splash_view.dart';
 import 'package:hyper_market/generated/l10n.dart';
@@ -30,12 +32,17 @@ void main() async {
           'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtpemdtZ2FvY2RobmFydnF0enZmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzMzMjQ5NjksImV4cCI6MjA0ODkwMDk2OX0.LwosgMdM5ZcZAeVxn3b84lIeO4K6_-l4BsYF5pxxkJg',
     );
 
-
     await getIt<LocalStorageService>().init();
+    
+    // تهيئة خدمة الإشعارات
+    await NotificationService.init();
+
+    final notificationRepo = NotificationRepositoryImpl();
+    notificationRepo.listenToOrderChanges();
 
     runApp(const MyApp());
   } catch (e) {
-    debugPrint('❌ Error during initialization: $e');
+    print(e);
   }
 }
 
@@ -52,6 +59,9 @@ class MyApp extends StatelessWidget {
         BlocProvider(
           create: (context) =>
               ThemeCubit(prefs: SharedPreferences.getInstance()),
+        ),
+        BlocProvider<NotificationsCubit>(
+          create: (context) => NotificationsCubit(),
         ),
       ],
       child: BlocBuilder<ThemeCubit, ThemeState>(
@@ -76,5 +86,11 @@ class MyApp extends StatelessWidget {
         },
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    // تنظيف موارد الإشعارات عند إغلاق التطبيق
+    NotificationService.dispose();
   }
 }

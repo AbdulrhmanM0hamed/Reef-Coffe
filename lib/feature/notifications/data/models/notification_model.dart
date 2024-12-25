@@ -41,4 +41,25 @@ class NotificationModel extends Equatable {
 
   @override
   List<Object?> get props => [id, title, body, timestamp, isRead, imageUrl];
+
+  NotificationModel copyWith({
+    String? id,
+    String? title,
+    String? body,
+    String? timestamp,
+    bool? isRead,
+    String? imageUrl,
+  }) {
+    return NotificationModel(
+      id: id ?? this.id,
+      title: title ?? this.title,
+      body: body ?? this.body,
+      timestamp: timestamp ?? this.timestamp,
+      isRead: isRead ?? this.isRead,
+      imageUrl: imageUrl ?? this.imageUrl,
+    );
+  }
+
+  // إضافة getter للحصول على كائن DateTime
+  DateTime get dateTime => DateTime.parse(timestamp);
 }

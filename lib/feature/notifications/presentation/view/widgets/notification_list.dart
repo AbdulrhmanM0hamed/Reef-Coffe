@@ -71,11 +71,11 @@ class NotificationTile extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          if (notification.imageUrl != null) ...[
+          if (notification.body != null) ...[
             ClipRRect(
               borderRadius: BorderRadius.circular(8),
               child: Image.asset(
-                notification.imageUrl ?? "assets/images/profile_image.png",
+                "assets/images/profile_image.png",
                 width: 60,
                 height: 60,
                 fit: BoxFit.cover,
