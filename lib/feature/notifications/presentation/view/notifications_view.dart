@@ -112,9 +112,7 @@ class _NotificationsViewState extends State<NotificationsView> {
                         children: [
                           Text(
                             notification.title,
-                            style: const TextStyle(
-                              fontWeight: FontWeight.normal,
-                            ),
+                            style: getBoldStyle(fontFamily: FontConstant.cairo, fontSize: 14),
                           ),
                           const SizedBox(height: 8),
                           Text(

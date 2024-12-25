@@ -29,6 +29,8 @@ class NotificationRepositoryImpl implements NotificationRepository {
         return 'الطلب جاهز وجاري التوصيل 🚚';
       case 'cancelled':
         return 'ملغي ❌';
+        case 'pending':
+        return 'قيد الانتظار ⏳ ';
       default:
         return status;
     }
