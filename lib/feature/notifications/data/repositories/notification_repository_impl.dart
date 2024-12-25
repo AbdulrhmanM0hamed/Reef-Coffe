@@ -69,12 +69,14 @@ class NotificationRepositoryImpl implements NotificationRepository {
   @override
   void listenToOrderChanges() async {
     final currentUserId = _supabase.auth.currentUser?.id;
-    if (currentUserId == null) return;
+    if (currentUserId == null) {
+      print('No user logged in');
+      return;
+    }
 
-    // إلغاء الاشتراك السابق إن وجد
     _unsubscribe();
-
     await _loadLastStatuses();
+    
     print('Starting to listen for order changes for user: $currentUserId');
 
     _channel = _supabase
@@ -84,152 +86,177 @@ class NotificationRepositoryImpl implements NotificationRepository {
           schema: 'public',
           table: 'orders',
           callback: (payload) async {
-            print('Received order change: $payload');
+            print('Received order change payload: ${payload.toString()}');
             
             if (payload.newRecord != null) {
-              final orderId = payload.newRecord!['id'] as String;
-              final newStatus = payload.newRecord!['status'] as String;
-              final orderUserId = payload.newRecord!['user_id'] as String?;
+              // استخدام newRow بدلاً من newRecord
+              final newRow = payload.newRecord!;
+              final orderId = newRow['id'] as String;
+              final newStatus = newRow['status'] as String;
+              final orderUserId = newRow['user_id'] as String;
+
+              print('Order ID: $orderId');
+              print('New Status: $newStatus');
+              print('Order User ID: $orderUserId');
+              print('Current User ID: $currentUserId');
 
               final updateKey = _generateUpdateKey(orderId, newStatus);
               
-              // تجاهل التحديث إذا كان نفس التحديث السابق
               if (updateKey == _lastUpdateKey) {
                 print('Ignoring duplicate update: $updateKey');
                 return;
               }
 
-   
-
               if (currentUserId == orderUserId) {
-                
-                // تحديث مفتاح آخر تحديث
+                print('Creating notification for order status change');
                 _lastUpdateKey = updateKey;
-                
-                // حفظ الحالة الجديدة
                 _lastOrderStatuses[orderId] = newStatus;
                 await _saveLastStatuses();
-                
-                final notification = NotificationModel(
-                  id: DateTime.now().toString(),
-                  title: 'تحديث حالة الطلب',
-                  body: 'تم تحديث حالة طلبك رقم #${_formatOrderId(orderId)} إلى: ${_getArabicStatus(newStatus)}',
-                  timestamp: DateTime.now().toIso8601String(),
-                  isRead: false,
-                );
 
-                // حفظ الإشعار في SharedPreferences
-                final prefs = await SharedPreferences.getInstance();
-                final String? notificationsJson = prefs.getString(_notificationsKey);
-                
-                List<NotificationModel> notifications = [];
-                if (notificationsJson != null && notificationsJson.isNotEmpty) {
-                  final List<dynamic> decoded = jsonDecode(notificationsJson);
-                  notifications = decoded
-                      .map((item) => NotificationModel.fromJson(item as Map<String, dynamic>))
-                      .toList();
-                }
-                
-                // التحقق من عدم وجود نفس الإشعار في آخر 5 ثواني
-                final now = DateTime.now();
-                final recentNotifications = notifications.where((n) {
-                  final notificationTime = DateTime.parse(n.timestamp);
-                  final difference = now.difference(notificationTime);
-                  return difference.inSeconds <= 5 && 
-                         n.body.contains(orderId) && 
-                         n.body.contains(_getArabicStatus(newStatus));
-                });
-                
-                if (recentNotifications.isNotEmpty) {
-                  return;
-                }
-                
-                notifications.insert(0, notification);
-                
-                final String jsonString = jsonEncode(
-                  notifications.map((n) => n.toJson()).toList(),
-                );
-                
-                await prefs.setString(_notificationsKey, jsonString);
+                try {
+                  // إنشاء إشعار في Supabase
+                  final String title = 'تحديث حالة الطلب';
+                  final String body = 'تم تحديث حالة طلبك رقم #${_formatOrderId(orderId)} إلى: ${_getArabicStatus(newStatus)}';
+                  
+                  final notificationData = {
+                    'id': DateTime.now().millisecondsSinceEpoch.toString(),
+                    'user_id': currentUserId,
+                    'title': title,
+                    'body': body,
+                    'created_at': DateTime.now().toIso8601String(),
+                    'is_read': false,
+                    'order_id': orderId,
+                  };
+                  print('Inserting notification: $notificationData');
+                  
+                  // التحقق من عدم وجود إشعار مكرر
+                  final existingNotifications = await _supabase
+                      .from('notifications')
+                      .select()
+                      .eq('user_id', currentUserId)
+                      .eq('order_id', orderId)
+                      .eq('body', body);
 
-                // إظهار الإشعار
-                await NotificationService.showNotification(
-                  title: notification.title,
-                  body: notification.body,
-                );
+                  if ((existingNotifications as List).isEmpty) {
+                    final response = await _supabase
+                        .from('notifications')
+                        .insert(notificationData)
+                        .select()
+                        .single();
+                    
+                    print('Notification created successfully: $response');
+
+                    // عرض الإشعار
+                    await NotificationService.showNotification(
+                      title: title,
+                      body: body,
+                      payload: jsonEncode({'notification_id': notificationData['id']}),
+                    );
+                  } else {
+                    print('Duplicate notification found, skipping creation');
+                  }
+                } catch (e, stackTrace) {
+                  print('Error creating notification: $e');
+                  print('Stack trace: $stackTrace');
+                }
+              } else {
+                print('Order update is not for current user. Current: $currentUserId, Order: $orderUserId');
               }
+            } else {
+              print('New record is null in payload: $payload');
             }
           },
         )
         .subscribe();
     
-  }
-
-  @override
-  Future<void> clearAllNotifications() async {
-    try {
-      final prefs = await SharedPreferences.getInstance();
-      await prefs.remove(_notificationsKey);
-    } catch (e) {
-      print('Error clearing notifications: $e');
-    }
+    print('Subscribed to order updates channel');
   }
 
   @override
   Future<Either<Failure, List<NotificationModel>>> getNotifications() async {
     try {
-      final prefs = await SharedPreferences.getInstance();
-      final String? notificationsJson = prefs.getString(_notificationsKey);
-
-      if (notificationsJson == null || notificationsJson.isEmpty) {
-        return Right([]);
+      final currentUserId = _supabase.auth.currentUser?.id;
+      if (currentUserId == null) {
+        return Left(ServerFailure(message: 'لم يتم تسجيل الدخول'));
       }
 
-      final List<dynamic> decoded = jsonDecode(notificationsJson);
-      final List<NotificationModel> notifications = decoded
-          .map((item) => NotificationModel.fromJson(item as Map<String, dynamic>))
+      // جلب الإشعارات من Supabase
+      final response = await _supabase
+          .from('notifications')
+          .select()
+          .eq('user_id', currentUserId)
+          .order('created_at', ascending: false);
+
+      if (response == null) {
+        return const Right([]);
+      }
+
+      final List<NotificationModel> notifications = (response as List)
+          .map((notification) => NotificationModel.fromJson(notification))
           .toList();
+
+      // حفظ الإشعارات في التخزين المحلي
+      final prefs = await SharedPreferences.getInstance();
+      final notificationsJson = jsonEncode(response);
+      await prefs.setString(_notificationsKey, notificationsJson);
 
       return Right(notifications);
     } catch (e) {
-      return Left(ServerFailure(message: 'فشل في استرجاع الإشعارات: $e'));
+      print('Error getting notifications: $e');
+      return Left(ServerFailure(message: 'حدث خطأ أثناء تحميل الإشعارات'));
     }
   }
 
   @override
   Future<Either<Failure, Unit>> markAsRead(String notificationId) async {
     try {
-      final prefs = await SharedPreferences.getInstance();
-      final String? notificationsJson = prefs.getString(_notificationsKey);
-
-      if (notificationsJson == null || notificationsJson.isEmpty) {
-        return const Right(unit);
+      final currentUserId = _supabase.auth.currentUser?.id;
+      if (currentUserId == null) {
+        return Left(ServerFailure(message: 'لم يتم تسجيل الدخول'));
       }
 
-      final List<dynamic> decoded = jsonDecode(notificationsJson);
-      final List<NotificationModel> notifications = decoded
-          .map((item) => NotificationModel.fromJson(item as Map<String, dynamic>))
-          .toList();
-
-      final index = notifications.indexWhere((n) => n.id == notificationId);
-      if (index != -1) {
-        notifications[index] = NotificationModel(
-          id: notifications[index].id,
-          title: notifications[index].title,
-          body: notifications[index].body,
-          timestamp: notifications[index].timestamp,
-          isRead: true,
-        );
-
-        final String jsonString = jsonEncode(
-          notifications.map((n) => n.toJson()).toList(),
-        );
-        await prefs.setString(_notificationsKey, jsonString);
-      }
+      await _supabase
+          .from('notifications')
+          .update({'is_read': true})
+          .eq('id', notificationId)
+          .eq('user_id', currentUserId);
 
       return const Right(unit);
     } catch (e) {
-      return Left(ServerFailure(message: 'فشل في تحديث حالة الإشعار: $e'));
+      print('Error marking notification as read: $e');
+      return Left(ServerFailure(message: 'حدث خطأ أثناء تحديث حالة الإشعار'));
+    }
+  }
+
+  @override
+  Future<Either<Failure, Unit>> markAllAsRead() async {
+    try {
+      final currentUserId = _supabase.auth.currentUser?.id;
+      if (currentUserId == null) {
+        return Left(ServerFailure(message: 'لم يتم تسجيل الدخول'));
+      }
+
+      await _supabase
+          .from('notifications')
+          .update({'is_read': true})
+          .eq('user_id', currentUserId)
+          .eq('is_read', false);
+
+      return const Right(unit);
+    } catch (e) {
+      print('Error marking all notifications as read: $e');
+      return Left(ServerFailure(message: 'حدث خطأ أثناء تحديث حالة الإشعارات'));
+    }
+  }
+
+  @override
+  Future<void> clearAllNotifications() async {
+    try {
+      await _supabase
+          .from('notifications')
+          .delete();
+    } catch (e) {
+      print('Error clearing notifications: $e');
     }
   }
 }

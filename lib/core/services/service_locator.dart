@@ -38,6 +38,8 @@ import 'package:hyper_market/feature/home/data/repositories/special_offers_repos
 import 'package:hyper_market/feature/home/domain/repositories/special_offers_repository.dart';
 import 'package:hyper_market/feature/home/domain/usecases/get_special_offers.dart';
 import 'package:hyper_market/feature/home/presentation/cubit/special_offers_cubit.dart';
+import 'package:hyper_market/feature/notifications/data/repositories/notification_repository_impl.dart';
+import 'package:hyper_market/feature/notifications/domain/repositories/notification_repository.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 final getIt = GetIt.instance;
@@ -106,6 +108,11 @@ void setupServiceLocator() {
 
   getIt.registerLazySingleton<ResetPasswordCubit>(
     () => ResetPasswordCubit(authRepository: getIt<AuthRepository>()),
+  );
+
+  // Notifications
+  getIt.registerLazySingleton<NotificationRepository>(
+    () => NotificationRepositoryImpl(),
   );
 
   // Favorites

@@ -1,8 +1,5 @@
 part of 'notifications_cubit.dart';
 
-import 'package:equatable/equatable.dart';
-import 'package:hyper_market/feature/notifications/data/models/notification_model.dart';
-
 abstract class NotificationsState extends Equatable {
   const NotificationsState();
 

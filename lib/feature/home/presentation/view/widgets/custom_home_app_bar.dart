@@ -22,7 +22,12 @@ class _CustomHomeAppBarState extends State<CustomHomeAppBar> {
   @override
   void initState() {
     super.initState();
+    _checkNewNotifications();
     _loadUnreadCount();
+  }
+
+  Future<void> _checkNewNotifications() async {
+    await NotificationService.checkNewNotifications();
   }
 
   Future<void> _loadUnreadCount() async {
