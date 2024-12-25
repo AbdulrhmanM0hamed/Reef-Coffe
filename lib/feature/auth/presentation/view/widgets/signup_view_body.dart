@@ -23,9 +23,19 @@ class _SignupViewBodyState extends State<SignupViewBody> {
   late String email, password, userName, phoneNumber;
   bool isAgreed = false;
 
+  String _normalizeSpaces(String value) {
+    // Remove leading/trailing spaces and replace multiple spaces with single space
+    return value.trim().replaceAll(RegExp(r'\s+'), ' ');
+  }
+
   String? _validateEmail(String? value) {
     if (value == null || value.isEmpty) {
       return 'البريد الإلكتروني مطلوب';
+    }
+
+    // Check for spaces in email
+    if (value.contains(' ')) {
+      return 'لا يمكن أن يحتوي البريد الإلكتروني على مسافات';
     }
 
     // تعبير منتظم أكثر مرونة للتحقق من صحة البريد الإلكتروني
@@ -36,6 +46,30 @@ class _SignupViewBodyState extends State<SignupViewBody> {
 
     if (!emailRegExp.hasMatch(value)) {
       return 'البريد الإلكتروني غير صحيح';
+    }
+
+    return null;
+  }
+
+  String? _validateName(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'الرجاء إدخال اسمك الكامل';
+    }
+    
+    // Check if the value contains only spaces
+    if (value.trim().isEmpty) {
+      return 'لا يمكن أن يتكون الاسم من مسافات فقط';
+    }
+
+    // Normalize spaces and check length
+    String normalizedValue = _normalizeSpaces(value);
+    if (normalizedValue.length < 4) {
+      return 'الاسم يجب أن يكون 4 أحرف على الأقل';
+    }
+
+    // Ensure the name contains actual letters (Arabic or English) and allows spaces between words
+    if (!RegExp(r'^[\u0600-\u06FFa-zA-Z\s]+$').hasMatch(normalizedValue)) {
+      return 'الاسم يجب أن يحتوي على حروف فقط';
     }
 
     return null;
@@ -58,18 +92,10 @@ class _SignupViewBodyState extends State<SignupViewBody> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               CustomTextFormField(
-                onSaved: (value) => userName = value!,
+                onSaved: (value) => userName = _normalizeSpaces(value!),
                 hintText: S.current!.fullName,
                 suffixIcon: const Icon(Icons.person),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'الرجاء إدخال اسمك الكامل';
-                  }
-                  if (value.length < 4) {
-                    return 'الاسم يجب أن يكون 4 أحرف على الأقل';
-                  }
-                  return null;
-                },
+                validator: _validateName,
               ),
               SizedBox(height: screenHeight * 0.02),
               CustomTextFormField(

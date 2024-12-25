@@ -29,18 +29,6 @@ class ProductsViewBody extends StatelessWidget {
               () => context.read<ProductsCubit>().getAllProducts(),
             );
           } else if (state is ProductsLoaded) {
-            if (state.products.isEmpty) {
-              return Center(
-                child: Text(
-                  'لا توجد منتجات',
-                  style: getRegularStyle(
-                    fontFamily: FontConstant.cairo,
-                    fontSize: FontSize.size16,
-                    color: Colors.grey,
-                  ),
-                ),
-              );
-            }
             return Column(
               children: [
                 // Search and Filter Bar
@@ -69,21 +57,33 @@ class ProductsViewBody extends StatelessWidget {
                   ),
                 ),
 
-                // Products Grid
+                // Products Grid or Empty State
                 Expanded(
-                  child: GridView.builder(
-                    padding: const EdgeInsets.all(16),
-                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      childAspectRatio: 0.65,
-                      crossAxisSpacing: 12,
-                      mainAxisSpacing: 12,
-                    ),
-                    itemCount: state.products.length,
-                    itemBuilder: (context, index) {
-                      return ProductCard(product: state.products[index]);
-                    },
-                  ),
+                  child: state.products.isEmpty
+                      ? Center(
+                          child: Text(
+                            'لا توجد منتجات',
+                            style: getRegularStyle(
+                              fontFamily: FontConstant.cairo,
+                              fontSize: FontSize.size16,
+                              color: Colors.grey,
+                            ),
+                          ),
+                        )
+                      : GridView.builder(
+                          padding: const EdgeInsets.all(16),
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            childAspectRatio: 0.65,
+                            crossAxisSpacing: 12,
+                            mainAxisSpacing: 12,
+                          ),
+                          itemCount: state.products.length,
+                          itemBuilder: (context, index) {
+                            return ProductCard(product: state.products[index]);
+                          },
+                        ),
                 ),
               ],
             );

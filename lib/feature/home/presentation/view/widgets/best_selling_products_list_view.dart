@@ -63,7 +63,7 @@ class BestSellingProductsListView extends StatelessWidget {
               },
             ),
           );
-          ;
+        
         },
       ),
     );

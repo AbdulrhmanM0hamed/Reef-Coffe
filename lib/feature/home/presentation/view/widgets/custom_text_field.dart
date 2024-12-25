@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hyper_market/core/utils/constants/colors.dart';
 import 'package:hyper_market/core/utils/constants/font_manger.dart';
 import 'package:hyper_market/core/utils/constants/styles_manger.dart';
 import 'package:hyper_market/core/services/service_locator.dart';
@@ -20,6 +21,7 @@ class _CustomSearchTextFieldState extends State<CustomSearchTextField> {
   final FocusNode _focusNode = FocusNode();
   final TextEditingController _searchController = TextEditingController();
   bool _showOverlay = false;
+  bool _isSearchActive = false;
   OverlayEntry? _overlayEntry;
   late final ProductsCubit _productsCubit;
 
@@ -29,10 +31,16 @@ class _CustomSearchTextFieldState extends State<CustomSearchTextField> {
     _productsCubit = getIt<ProductsCubit>();
     _focusNode.addListener(() {
       if (_focusNode.hasFocus) {
+        setState(() {
+          _isSearchActive = true;
+        });
         _productsCubit.getAllProducts();
         _showOverlay = true;
         _showSearchOverlay();
       } else {
+        setState(() {
+          _isSearchActive = false;
+        });
         _hideSearchOverlay();
       }
     });
@@ -63,6 +71,18 @@ class _CustomSearchTextFieldState extends State<CustomSearchTextField> {
     if (mounted) {
       _productsCubit.getAllProducts();
     }
+  }
+
+  void _toggleSearch() {
+    setState(() {
+      _isSearchActive = !_isSearchActive;
+      if (_isSearchActive) {
+        _focusNode.requestFocus();
+      } else {
+        _focusNode.unfocus();
+        _resetSearch();
+      }
+    });
   }
 
   OverlayEntry _createOverlayEntry() {
@@ -159,6 +179,11 @@ class _CustomSearchTextFieldState extends State<CustomSearchTextField> {
           child: TextField(
             controller: _searchController,
             focusNode: _focusNode,
+            onTap: () {
+              setState(() {
+                _isSearchActive = true;
+              });
+            },
             onChanged: (query) {
               if (!mounted) return;
               _productsCubit.searchProducts(query);
@@ -171,16 +196,28 @@ class _CustomSearchTextFieldState extends State<CustomSearchTextField> {
             },
             decoration: InputDecoration(
               hintText: "ابحث عن الذي تريده",
-              prefixIcon: SizedBox(
-                width: 20,
-                child: Center(
-                  child: SvgPicture.asset(
-                    "assets/images/search_icon.svg",
-                    width: 25,
+              prefixIcon: GestureDetector(
+                onTap: _toggleSearch,
+                child: SizedBox(
+                  width: 20,
+                  child: Center(
+                    child: SvgPicture.asset(
+                      "assets/images/search_icon.svg",
+                      width: 25,
+                      color: _isSearchActive ? TColors.primary : Colors.grey,
+                    ),
                   ),
                 ),
               ),
-           
+              suffixIcon: _searchController.text.isNotEmpty
+                  ? IconButton(
+                      icon: const Icon(Icons.clear),
+                      onPressed: () {
+                        _resetSearch();
+                        setState(() {});
+                      },
+                    )
+                  : null,
             ),
           ),
         ),

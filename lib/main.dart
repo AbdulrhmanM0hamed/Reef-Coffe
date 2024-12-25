@@ -88,9 +88,5 @@ class MyApp extends StatelessWidget {
     );
   }
 
-  @override
-  void dispose() {
-    // تنظيف موارد الإشعارات عند إغلاق التطبيق
-    NotificationService.dispose();
-  }
+
 }

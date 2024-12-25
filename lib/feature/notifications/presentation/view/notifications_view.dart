@@ -3,10 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hyper_market/core/utils/constants/font_manger.dart';
 import 'package:hyper_market/core/utils/constants/styles_manger.dart';
 import 'package:hyper_market/feature/notifications/presentation/cubit/notifications_cubit.dart';
-import 'package:intl/intl.dart';
-import 'package:hyper_market/core/services/notification_service.dart';
-import 'package:hyper_market/feature/notifications/data/models/notification_model.dart';
-import 'package:hyper_market/feature/notifications/data/repositories/notification_repository_impl.dart';
 
 class NotificationsView extends StatefulWidget {
   const NotificationsView({Key? key}) : super(key: key);
@@ -54,15 +50,7 @@ class _NotificationsViewState extends State<NotificationsView> {
           title:  Text('الإشعارات', style: getBoldStyle(fontFamily: FontConstant.cairo, fontSize: FontSize.size20)),
           elevation: 0,
           centerTitle: true,
-          actions: [
-            IconButton(
-              icon: const Icon(Icons.delete_sweep, color: Colors.red),
-              onPressed: () {
-                // حذف جميع الإشعارات
-                context.read<NotificationsCubit>().clearAllNotifications();
-              },
-            ),
-          ],
+       
         ),
         body: BlocBuilder<NotificationsCubit, NotificationsState>(
           builder: (context, state) {

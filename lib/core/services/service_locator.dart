@@ -1,5 +1,4 @@
 import 'package:get_it/get_it.dart';
-import 'package:hyper_market/core/services/notification_service.dart';
 import 'package:hyper_market/core/services/supabase/supabase_initialize.dart';
 import 'package:hyper_market/core/services/local_storage/local_storage_service.dart';
 import 'package:hyper_market/feature/auth/data/datasources/auth_remote_data_source.dart';

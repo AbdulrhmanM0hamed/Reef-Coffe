@@ -77,7 +77,6 @@ class NotificationRepositoryImpl implements NotificationRepository {
     _unsubscribe();
     await _loadLastStatuses();
     
-    print('Starting to listen for order changes for user: $currentUserId');
 
     _channel = _supabase
         .channel('order_updates')
@@ -95,10 +94,7 @@ class NotificationRepositoryImpl implements NotificationRepository {
               final newStatus = newRow['status'] as String;
               final orderUserId = newRow['user_id'] as String;
 
-              print('Order ID: $orderId');
-              print('New Status: $newStatus');
-              print('Order User ID: $orderUserId');
-              print('Current User ID: $currentUserId');
+       
 
               final updateKey = _generateUpdateKey(orderId, newStatus);
               
@@ -127,7 +123,6 @@ class NotificationRepositoryImpl implements NotificationRepository {
                     'is_read': false,
                     'order_id': orderId,
                   };
-                  print('Inserting notification: $notificationData');
                   
                   // التحقق من عدم وجود إشعار مكرر
                   final existingNotifications = await _supabase
@@ -144,7 +139,6 @@ class NotificationRepositoryImpl implements NotificationRepository {
                         .select()
                         .single();
                     
-                    print('Notification created successfully: $response');
 
                     // عرض الإشعار
                     await NotificationService.showNotification(
@@ -169,7 +163,6 @@ class NotificationRepositoryImpl implements NotificationRepository {
         )
         .subscribe();
     
-    print('Subscribed to order updates channel');
   }
 
   @override

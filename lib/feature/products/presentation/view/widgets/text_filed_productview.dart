@@ -27,7 +27,7 @@ class CustomTextFieldProductsView extends StatelessWidget {
         hintStyle: getRegularStyle(
           fontFamily: FontConstant.cairo,
           fontSize: FontSize.size14,
-          color: Colors.grey,
+         
         ),
         prefixIcon: SizedBox(
           width: 25,
@@ -39,7 +39,6 @@ class CustomTextFieldProductsView extends StatelessWidget {
           ),
         ),
         filled: true,
-        fillColor: Colors.white,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
           borderSide: BorderSide(
