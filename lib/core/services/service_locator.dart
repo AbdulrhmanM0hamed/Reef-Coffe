@@ -46,8 +46,7 @@ void setupServiceLocator() {
   // Services
   getIt.registerLazySingleton<SupabaseService>(() => SupabaseService());
   getIt.registerLazySingleton<LocalStorageService>(() => LocalStorageService());
-  getIt.registerLazySingleton<NotificationService>(() => NotificationService());
-
+//getIt.registerLazySingleton<NotificationService>(() => NotificationService());
   // Cart
   getIt.registerLazySingleton<CartCubit>(() => CartCubit());
 

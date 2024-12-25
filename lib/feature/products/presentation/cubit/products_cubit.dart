@@ -63,23 +63,46 @@ class ProductsCubit extends Cubit<ProductsState> {
 
   void searchProducts(String query) {
     if (isClosed) return;
-    _currentQuery = query.toLowerCase();
+    
+    _currentQuery = query.trim(); // إزالة المسافات الزائدة
+    
     if (_currentQuery.isEmpty) {
-      if (!isClosed) {
-        emit(ProductsLoaded(_allProducts));
-      }
+      emit(ProductsLoaded(_allProducts));
       return;
     }
 
+    // تحويل النص للحروف الصغيرة وإزالة التشكيل
+    final searchQuery = _normalizeArabicText(_currentQuery.toLowerCase());
+    
     final filteredProducts = _allProducts.where((product) {
-      final name = product.name.toLowerCase();
-      final description = product.description!.toLowerCase();
-      return name.contains(_currentQuery) || description.contains(_currentQuery);
+      // تطبيق نفس المعالجة على اسم المنتج والوصف
+      final normalizedName = _normalizeArabicText(product.name.toLowerCase());
+      final normalizedDescription = product.description != null 
+          ? _normalizeArabicText(product.description!.toLowerCase())
+          : '';
+          
+      // البحث عن تطابق جزئي
+      return normalizedName.contains(searchQuery) || 
+             normalizedDescription.contains(searchQuery);
     }).toList();
 
-    if (!isClosed) {
-      emit(ProductsLoaded(filteredProducts));
-    }
+    emit(ProductsLoaded(filteredProducts));
+  }
+
+  // دالة لمعالجة النص العربي
+  String _normalizeArabicText(String text) {
+    // إزالة التشكيل
+    final normalized = text
+        .replaceAll('\u064B', '') // فتحتين
+        .replaceAll('\u064C', '') // ضمتين
+        .replaceAll('\u064D', '') // كسرتين
+        .replaceAll('\u064E', '') // فتحة
+        .replaceAll('\u064F', '') // ضمة
+        .replaceAll('\u0650', '') // كسرة
+        .replaceAll('\u0651', '') // شدة
+        .replaceAll('\u0652', ''); // سكون
+        
+    return normalized;
   }
 
   void filterProducts({

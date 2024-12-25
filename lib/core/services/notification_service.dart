@@ -1,141 +1,138 @@
-import 'dart:convert';
-import 'package:awesome_notifications/awesome_notifications.dart';
-import 'package:flutter/widgets.dart';
-import 'package:hyper_market/core/services/service_locator.dart';
-import 'package:hyper_market/core/services/supabase/supabase_initialize.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+// import 'dart:convert';
+// import 'dart:io';
+// import 'package:flutter/foundation.dart';
+// import 'package:hyper_market/core/services/service_locator.dart';
+// import 'package:hyper_market/core/services/supabase/supabase_initialize.dart';
+// import 'package:onesignal_flutter/onesignal_flutter.dart';
+// import 'package:supabase_flutter/supabase_flutter.dart';
+// import 'package:http/http.dart' as http;
 
-class NotificationService {
-  late final SupabaseClient _client;
-  static const String _channelKey = 'hyper_market_channel';
-  static const String KUserData = 'user_data';
+// class NotificationService {
+//   final _client = getIt<SupabaseService>().client;
   
-  Future<void> initialize() async {
-    _client = getIt<SupabaseService>().client;
+//   Future<void> initialize() async {
+//     debugPrint('🔔 Initializing NotificationService...');
     
-    // Initialize local notifications
-    await AwesomeNotifications().initialize(
-      null, // no icon for now
-      [
-        NotificationChannel(
-          channelKey: _channelKey,
-          channelName: 'هايبر ماركت',
-          channelDescription: 'إشعارات تطبيق هايبر ماركت',
-          defaultColor: const Color(0xFF9D50DD),
-          ledColor: const Color(0xFF9D50DD),
-          importance: NotificationImportance.High,
-          playSound: true,
-          enableVibration: true,
-          enableLights: true,
-        ),
-      ],
-    );
-
-    // Request notification permissions
-    await AwesomeNotifications().isNotificationAllowed().then((isAllowed) {
-      if (!isAllowed) {
-        AwesomeNotifications().requestPermissionToSendNotifications();
-      }
-    });
-
-    // Listen to order status changes
-    _client
-      .channel('public:orders')
-      .onPostgresChanges(
-        event: PostgresChangeEvent.update,
-        schema: 'public',
-        table: 'orders',
-        callback: (payload) async {
-          debugPrint('🔔 Order status changed: ${payload.newRecord}');
-          final orderId = payload.newRecord['id'] as String;
-          final status = payload.newRecord['status'] as String;
-          final userId = payload.newRecord['user_id'] as String;
-          
-          // Get current user ID
-          final prefs = await SharedPreferences.getInstance();
-          final userDataJson = prefs.getString(KUserData);
-          String? currentUserId;
-          if (userDataJson != null && userDataJson.isNotEmpty) {
-            try {
-              final userData = json.decode(userDataJson);
-              currentUserId = userData['id'];
-            } catch (e) {
-              debugPrint('Error parsing user data: $e');
-            }
-          }
-
-          debugPrint('🔔 Current user ID: $currentUserId, Order user ID: $userId');
-
-          // Only show notification if this order belongs to current user
-          if (currentUserId != null && userId == currentUserId) {
-            _showOrderStatusNotification(orderId, status);
-          }
-        },
-      )
-      .subscribe();
-
-    // Listen to special offers
-    _client
-      .channel('public:special_offers')
-      .onPostgresChanges(
-        event: PostgresChangeEvent.insert,
-        schema: 'public',
-        table: 'special_offers',
-        callback: (payload) {
-          debugPrint('🔔 New special offer: ${payload.newRecord}');
-          final title = payload.newRecord['title'] as String;
-          final subtitle = payload.newRecord['subtitle'] as String;
-          _showSpecialOfferNotification(title, subtitle);
-        },
-      )
-      .subscribe();
-
-    debugPrint('🔔 NotificationService initialized successfully');
-  }
-
-  Future<void> _showOrderStatusNotification(String orderId, String status) async {
-    String message = _getStatusMessage(status);
-    // Get last 8 characters from order ID
-    String shortOrderId = orderId.length > 8 ? orderId.substring(orderId.length - 8) : orderId;
+//     // Initialize OneSignal with high priority settings
+//     OneSignal.Debug.setLogLevel(OSLogLevel.verbose);
+//     OneSignal.initialize("b0e37948-f397-43c0-9c5a-06d80a592c8a");
     
-    await AwesomeNotifications().createNotification(
-      content: NotificationContent(
-        id: DateTime.now().millisecondsSinceEpoch.remainder(100000),
-        channelKey: _channelKey,
-        title: 'تحديث حالة الطلب #$shortOrderId',
-        body: message,
-        notificationLayout: NotificationLayout.Default,
-      ),
-    );
-  }
+//     // Configure notification settings for all states
+//     await OneSignal.Notifications.requestPermission(true);
+    
+//     // Set up notification handlers for different app states
+//     OneSignal.Notifications.addForegroundWillDisplayListener((event) {
+//       debugPrint('🔔 Notification will display in foreground: ${event.notification.additionalData}');
+//       event.notification.display();
+//     });
+    
+//     OneSignal.Notifications.addClickListener((event) {
+//       debugPrint('🔔 Notification clicked: ${event.notification.additionalData}');
+//       _handleNotificationClick(event.notification);
+//     });
+    
+//     _setupOrderStatusListener();
+//     debugPrint('🔔 NotificationService initialized successfully');
+//   }
 
-  String _getStatusMessage(String status) {
-    switch (status.toLowerCase()) {
-      case 'processing':
-        return 'جاري معالجة طلبك';
-      case 'accepted':
-        return 'تم الموافقة على طلبك';
-      case 'completed':
-        return 'تم اكتمال طلبك وجاري التوصيل';
-      case 'delivered':
-        return 'تم تسليم طلبك وتشرفنا في التعامل معك';
-      case 'canceled':
-        return 'تم إلغاء طلبك';
-      default:
-        return 'تم تحديث حالة طلبك إلى: $status';
-    }
-  }
+//   void _handleNotificationClick(OSNotification notification) {
+//     try {
+//       final data = notification.additionalData;
+//       if (data != null && data['order_id'] != null) {
+//         // Handle navigation or any other action based on notification data
+//         debugPrint('🔔 Handling notification click for order: ${data['order_id']}');
+//       }
+//     } catch (e) {
+//       debugPrint('❌ Error handling notification click: $e');
+//     }
+//   }
 
-  Future<void> _showSpecialOfferNotification(String title, String subtitle) async {
-    await AwesomeNotifications().createNotification(
-      content: NotificationContent(
-        id: DateTime.now().millisecondsSinceEpoch.remainder(100000),
-        channelKey: _channelKey,
-        title: 'عرض خاص جديد! 🎉',
-        body: '$title\n$subtitle',
-        notificationLayout: NotificationLayout.Default,
-      ),
-    );
-  }
-}
+//   void _setupOrderStatusListener() {
+//     debugPrint('🔔 Setting up order status listener...');
+//     final supabase = Supabase.instance.client;
+    
+//     supabase
+//         .channel('public:orders')
+//         .onPostgresChanges(
+//           event: PostgresChangeEvent.update,
+//           schema: 'public',
+//           table: 'orders',
+//           callback: (payload) async {
+//             debugPrint('🔔 Order status changed: ${payload.newRecord}');
+            
+//             final userId = supabase.auth.currentUser?.id;
+//             final orderUserId = payload.newRecord['user_id'] as String?;
+//             final status = payload.newRecord['status'] as String?;
+            
+//             debugPrint('🔔 Current user: $userId, Order user: $orderUserId');
+            
+//             if (userId != null && userId == orderUserId && status != null) {
+//               final playerId = OneSignal.User.pushSubscription.id;
+//               debugPrint('🔔 Current OneSignal Player ID: $playerId');
+              
+//               if (playerId != null) {
+//                 try {
+//                   final response = await http.post(
+//                     Uri.parse('https://onesignal.com/api/v1/notifications'),
+//                     headers: {
+//                       'accept': 'application/json',
+//                       'Content-Type': 'application/json',
+//                       'Authorization': 'os_v2_app_wdrxsshts5b4bhc2a3mauwjmrj5k5rnn5ayen3f6xbz63lyz56hvs2rd4clmzo3bvo5cesqbwsgep3baiynaz4avs7czblmaubw564a'
+//                     },
+//                     body: jsonEncode({
+//                       'app_id': 'b0e37948-f397-43c0-9c5a-06d80a592c8a',
+//                       'include_player_ids': [playerId],
+//                       'contents': {'en': _getStatusMessage(status)},
+//                       'headings': {'en': 'تحديث حالة الطلب'},
+//                       'data': {'order_id': payload.newRecord['id']},
+//                       'priority': 10,
+//                       'android_group': 'order_status',
+//                       'android_group_message': {'en': 'تحديثات الطلبات'},
+//                       'android_sound': 'notification',
+//                       'android_visibility': 1,
+//                       'collapse_id': 'order_${payload.newRecord['id']}',
+//                       'ttl': 86400
+//                     }),
+//                   );
+                  
+//                   debugPrint('🔔 Request Headers: ${response.request?.headers}');
+//                   debugPrint('🔔 Response Status Code: ${response.statusCode}');
+//                   final responseData = jsonDecode(response.body);
+//                   debugPrint('🔔 OneSignal Response: $responseData');
+                  
+//                   if (response.statusCode != 200) {
+//                     debugPrint('❌ Error sending notification: ${response.body}');
+//                   } else {
+//                     debugPrint('✅ Notification sent successfully');
+//                   }
+//                 } catch (e) {
+//                   debugPrint('❌ Error sending notification: $e');
+//                 }
+//               } else {
+//                 debugPrint('❌ No OneSignal Player ID found');
+//               }
+//             }
+//           },
+//         )
+//         .subscribe();
+    
+//     debugPrint('🔔 Order status listener set up successfully');
+//   }
+
+//   String _getStatusMessage(String status) {
+//     switch (status) {
+//       case 'pending':
+//         return 'تم استلام طلبك وفي انتظار المراجعة';
+//       case 'processing':
+//         return 'جاري تجهيز طلبك';
+//       case 'completed':
+//         return 'تم اكتمال طلبك بنجاح';
+//       case 'cancelled':
+//         return 'تم إلغاء الطلب';
+//       case 'delivered':
+//         return 'تم توصيل طلبك بنجاح';
+//       default:
+//         return 'تم تحديث حالة طلبك إلى: $status';
+//     }
+//   }
+// }

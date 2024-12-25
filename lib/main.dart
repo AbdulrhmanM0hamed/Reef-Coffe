@@ -1,7 +1,5 @@
-import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hyper_market/core/services/local_storage/local_storage_service.dart';
 import 'package:hyper_market/core/services/notification_service.dart';
@@ -17,41 +15,28 @@ import 'package:hyper_market/generated/l10n.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
-  
   try {
     WidgetsFlutterBinding.ensureInitialized();
-     
+
     await Prefs.init();
     await Prefs.clearInvalidData();
 
-    if (kIsWeb) {
-      await FacebookAuth.instance.webAndDesktopInitialize(
-        appId: "1318649632135518",
-        cookie: true,
-        xfbml: true,
-        version: "v15.0",
-      );
-    }
-
     setupServiceLocator();
 
+    // Initialize Supabase
     await getIt<SupabaseService>().initialize(
       supabaseUrl: 'https://kizgmgaocdhnarvqtzvf.supabase.co',
       supabaseKey:
           'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtpemdtZ2FvY2RobmFydnF0enZmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzMzMjQ5NjksImV4cCI6MjA0ODkwMDk2OX0.LwosgMdM5ZcZAeVxn3b84lIeO4K6_-l4BsYF5pxxkJg',
     );
 
-    await getIt<LocalStorageService>().init();
 
-    await getIt<NotificationService>().initialize();
+    await getIt<LocalStorageService>().init();
 
     runApp(const MyApp());
   } catch (e) {
-    debugPrint('حدث خطأ في التطبيق: $e');
-    await Prefs.clearInvalidData();
-    runApp(const MyApp());
+    debugPrint('❌ Error during initialization: $e');
   }
-  
 }
 
 class MyApp extends StatelessWidget {
@@ -65,13 +50,14 @@ class MyApp extends StatelessWidget {
           value: getIt<CartCubit>(),
         ),
         BlocProvider(
-          create: (context) => ThemeCubit(prefs: SharedPreferences.getInstance()),
+          create: (context) =>
+              ThemeCubit(prefs: SharedPreferences.getInstance()),
         ),
       ],
       child: BlocBuilder<ThemeCubit, ThemeState>(
         builder: (context, state) {
           return MaterialApp(
-            title: 'Hyper Market',
+            title: 'ريف القهوة',
             debugShowCheckedModeBanner: false,
             theme: state.isDark ? TAppTheme.darkTheme : TAppTheme.lightTheme,
             darkTheme: TAppTheme.darkTheme,
