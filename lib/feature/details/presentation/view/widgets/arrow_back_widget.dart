@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:hyper_market/core/utils/constants/colors.dart';
 
 class ArrowBackWidget extends StatelessWidget {
   const ArrowBackWidget({
@@ -16,12 +15,14 @@ class ArrowBackWidget extends StatelessWidget {
       ),
       child: Container(
         decoration: BoxDecoration(
-            color: TColors.white, borderRadius: BorderRadius.circular(16)),
+            color: Theme.of(context).brightness == Brightness.light
+                ? Colors.white
+                : const Color.fromARGB(255, 19, 19, 19),
+            borderRadius: BorderRadius.circular(16)),
         child: IconButton(
           icon: const Icon(
             Icons.arrow_back_ios_new_outlined,
             size: 20,
-            color: TColors.black,
           ),
           onPressed: () => Navigator.pop(context),
         ),

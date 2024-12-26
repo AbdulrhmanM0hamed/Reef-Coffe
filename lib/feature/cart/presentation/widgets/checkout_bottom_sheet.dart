@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hyper_market/core/utils/common/elvated_button.dart';
 import 'package:hyper_market/core/utils/constants/colors.dart';
 import 'package:hyper_market/core/utils/constants/font_manger.dart';
@@ -84,10 +85,41 @@ class _CheckoutBottomSheetState extends State<CheckoutBottomSheet> {
   void _submitOrder() {
     final userId = supabaseClient.auth.currentUser?.id;
     if (userId == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-            backgroundColor: TColors.primary,
-            content: Text('تم اضافة الطلب بنجاح ')),
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          Future.delayed(const Duration(seconds: 3), () {
+            Navigator.of(context).pop();
+          });
+          return Dialog(
+            backgroundColor: Colors.white,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(20),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  SvgPicture.asset(
+                    'assets/images/order_request.svg',
+                    width: 100,
+                    height: 100,
+                  ),
+                  const SizedBox(height: 20),
+                  const Text(
+                    'تم اضافة الطلب بنجاح',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        },
       );
       return;
     }

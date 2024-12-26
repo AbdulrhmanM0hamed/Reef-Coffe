@@ -153,7 +153,7 @@ class OrderCard extends StatelessWidget {
       case 'accepted':
         return 'مقبول';
       case 'completed':
-        return 'مكتمل';
+        return 'جارى التوصيل';
       case 'delivered':
         return 'تم التسليم';
       case 'canceled':

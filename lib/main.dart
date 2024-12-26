@@ -25,7 +25,6 @@ void main() async {
 
     setupServiceLocator();
 
-    // Initialize Supabase
     await getIt<SupabaseService>().initialize(
       supabaseUrl: 'https://kizgmgaocdhnarvqtzvf.supabase.co',
       supabaseKey:
@@ -34,7 +33,6 @@ void main() async {
 
     await getIt<LocalStorageService>().init();
     
-    // تهيئة خدمة الإشعارات
     await NotificationService.init();
 
     final notificationRepo = NotificationRepositoryImpl();

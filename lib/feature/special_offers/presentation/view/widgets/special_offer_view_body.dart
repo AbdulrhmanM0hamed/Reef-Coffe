@@ -148,14 +148,16 @@ class _SpecialOfferViewBodyState extends State<SpecialOfferViewBody> {
         width: 40,
         height: 40,
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: Theme.of(context).brightness == Brightness.dark
+              ? const Color.fromARGB(255, 19, 19, 19)
+              : Colors.white,
           borderRadius: BorderRadius.circular(16),
         ),
         child: IconButton(
           icon: const Icon(
             Icons.arrow_back_ios_new_outlined,
             size: 20,
-            color: TColors.black,
+           
           ),
           onPressed: () => Navigator.pop(context),
         ),
