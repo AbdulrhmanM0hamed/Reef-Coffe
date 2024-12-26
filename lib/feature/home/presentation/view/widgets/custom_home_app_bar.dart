@@ -63,7 +63,6 @@ class _CustomHomeAppBarState extends State<CustomHomeAppBar> {
           value: userId,
         ),
         callback: (payload) {
-          // عند تحديث حالة الطلب، نقوم بتحديث عداد الإشعارات
           Future.delayed(const Duration(milliseconds: 500), () {
             _loadUnreadCount();
           });

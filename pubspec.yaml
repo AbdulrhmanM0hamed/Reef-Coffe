@@ -29,26 +29,23 @@ environment:
 # versions available, run `flutter pub outdated`.
 dependencies:
   animations: ^2.0.11
-  awesome_notifications: ^0.8.2
   bottom_navy_bar: ^6.1.0
   cached_network_image: ^3.4.1
   carousel_slider: ^5.0.0
   cupertino_icons: ^1.0.8
   dartz: ^0.10.1
   equatable: ^2.0.7
-  firebase_core: ^2.24.2
-  firebase_messaging: ^14.7.10
   flutter:
     sdk: flutter
-  flutter_background_service: ^5.1.0
-  flutter_background_service_android: ^6.3.0
+ 
+
   flutter_bloc: ^8.1.4
   flutter_facebook_auth: ^7.1.1
-  flutter_local_notifications: ^16.2.0
+  flutter_local_notifications: ^18.0.1
   flutter_localizations:
     sdk: flutter
   flutter_rating_bar: ^4.0.1
-  flutter_screenutil: ^5.9.3
+  
   flutter_svg: ^2.0.9
   get_it: ^8.0.2
   google_sign_in: ^6.2.2
@@ -56,7 +53,6 @@ dependencies:
   image_picker: ^1.0.7
   modal_progress_hud_nsn: ^0.5.1
   network_info_plus: ^6.1.1
-  onesignal_flutter: ^5.0.4
   page_transition: ^2.1.0
   permission_handler: ^11.0.1
   pin_code_fields: ^8.0.1

@@ -25,7 +25,7 @@ android {
 
     defaultConfig {
         applicationId "com.example.hyper_market"
-        minSdk 21  // الحد الأدنى لدعم معظم الأجهزة
+        minSdkVersion 23   // الحد الأدنى لدعم معظم الأجهزة
         targetSdk flutter.targetSdkVersion
         versionCode flutter.versionCode.toInteger()
         versionName flutter.versionName
