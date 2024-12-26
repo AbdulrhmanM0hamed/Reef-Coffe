@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -5,8 +7,8 @@ import 'package:hyper_market/core/utils/constants/colors.dart';
 import 'package:hyper_market/core/utils/constants/font_manger.dart';
 import 'package:hyper_market/core/utils/constants/styles_manger.dart';
 import 'package:hyper_market/feature/notifications/presentation/view/notifications_view.dart';
-import 'package:hyper_market/core/services/notification_service.dart';
 import 'package:hyper_market/feature/notifications/presentation/cubit/notifications_cubit.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class CustomHomeAppBar extends StatefulWidget {
   final String userName;
@@ -18,24 +20,83 @@ class CustomHomeAppBar extends StatefulWidget {
 
 class _CustomHomeAppBarState extends State<CustomHomeAppBar> {
   int _unreadCount = 0;
+  late RealtimeChannel _notificationsChannel;
+  late RealtimeChannel _ordersChannel;
 
   @override
   void initState() {
     super.initState();
-    _checkNewNotifications();
+    _setupRealtimeListeners();
     _loadUnreadCount();
   }
 
-  Future<void> _checkNewNotifications() async {
-    await NotificationService.checkNewNotifications();
+  void _setupRealtimeListeners() {
+    final supabase = Supabase.instance.client;
+    final userId = supabase.auth.currentUser!.id;
+    
+    // مراقبة جدول الإشعارات
+    _notificationsChannel = supabase.channel('public:notifications')
+      .onPostgresChanges(
+        event: PostgresChangeEvent.all,
+        schema: 'public',
+        table: 'notifications',
+        filter: PostgresChangeFilter(
+          type: PostgresChangeFilterType.eq,
+          column: 'user_id',
+          value: userId,
+        ),
+        callback: (payload) {
+          _loadUnreadCount();
+        },
+      )
+      .subscribe();
+
+    // مراقبة جدول الطلبات
+    _ordersChannel = supabase.channel('public:orders')
+      .onPostgresChanges(
+        event: PostgresChangeEvent.update,
+        schema: 'public',
+        table: 'orders',
+        filter: PostgresChangeFilter(
+          type: PostgresChangeFilterType.eq,
+          column: 'user_id',
+          value: userId,
+        ),
+        callback: (payload) {
+          // عند تحديث حالة الطلب، نقوم بتحديث عداد الإشعارات
+          Future.delayed(const Duration(milliseconds: 500), () {
+            _loadUnreadCount();
+          });
+        },
+      )
+      .subscribe();
+  }
+
+  @override
+  void dispose() {
+    _notificationsChannel.unsubscribe();
+    _ordersChannel.unsubscribe();
+    super.dispose();
   }
 
   Future<void> _loadUnreadCount() async {
-    final notifications = await NotificationService.getNotifications();
-    if (mounted) {
-      setState(() {
-        _unreadCount = notifications.where((n) => !n.isRead).length;
-      });
+    final supabase = Supabase.instance.client;
+    if (!mounted) return;
+
+    try {
+      final response = await supabase
+          .from('notifications')
+          .select()
+          .eq('user_id', supabase.auth.currentUser!.id)
+          .eq('is_read', false);
+
+      if (mounted) {
+        setState(() {
+          _unreadCount = (response as List).length;
+        });
+      }
+    } catch (e) {
+      debugPrint('Error loading unread count: $e');
     }
   }
 
