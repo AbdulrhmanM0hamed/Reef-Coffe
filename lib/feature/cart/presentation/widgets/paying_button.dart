@@ -10,6 +10,7 @@ import 'package:hyper_market/feature/cart/presentation/widgets/checkout_bottom_s
 import 'package:hyper_market/feature/home/presentation/view/home_view.dart';
 import 'package:hyper_market/feature/orders/presentation/cubit/orders_cubit.dart';
 import 'package:hyper_market/feature/orders/presentation/cubit/orders_state.dart';
+import 'package:hyper_market/core/errors/network_error_handler.dart';
 
 class PayingButton extends StatelessWidget {
   const PayingButton({super.key});
@@ -115,8 +116,19 @@ class PayingButton extends StatelessWidget {
                               },
                             );
                           } else if (state is OrderCreationError) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text(state.message)),
+                            Navigator.pop(context);
+                            showDialog(
+                              context: context,
+                              builder: (context) => AlertDialog(
+                                title: const Text('خطأ'),
+                                content: Text(NetworkErrorHandler.getErrorMessage(state.message)),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () => Navigator.pop(context),
+                                    child: const Text('حسناً'),
+                                  ),
+                                ],
+                              ),
                             );
                           }
                         },
