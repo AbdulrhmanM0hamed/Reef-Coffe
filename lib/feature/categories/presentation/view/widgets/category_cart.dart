@@ -55,23 +55,18 @@ class CategoryCart extends StatelessWidget {
           children: [
             Expanded(
               flex: 5,
-              child: Container(
+              child: CachedNetworkImage(
+                imageUrl: category.imageUrl,
+                fit: BoxFit.contain,
                 width: size.width * 0.4,
-                padding: EdgeInsets.all(size.width * 0.02),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(size.width * 0.03),
-                  child: CachedNetworkImage(
-                    imageUrl: category.imageUrl,
-                    fit: BoxFit.cover,
-                    errorWidget: (context, error, stackTrace) {
-                      return Icon(
-                        Icons.error_outline,
-                        color: Colors.grey,
-                        size: size.width * 0.08,
-                      );
-                    },
-                  ),
-                ),
+                height: size.width * 0.3,
+                errorWidget: (context, error, stackTrace) {
+                  return Icon(
+                    Icons.error_outline,
+                    color: Colors.grey,
+                    size: size.width * 0.08,
+                  );
+                },
               ),
             ),
             Center(

@@ -1,5 +1,5 @@
 class StringManager {
-  static const String products = 'المنتجات';
+  static const String products = 'التصنيفات';
   static const String search = 'البحث';
   static const String categories = 'الفئات';
   static const String cart = 'السلة';

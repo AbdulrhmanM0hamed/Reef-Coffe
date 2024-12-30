@@ -13,7 +13,9 @@ class SpecialOffersCubit extends Cubit<SpecialOffersState> {
 
     result.fold(
       (failure) => emit(SpecialOffersError(message: failure.message)),
-      (offers) => emit(SpecialOffersLoaded(offers)),
+      (offers) {
+        if (!isClosed) emit(SpecialOffersLoaded(offers));
+      },
     );
   }
 }

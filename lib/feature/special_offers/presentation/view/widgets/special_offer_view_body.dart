@@ -177,8 +177,9 @@ class _SpecialOfferViewBodyState extends State<SpecialOfferViewBody> {
               Text(
                 widget.offer.title,
                 style: getBoldStyle(
+                  
                   fontFamily: FontConstant.cairo,
-                  fontSize: FontSize.size24,
+                  fontSize: FontSize.size22,
                 ),
               ),
               const SizedBox(height: 4),
@@ -229,10 +230,10 @@ class _SpecialOfferViewBodyState extends State<SpecialOfferViewBody> {
         const SizedBox(height: 8),
         Text(
           widget.offer.description,
-          style: getRegularStyle(
+          style: getMediumStyle(
             fontFamily: FontConstant.cairo,
             fontSize: FontSize.size16,
-            color: TColors.secondary,
+            color: const Color.fromARGB(255, 129, 125, 125),
           ),
         ),
       ],
@@ -273,7 +274,8 @@ class _SpecialOfferViewBodyState extends State<SpecialOfferViewBody> {
                         Expanded(
                           child: Text(
                             item,
-                            style: getRegularStyle(
+                            style: getMediumStyle(
+                              color: const Color.fromARGB(255, 112, 110, 110),
                               fontFamily: FontConstant.cairo,
                               fontSize: FontSize.size16,
                             ),
@@ -319,10 +321,10 @@ class _SpecialOfferViewBodyState extends State<SpecialOfferViewBody> {
                       Expanded(
                         child: Text(
                           term,
-                          style: getRegularStyle(
+                          style: getMediumStyle(
+                            color: const Color.fromARGB(255, 112, 110, 110),
                             fontFamily: FontConstant.cairo,
                             fontSize: FontSize.size14,
-                            color: TColors.secondary,
                           ),
                         ),
                       ),

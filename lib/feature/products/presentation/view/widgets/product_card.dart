@@ -55,9 +55,7 @@ class ProductCard extends StatelessWidget {
                   borderRadius: BorderRadius.circular(_getBorderRadius(size)),
                   child: Container(
                     decoration:  BoxDecoration(
-                      color: Theme.of(context).brightness == Brightness.dark
-                          ? Colors.grey[900]
-                          : Colors.white,
+                     
                     ),
                     child: CachedNetworkImage(
                       imageUrl: product.imageUrl ?? '',
