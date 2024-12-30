@@ -21,7 +21,6 @@ class PayingButton extends StatelessWidget {
       builder: (context, state) {
         final cartItems = context.read<CartCubit>().getItems();
         final totalAmount = context.read<CartCubit>().getTotal();
-
         return ElevatedButton(
           onPressed: cartItems.isEmpty
               ? null

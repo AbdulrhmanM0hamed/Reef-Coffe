@@ -7,6 +7,11 @@
 -keep class io.flutter.plugins.** { *; }
 -keep class io.flutter.plugin.editing.** { *; }
 
+# Video Player
+-keep class io.flutter.plugins.videoplayer.** { *; }
+-keep class com.google.android.exoplayer2.** { *; }
+-dontwarn com.google.android.exoplayer2.**
+
 # Supabase
 -keep class io.supabase.** { *; }
 -keep class com.google.gson.** { *; }

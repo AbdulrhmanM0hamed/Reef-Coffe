@@ -5,188 +5,127 @@ import 'package:hyper_market/core/utils/constants/assets.dart';
 import 'package:hyper_market/core/utils/constants/colors.dart';
 import 'package:hyper_market/core/utils/constants/constants.dart';
 import 'package:hyper_market/core/utils/constants/font_manger.dart';
-import 'package:hyper_market/core/utils/constants/strings_manager.dart';
 import 'package:hyper_market/core/utils/constants/styles_manger.dart';
+import 'package:hyper_market/core/utils/constants/strings_manager.dart';
 import 'package:hyper_market/feature/auth/presentation/view/signin_view.dart';
+import 'package:hyper_market/feature/home/presentation/view/home_view.dart';
 import 'package:hyper_market/feature/onBoarding/presentation/view/widgets/logo_with_app_name.dart';
 import 'package:hyper_market/feature/onBoarding/presentation/view/widgets/outline.dart';
 import 'package:hyper_market/core/utils/animations/custom_animations.dart';
 
-class OnBoardingViewBody extends StatefulWidget {
-  const OnBoardingViewBody({super.key});
+import 'package:flutter/material.dart';
+import 'package:video_player/video_player.dart';
+
+class OnBoardingScreen extends StatefulWidget {
+  const OnBoardingScreen({Key? key}) : super(key: key);
 
   @override
-  State<OnBoardingViewBody> createState() => _OnBoardingViewBodyState();
+  State<OnBoardingScreen> createState() => _OnBoardingScreenState();
 }
 
-class _OnBoardingViewBodyState extends State<OnBoardingViewBody> {
-  bool _isVisible = false;
+class _OnBoardingScreenState extends State<OnBoardingScreen> {
+  late VideoPlayerController _videoController;
+  bool _isVideoInitialized = false;
 
   @override
   void initState() {
     super.initState();
-    Future.delayed(Duration(milliseconds: 100), () {
-      setState(() {
-        _isVisible = true;
-      });
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _initializeVideo();
     });
+  }
+
+  Future<void> _initializeVideo() async {
+    try {
+      _videoController = VideoPlayerController.asset(
+        'assets/images/onboarding_video.mp4',
+        videoPlayerOptions: VideoPlayerOptions(
+          mixWithOthers: false,
+          allowBackgroundPlayback: false,
+        ),
+      );
+
+      await _videoController.initialize();
+
+      if (mounted) {
+        // تعيين أقصى جودة متاحة
+        _videoController.setPlaybackSpeed(1.0);
+        _videoController.setVolume(1.0);
+
+        setState(() {
+          _isVideoInitialized = true;
+        });
+        _videoController.setLooping(true);
+        _videoController.play();
+      }
+    } catch (e) {
+      print('Error initializing video: $e');
+      if (mounted) {
+        setState(() {
+          _isVideoInitialized = false;
+        });
+      }
+    }
+  }
+
+  @override
+  void dispose() {
+    if (_isVideoInitialized) {
+      _videoController.dispose(); // تنظيف الذاكرة عند الخروج من الشاشة
+    }
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    var size = MediaQuery.of(context).size;
-
-    return Padding(
-      padding: EdgeInsets.symmetric(
-          horizontal: size.width * 0.05, vertical: size.height * 0.035),
-      child: Column(
+    return Scaffold(
+      body: Stack(
         children: [
-          CustomAnimations.slideFromLeft(
-            duration: Duration(milliseconds: 800),
-            child: AnimatedOpacity(
-              duration: Duration(milliseconds: 800),
-              opacity: _isVisible ? 1.0 : 0.0,
-              child: Container(
-                width: double.infinity,
-                height: size.height * 0.53,
-                decoration: BoxDecoration(
-                    border: Border.all(color: TColors.darkGrey),
-                    color: Theme.of(context).brightness == Brightness.dark
-                        ? const Color.fromARGB(255, 19, 19, 19)
-                        : TColors.white,
-                    borderRadius: BorderRadius.circular(16)),
-                child: Column(
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.symmetric(
-                          horizontal: size.width * 0.1,
-                          vertical: size.height * 0.04),
-                      child: CustomAnimations.fadeIn(
-                        duration: Duration(milliseconds: 1000),
-                        child: const LogoWithAppName(),
-                      ),
-                    ),
-                    SizedBox(height: size.height * 0.02),
-                    Padding(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: size.width * 0.1),
-                      child: Column(
-                        children: [
-                          CustomAnimations.slideFromLeft(
-                            duration: Duration(milliseconds: 800),
-                            child: const OutlineWidget(
-                              image: AssetsManager.organicFood,
-                              title: 'وجبات صحية',
-                            ),
-                          ),
-                          Divider(
-                            indent: 10,
-                          ),
-                          CustomAnimations.slideFromLeft(
-                            duration: Duration(milliseconds: 900),
-                            child: const OutlineWidget(
-                              image: AssetsManager.foodTurkey,
-                              title: StringManager.fullFoods,
-                            ),
-                          ),
-                          Divider(
-                            indent: 10,
-                          ),
-                          CustomAnimations.slideFromLeft(
-                            duration: Duration(milliseconds: 1000),
-                            child: const OutlineWidget(
-                              image: AssetsManager.deliveryTruck,
-                              title: StringManager.deliveryTruck,
-                            ),
-                          ),
-                          Divider(
-                            indent: 10,
-                          ),
-                          CustomAnimations.slideFromLeft(
-                            duration: Duration(milliseconds: 1100),
-                            child: const OutlineWidget(
-                              image: AssetsManager.solarMoney,
-                              title: StringManager.refund,
-                            ),
-                          ),
-                          Divider(
-                            indent: 10,
-                          ),
-                          CustomAnimations.slideFromLeft(
-                            duration: Duration(milliseconds: 1200),
-                            child: const OutlineWidget(
-                              image: AssetsManager.safeLock,
-                              title: StringManager.safe,
-                            ),
-                          ),
-                        ],
-                      ),
-                    )
-                  ],
+          if (_isVideoInitialized)
+            SizedBox.expand(
+              child: FittedBox(
+                fit: BoxFit.cover,
+                child: SizedBox(
+                  width: _videoController.value.size.width,
+                  height: _videoController.value.size.height,
+                  child: VideoPlayer(_videoController),
                 ),
               ),
+            )
+          else
+            const Center(
+              child: CircularProgressIndicator(),
             ),
+          // طبقة فوق الفيديو
+          Container(
+            color: Colors.black.withOpacity(0.3), // طبقة شفافة فوق الفيديو
           ),
-          SizedBox(
-            height: size.height * 0.04,
-          ),
-          CustomAnimations.fadeIn(
-            duration: Duration(milliseconds: 1300),
-            child: RichText(
-              text: TextSpan(
-                children: [
-                  TextSpan(
-                    text: StringManager.welcome, // النص الأول
-                    style: getBoldStyle(
-                        fontFamily: FontConstant.cairo,
-                        fontSize: size.height * 0.025,
-                        color: TColors.primary),
+
+          // الزر فقط
+          Align(
+              alignment: Alignment.bottomCenter,
+              child: Padding(
+                padding: const EdgeInsets.only(bottom: 30, right: 20, left: 20),
+                child: CustomAnimations.fadeIn(
+                  duration: Duration(milliseconds: 1500),
+                  child: CustomElevatedButton(
+                    buttonText: StringManager.start,
+                    onPressed: () async {
+                      final isLoginSuccess =
+                          await Prefs.getBool(KIsloginSuccess);
+                      final isUserLogout = await Prefs.getBool(KUserLogout);
+
+                      if (isLoginSuccess == true && isUserLogout != true) {
+                        Navigator.pushReplacementNamed(
+                            context, HomeView.routeName);
+                      } else {
+                        Navigator.pushReplacementNamed(
+                            context, SigninView.routeName);
+                      }
+                    },
                   ),
-                  TextSpan(
-                    text: 'ريف ' , // النص الأول
-                    style: getBoldStyle(
-                        fontFamily: FontConstant.cairo,
-                        fontSize: size.height * 0.025,
-                        color: TColors.primary),
-                  ),
-                  TextSpan(
-                    text: 'القهوة', // النص الثاني
-                    style: getBoldStyle(
-                        fontFamily: FontConstant.cairo,
-                        fontSize: size.height * 0.025,
-                        color: TColors.secondary),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          SizedBox(
-            height: size.height * 0.01,
-          ),
-          CustomAnimations.fadeIn(
-            duration: Duration(milliseconds: 1400),
-            child: Text(
-              StringManager.supTitleFOrWelcom,
-              textAlign: TextAlign.center,
-              style: getSemiBoldStyle(
-                  fontFamily: FontConstant.cairo,
-                  fontSize: size.height * 0.016,
-                  color: TColors.darkGrey),
-            ),
-          ),
-          SizedBox(
-            height: size.height * 0.06,
-          ),
-          CustomAnimations.fadeIn(
-            duration: Duration(milliseconds: 1500),
-            child: CustomElevatedButton(
-              buttonText: StringManager.start,
-              onPressed: ()  {
-                Prefs.setBool(KIsOnboardingViewSeen, true);
-                Navigator.pushReplacementNamed(context, SigninView.routeName);
-              },
-            ),
-          )
+                ),
+              )),
         ],
       ),
     );

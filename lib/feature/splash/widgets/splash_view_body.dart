@@ -111,41 +111,14 @@ class _SplashViewBodyState extends State<SplashViewBody>
   }
 
   void excuteNavigation(BuildContext context) async {
-    try {
-      await Future.delayed(const Duration(seconds: 2));
-
-      if (!mounted) return;
-
-      // Get all required flags
-      final isLoginSuccess = await Prefs.getBool(KIsloginSuccess);
-      final isOnboardingViewSeen = await Prefs.getBool(KIsOnboardingViewSeen);
-      final isUserLogout = await Prefs.getBool(KUserLogout);
-
-      debugPrint('Navigation Check - Login: $isLoginSuccess, Onboarding: $isOnboardingViewSeen, Logout: $isUserLogout');
-
-      // If there's any issue with the flags, reset them
-      if (isLoginSuccess == null || isOnboardingViewSeen == null || isUserLogout == null) {
-        await Prefs.clearInvalidData();
-        if (!mounted) return;
-        Navigator.pushReplacementNamed(context, SigninView.routeName);
-        return;
-      }
-
-      if (!mounted) return;
-
-      if (isUserLogout) {
-        Navigator.pushReplacementNamed(context, SigninView.routeName);
-      } else if (!isOnboardingViewSeen) {
-        Navigator.pushReplacementNamed(context, OnBordaingView.routeName);
-      } else if (isLoginSuccess) {
-        Navigator.pushReplacementNamed(context, HomeView.routeName);
-      } else {
-        Navigator.pushReplacementNamed(context, SigninView.routeName);
-      }
-    } catch (e) {
-      debugPrint('Error in navigation: $e');
-      if (!mounted) return;
-      Navigator.pushReplacementNamed(context, SigninView.routeName);
-    }
+  try {
+    await Future.delayed(const Duration(seconds: 2));
+    if (!mounted) return;
+    Navigator.pushReplacementNamed(context, OnBordaingView.routeName);
+  } catch (e) {
+    debugPrint('Error in navigation: $e');
+    if (!mounted) return;
+    Navigator.pushReplacementNamed(context, OnBordaingView.routeName);
   }
+}
 }
