@@ -29,7 +29,7 @@ class CartItemWidget extends StatelessWidget {
             Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(12),
-                color: Theme.of(context).brightness == Brightness.dark ? Colors.grey[800] : Colors.white,
+                color: Theme.of(context).brightness == Brightness.dark ? Colors.grey[900] : Colors.white60,
                 boxShadow: [
                   BoxShadow(
                     color: Colors.grey.withOpacity(0.1),
