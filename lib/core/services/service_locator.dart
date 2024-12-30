@@ -39,6 +39,12 @@ import 'package:hyper_market/feature/home/domain/usecases/get_special_offers.dar
 import 'package:hyper_market/feature/home/presentation/cubit/special_offers_cubit.dart';
 import 'package:hyper_market/feature/notifications/data/repositories/notification_repository_impl.dart';
 import 'package:hyper_market/feature/notifications/domain/repositories/notification_repository.dart';
+import 'package:hyper_market/feature/profile/data/datasources/profile_remote_datasource.dart';
+import 'package:hyper_market/feature/profile/data/repositories/profile_repository_impl.dart';
+import 'package:hyper_market/feature/profile/domain/repositories/profile_repository.dart';
+import 'package:hyper_market/feature/profile/domain/usecases/update_name_usecase.dart';
+import 'package:hyper_market/feature/profile/domain/usecases/update_password_usecase.dart';
+import 'package:hyper_market/feature/profile/presentation/cubit/profile_cubit.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 final getIt = GetIt.instance;
@@ -101,6 +107,32 @@ void setupServiceLocator() {
   getIt.registerLazySingleton<SignInCubit>(
     () => SignInCubit(authRepository: getIt<AuthRepository>()),
   );
+
+  getIt.registerLazySingleton<ProfileRemoteDataSource>(() =>
+      ProfileRemoteDataSourceImpl(
+          supabaseClient: getIt<SupabaseService>().client));
+
+  getIt.registerLazySingleton<ProfileRepository>(
+    () => ProfileRepositoryImpl(
+      remoteDataSource: getIt<ProfileRemoteDataSource>(),
+    ),
+  );
+
+  getIt.registerLazySingleton(
+    () => UpdateNameUseCase(getIt<ProfileRepository>()),
+  );
+
+  getIt.registerLazySingleton(
+    () => UpdatePasswordUseCase(getIt<ProfileRepository>()),
+  );
+
+  getIt.registerLazySingleton<ProfileCubit>(
+    () => ProfileCubit(
+      updatePasswordUseCase: getIt<UpdatePasswordUseCase>(),
+      updateNameUseCase: getIt<UpdateNameUseCase>(),
+    ),
+  );
+
   getIt.registerLazySingleton<SignUpCubit>(
     () => SignUpCubit(authRepository: getIt<AuthRepository>()),
   );
@@ -152,10 +184,14 @@ void setupServiceLocator() {
   );
 
   // Use cases
-  getIt.registerLazySingleton(() => AddRatingUseCase(getIt<RatingRepository>()));
-  getIt.registerLazySingleton(() => CheckUserRatingUseCase(getIt<RatingRepository>()));
-  getIt.registerLazySingleton(() => UpdateRatingUseCase(getIt<RatingRepository>()));
-  getIt.registerLazySingleton(() => GetProductRatingUseCase(getIt<RatingRepository>()));
+  getIt
+      .registerLazySingleton(() => AddRatingUseCase(getIt<RatingRepository>()));
+  getIt.registerLazySingleton(
+      () => CheckUserRatingUseCase(getIt<RatingRepository>()));
+  getIt.registerLazySingleton(
+      () => UpdateRatingUseCase(getIt<RatingRepository>()));
+  getIt.registerLazySingleton(
+      () => GetProductRatingUseCase(getIt<RatingRepository>()));
 
   // Repository
   getIt.registerLazySingleton<RatingRepository>(
@@ -175,5 +211,4 @@ void setupServiceLocator() {
 
   // Product Dependencies
   getIt.registerLazySingleton(() => ProductsCubit(getIt<ProductRepository>()));
-
 }

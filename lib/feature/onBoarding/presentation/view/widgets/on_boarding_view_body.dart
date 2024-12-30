@@ -1,19 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:hyper_market/core/services/shared_preferences.dart';
 import 'package:hyper_market/core/utils/common/elvated_button.dart';
-import 'package:hyper_market/core/utils/constants/assets.dart';
-import 'package:hyper_market/core/utils/constants/colors.dart';
 import 'package:hyper_market/core/utils/constants/constants.dart';
-import 'package:hyper_market/core/utils/constants/font_manger.dart';
-import 'package:hyper_market/core/utils/constants/styles_manger.dart';
 import 'package:hyper_market/core/utils/constants/strings_manager.dart';
 import 'package:hyper_market/feature/auth/presentation/view/signin_view.dart';
 import 'package:hyper_market/feature/home/presentation/view/home_view.dart';
-import 'package:hyper_market/feature/onBoarding/presentation/view/widgets/logo_with_app_name.dart';
-import 'package:hyper_market/feature/onBoarding/presentation/view/widgets/outline.dart';
 import 'package:hyper_market/core/utils/animations/custom_animations.dart';
-
-import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 
 class OnBoardingScreen extends StatefulWidget {
@@ -107,13 +99,13 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
               child: Padding(
                 padding: const EdgeInsets.only(bottom: 30, right: 20, left: 20),
                 child: CustomAnimations.fadeIn(
-                  duration: Duration(milliseconds: 1500),
+                  duration:const Duration(milliseconds: 1500),
                   child: CustomElevatedButton(
                     buttonText: StringManager.start,
                     onPressed: () async {
                       final isLoginSuccess =
-                          await Prefs.getBool(KIsloginSuccess);
-                      final isUserLogout = await Prefs.getBool(KUserLogout);
+                           Prefs.getBool(KIsloginSuccess);
+                      final isUserLogout =  Prefs.getBool(KUserLogout);
 
                       if (isLoginSuccess == true && isUserLogout != true) {
                         Navigator.pushReplacementNamed(

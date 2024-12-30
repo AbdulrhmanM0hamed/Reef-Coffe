@@ -15,7 +15,10 @@ import 'package:hyper_market/feature/favorites/presentation/cubit/favorite_cubit
 import 'package:hyper_market/feature/favorites/presentation/view/favorites_view.dart';
 import 'package:hyper_market/feature/orders/presentation/cubit/orders_cubit.dart';
 import 'package:hyper_market/feature/orders/presentation/view/orders_view.dart';
+import 'package:hyper_market/feature/profile/presentation/cubit/profile_cubit.dart';
 import 'package:hyper_market/feature/profile/presentation/cubit/theme_cubit.dart';
+import 'package:hyper_market/feature/profile/presentation/view/update_profile/update_name_view.dart';
+import 'package:hyper_market/feature/profile/presentation/view/update_profile/update_password_view.dart';
 import 'package:hyper_market/feature/profile/presentation/view/widgets/profiel_menu_switch.dart';
 import 'package:hyper_market/feature/profile/presentation/view/widgets/profile_header.dart';
 import 'package:hyper_market/feature/profile/presentation/view/widgets/profile_menu_item.dart';
@@ -47,6 +50,40 @@ class ProfileViewBody extends StatelessWidget {
               // Profile Header
               ProfileHeader(userName: userName, userEmail: userEmail),
               const SizedBox(height: 24),
+              // بعد ProfileHeader مباشرة
+
+// إضافة خيار تغيير الاسم
+              ProfileMenuItem(
+                icon: Icons.person_outline,
+                title: 'تغيير الاسم',
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => BlocProvider(
+                        create: (context) => getIt<ProfileCubit>(),
+                        child: const UpdateNameView(),
+                      ),
+                    ),
+                  );
+                },
+              ),
+
+              ProfileMenuItem(
+                icon: Icons.lock_outline,
+                title: 'تغيير كلمة المرور',
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => BlocProvider(
+                        create: (context) => getIt<ProfileCubit>(),
+                        child: const UpdatePasswordView(),
+                      ),
+                    ),
+                  );
+                },
+              ),
 
               // Profile Menu Items
               ProfileMenuItem(
@@ -92,14 +129,7 @@ class ProfileViewBody extends StatelessWidget {
                   );
                 },
               ),
-              ProfileMenuSwitch(
-                icon: Icons.notifications_outlined,
-                title: 'الاشعارات',
-                value: true,
-                onChanged: (value) {
-                  // Handle notifications toggle
-                },
-              ),
+
               // ProfileMenuSwitch(
               //   icon: Icons.dark_mode_outlined,
               //   title: 'الوضع الليلي',
@@ -122,9 +152,8 @@ class ProfileViewBody extends StatelessWidget {
                   // Navigate to about
                 },
               ),
-              const SizedBox(height: 50),
 
-              // Logout Button
+              SizedBox(height: MediaQuery.of(context).size.height * 0.03),
               SizedBox(
                 width: double.infinity,
                 child: CustomElevatedButton(
