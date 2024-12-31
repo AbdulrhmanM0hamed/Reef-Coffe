@@ -7,39 +7,41 @@ import 'package:hyper_market/feature/products/domain/entities/product.dart';
 
 class ProductInfoSection extends StatelessWidget {
   final Product product;
-  final bool isSmallScreen;
-  final double screenHeight;
-  final double screenWidth;
 
   const ProductInfoSection({
     super.key,
     required this.product,
-    required this.isSmallScreen,
-    required this.screenHeight,
-    required this.screenWidth,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          'معلومات المنتج',
-          style: getBoldStyle(
-            fontFamily: FontConstant.cairo,
-            fontSize: isSmallScreen ? 18 : 20,
-            color: TColors.darkGrey,
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final width = constraints.maxWidth;
+        final isTablet = MediaQuery.of(context).size.width >= 768;
+        
+        return SizedBox(
+          width: width,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'معلومات المنتج',
+                style: getBoldStyle(
+                  fontFamily: FontConstant.cairo,
+                  fontSize: isTablet ? 20 : 18,
+                  color: TColors.darkGrey,
+                ),
+              ),
+              
+              ProductDetialsGridView(
+                product: product,
+              ),
+            ],
           ),
-        ),
-        SizedBox(height: screenHeight * 0.02),
-        ProductDetialsGridView(
-          screenHeight: screenHeight,
-          screenWidth: screenWidth,
-          product: product,
-          isSmallScreen: isSmallScreen,
-        ),
-      ],
+        );
+      },
     );
   }
 }

@@ -152,12 +152,9 @@ void didUpdateWidget(DetailsViewBody oldWidget) {
               _buildDescription(isSmallScreen),
               SizedBox(height: screenHeight * 0.02),
               _buildCommentsSection(isSmallScreen),
-              SizedBox(height: screenHeight * 0.02),
+              SizedBox(height: screenHeight * 0.01),
               ProductInfoSection(
                 product: widget.product,
-                screenHeight: screenHeight,
-                screenWidth: screenWidth,
-                isSmallScreen: isSmallScreen,
               ),
               SizedBox(height: screenHeight * 0.02),
               _buildAddToCartButton(),

@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hyper_market/core/utils/common/custom_app_bar.dart';
 import 'package:hyper_market/core/utils/common/elvated_button.dart';
-import 'package:hyper_market/core/utils/constants/font_manger.dart';
-import 'package:hyper_market/core/utils/constants/styles_manger.dart';
+
 import 'package:hyper_market/feature/profile/presentation/cubit/profile_cubit.dart';
 import 'package:hyper_market/feature/profile/presentation/cubit/profile_state.dart';
 import 'package:hyper_market/feature/profile/presentation/view/widgets/custom_text_filed.dart';

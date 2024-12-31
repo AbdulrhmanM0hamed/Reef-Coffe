@@ -48,28 +48,36 @@ class ProductCard extends StatelessWidget {
           children: [
             Expanded(
               flex: 4,
-              child: Container(
-                width: double.infinity,
-                padding: EdgeInsets.all(responsivePadding),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(_getBorderRadius(size)),
-                  child: Container(
-                    decoration:  BoxDecoration(
-                     
+              child: LayoutBuilder(
+                builder: (context, constraints) {
+                  return Container(
+                    width: double.infinity,
+                    padding: EdgeInsets.all(constraints.maxWidth * 0.05),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(_getBorderRadius(size)),
+                      child: AspectRatio(
+                        aspectRatio: 1,
+                        child: CachedNetworkImage(
+                          imageUrl: product.imageUrl ?? '',
+                          fit: BoxFit.contain,
+                          placeholder: (context, url) =>  const Center(
+                            child: CircularProgressIndicator(
+                              color: TColors.primary,
+                              strokeWidth: 2,
+                            ),
+                          ),
+                          errorWidget: (context, error, stackTrace) {
+                            return Icon(
+                              Icons.error_outline,
+                              color: Colors.grey.shade400,
+                              size: constraints.maxWidth * 0.3,
+                            );
+                          },
+                        ),
+                      ),
                     ),
-                    child: CachedNetworkImage(
-                      imageUrl: product.imageUrl ?? '',
-                      fit: BoxFit.contain,
-                      errorWidget: (context, error, stackTrace) {
-                        return Icon(
-                          Icons.error_outline,
-                          color: Colors.grey.shade400,
-                          size: _getErrorIconSize(size),
-                        );
-                      },
-                    ),
-                  ),
-                ),
+                  );
+                },
               ),
             ),
             Expanded(

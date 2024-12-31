@@ -84,7 +84,7 @@ class CartItemWidget extends StatelessWidget {
                   
                   // Price
                   Text(
-                    '${item.price!.toStringAsFixed(2)} EGP',
+                    '${item.price!.toStringAsFixed(2)} ريال',
                     style:const TextStyle(
                       fontSize: 14,
                       color: TColors.primary,

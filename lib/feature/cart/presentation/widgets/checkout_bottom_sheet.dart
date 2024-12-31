@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hyper_market/core/utils/common/elvated_button.dart';
-import 'package:hyper_market/core/utils/constants/colors.dart';
 import 'package:hyper_market/core/utils/constants/font_manger.dart';
 import 'package:hyper_market/core/utils/constants/styles_manger.dart';
 import 'package:hyper_market/feature/cart/data/models/cart_item_model.dart';
