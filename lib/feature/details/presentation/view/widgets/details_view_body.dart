@@ -20,10 +20,10 @@ import 'package:hyper_market/core/services/service_locator.dart';
 
 class DetailsViewBody extends StatefulWidget {
   final Product product;
-
+   final String heroTag;
   const DetailsViewBody({
     Key? key,
-    required this.product,
+    required this.product, required this.heroTag,
   }) : super(key: key);
 
   @override
@@ -101,6 +101,7 @@ void didUpdateWidget(DetailsViewBody oldWidget) {
             child: Column(
               children: [
                 ProductImageSection(
+                   heroTag: widget.heroTag,
                   imageUrl: widget.product.imageUrl ?? '',
                   productId: widget.product.id!,
                   screenHeight: screenHeight,

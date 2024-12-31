@@ -21,7 +21,7 @@ Route<dynamic> onGenratedRoutes(RouteSettings settings) {
   if (settings.name == DetailsView.routeName) {
     final product = settings.arguments as Product;
     return MaterialPageRoute(
-      builder: (context) => DetailsView(product: product),
+      builder: (context) => DetailsView(product: product , heroTag: 'details'),
     );
   }
 

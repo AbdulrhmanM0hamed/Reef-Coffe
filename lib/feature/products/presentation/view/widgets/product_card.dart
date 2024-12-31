@@ -10,6 +10,7 @@ import 'package:hyper_market/feature/details/presentation/view/details_view.dart
 import 'package:hyper_market/feature/products/presentation/view/widgets/add_product_snackbar.dart';
 import 'package:page_transition/page_transition.dart';
 import '../../../domain/entities/product.dart';
+import 'dart:math';
 
 class ProductCard extends StatelessWidget {
   final Product product;
@@ -21,16 +22,35 @@ class ProductCard extends StatelessWidget {
     final size = MediaQuery.of(context).size;
     final isSmallScreen = size.width < 360;
     final responsivePadding = size.width * 0.03;
+    final random = Random().nextInt(10000);
+    final heroTag = 'product_${product.id}_$random';
 
     return GestureDetector(
       onTap: () {
         Navigator.push(
           context,
-          PageTransition(
-            type: PageTransitionType.fade,
-            child: DetailsView(product: product),
-            duration: const Duration(milliseconds: 300),
-            reverseDuration: const Duration(milliseconds: 250),
+          PageRouteBuilder(
+            transitionDuration: const Duration(milliseconds:550),
+            reverseTransitionDuration: const Duration(milliseconds: 550),
+            pageBuilder: (context, animation, secondaryAnimation) => DetailsView(
+              product: product,
+              heroTag: heroTag,
+            ),
+            transitionsBuilder: (context, animation, secondaryAnimation, child) {
+              var begin = const Offset(0.0, 0.0);
+              var end = Offset.zero;
+              var curve = Curves.easeInOutCubic;
+              var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+              var offsetAnimation = animation.drive(tween);
+
+              return SlideTransition(
+                position: offsetAnimation,
+                child: FadeTransition(
+                  opacity: animation,
+                  child: child,
+                ),
+              );
+            },
           ),
         );
       },
@@ -48,36 +68,39 @@ class ProductCard extends StatelessWidget {
           children: [
             Expanded(
               flex: 4,
-              child: LayoutBuilder(
-                builder: (context, constraints) {
-                  return Container(
-                    width: double.infinity,
-                    padding: EdgeInsets.all(constraints.maxWidth * 0.05),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(_getBorderRadius(size)),
-                      child: AspectRatio(
-                        aspectRatio: 1,
-                        child: CachedNetworkImage(
-                          imageUrl: product.imageUrl ?? '',
-                          fit: BoxFit.contain,
-                          placeholder: (context, url) =>  const Center(
-                            child: CircularProgressIndicator(
-                              color: TColors.primary,
-                              strokeWidth: 2,
+              child: Hero(
+                tag: heroTag,
+                child: LayoutBuilder(
+                  builder: (context, constraints) {
+                    return Container(
+                      width: double.infinity,
+                      padding: EdgeInsets.all(constraints.maxWidth * 0.05),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(_getBorderRadius(size)),
+                        child: AspectRatio(
+                          aspectRatio: 1,
+                          child: CachedNetworkImage(
+                            imageUrl: product.imageUrl ?? '',
+                            fit: BoxFit.contain,
+                            placeholder: (context, url) =>  const Center(
+                              child: CircularProgressIndicator(
+                                color: TColors.primary,
+                                strokeWidth: 2,
+                              ),
                             ),
+                            errorWidget: (context, error, stackTrace) {
+                              return Icon(
+                                Icons.error_outline,
+                                color: Colors.grey.shade400,
+                                size: constraints.maxWidth * 0.3,
+                              );
+                            },
                           ),
-                          errorWidget: (context, error, stackTrace) {
-                            return Icon(
-                              Icons.error_outline,
-                              color: Colors.grey.shade400,
-                              size: constraints.maxWidth * 0.3,
-                            );
-                          },
                         ),
                       ),
-                    ),
-                  );
-                },
+                    );
+                  },
+                ),
               ),
             ),
             Expanded(

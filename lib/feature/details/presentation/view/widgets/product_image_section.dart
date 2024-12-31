@@ -9,6 +9,7 @@ class ProductImageSection extends StatelessWidget {
   final double screenHeight;
   final double screenWidth;
   final bool isSmallScreen;
+  final String heroTag;
 
   const ProductImageSection({
     super.key,
@@ -17,6 +18,7 @@ class ProductImageSection extends StatelessWidget {
     required this.screenHeight,
     required this.screenWidth,
     required this.isSmallScreen,
+    required this.heroTag,
   });
 
   @override
@@ -25,28 +27,23 @@ class ProductImageSection extends StatelessWidget {
       height: screenHeight * 0.45,
       child: Stack(
         children: [
-          AspectRatio(
-            aspectRatio: 3.2 / 3,
-            child: Hero(
-              tag: 'product_image_${productId}_list',
-              child: CachedNetworkImage(
-                imageUrl: imageUrl,
-                height: screenHeight * 0.4,
-                width: double.infinity,
-                fit: BoxFit.contain,
-                errorWidget: (context, error, stackTrace) {
-                  return Icon(
-                    Icons.error_outline,
-                    color: Colors.grey.shade400,
-                    size: isSmallScreen ? 48 : 64,
-                  );
-                },
-              ),
+          Hero(
+            tag: heroTag,
+            child: CachedNetworkImage(
+              imageUrl: imageUrl,
+              fit: BoxFit.contain,
+              errorWidget: (context, error, stackTrace) {
+                return Icon(
+                  Icons.error_outline,
+                  color: Colors.grey.shade400,
+                  size: isSmallScreen ? 48 : 64,
+                );
+              },
             ),
           ),
           Positioned(
             top: screenHeight * 0.05,
-            right: screenWidth * 0.04,
+            right: screenWidth * 0.008,
             child: const ArrowBackWidget(),
           ),
         ],

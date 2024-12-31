@@ -12,10 +12,12 @@ import 'package:hyper_market/feature/products/domain/entities/product.dart';
 class DetailsView extends StatelessWidget {
   static const String routeName = '/details';
   final Product product;
+  final String heroTag;
 
   const DetailsView({
     Key? key,
     required this.product,
+    required this.heroTag,
   }) : super(key: key);
 
   @override
@@ -35,7 +37,10 @@ class DetailsView extends StatelessWidget {
             statusBarColor: Colors.transparent,
             statusBarIconBrightness: Brightness.dark,
           ),
-          child: DetailsViewBody(product: product),
+          child: DetailsViewBody(
+            product: product,
+            heroTag: heroTag,
+          ),
         ),
       ),
     );
