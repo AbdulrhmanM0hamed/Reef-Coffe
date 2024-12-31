@@ -34,7 +34,6 @@ class _CustomSearchTextFieldState extends State<CustomSearchTextField> {
         setState(() {
           _isSearchActive = true;
         });
-        _productsCubit.getAllProducts();
         _showOverlay = true;
         _showSearchOverlay();
       } else {
@@ -54,6 +53,21 @@ class _CustomSearchTextFieldState extends State<CustomSearchTextField> {
     super.dispose();
   }
 
+  void _toggleSearch() {
+    setState(() {
+      _isSearchActive = !_isSearchActive;
+      if (!_isSearchActive) {
+        _resetSearch();
+      }
+    });
+  }
+
+  void _resetSearch() {
+    _searchController.clear();
+    _productsCubit.searchProducts('');
+    _hideSearchOverlay();
+  }
+
   void _showSearchOverlay() {
     _overlayEntry = _createOverlayEntry();
     if (!mounted) return;
@@ -64,25 +78,6 @@ class _CustomSearchTextFieldState extends State<CustomSearchTextField> {
     _showOverlay = false;
     _overlayEntry?.remove();
     _overlayEntry = null;
-  }
-
-  void _resetSearch() {
-    _searchController.clear();
-    if (mounted) {
-      _productsCubit.getAllProducts();
-    }
-  }
-
-  void _toggleSearch() {
-    setState(() {
-      _isSearchActive = !_isSearchActive;
-      if (_isSearchActive) {
-        _focusNode.requestFocus();
-      } else {
-        _focusNode.unfocus();
-        _resetSearch();
-      }
-    });
   }
 
   OverlayEntry _createOverlayEntry() {
@@ -113,7 +108,7 @@ class _CustomSearchTextFieldState extends State<CustomSearchTextField> {
                         padding: const EdgeInsets.all(16),
                         child: Text(
                           'لا توجد منتجات',
-                          style: getRegularStyle(
+                          style: getMediumStyle(
                             fontFamily: FontConstant.cairo,
                             fontSize: 14,
                           ),
@@ -131,14 +126,14 @@ class _CustomSearchTextFieldState extends State<CustomSearchTextField> {
                           return ListTile(
                             title: Text(
                               product.name,
-                              style: getRegularStyle(
+                              style: getMediumStyle(
                                 fontFamily: FontConstant.cairo,
                                 fontSize: 14,
                               ),
                             ),
                             subtitle: Text(
                               '${product.price} جنيه',
-                              style: getRegularStyle(
+                              style: getMediumStyle(
                                 fontFamily: FontConstant.cairo,
                                 fontSize: 12,
                                 color: Colors.grey,

@@ -7,7 +7,9 @@ class ProductsCubit extends Cubit<ProductsState> {
   final ProductRepository productRepository;
   List<Product> _allProducts = [];
   String _currentQuery = '';
+
   ProductsCubit(this.productRepository) : super(ProductsInitial());
+
   Future<void> getProductsByCategory(String? categoryId) async {
     if (isClosed) return;
     if (categoryId == null) return;
@@ -64,34 +66,45 @@ class ProductsCubit extends Cubit<ProductsState> {
   void searchProducts(String query) {
     if (isClosed) return;
     
-    _currentQuery = query.trim(); // إزالة المسافات الزائدة
+    _currentQuery = query.trim();
     
     if (_currentQuery.isEmpty) {
       emit(ProductsLoaded(_allProducts));
       return;
     }
 
-    // تحويل النص للحروف الصغيرة وإزالة التشكيل
     final searchQuery = _normalizeArabicText(_currentQuery.toLowerCase());
     
     final filteredProducts = _allProducts.where((product) {
-      // تطبيق نفس المعالجة على اسم المنتج والوصف
       final normalizedName = _normalizeArabicText(product.name.toLowerCase());
       final normalizedDescription = product.description != null 
-          ? _normalizeArabicText(product.description.toLowerCase())
+          ? _normalizeArabicText(product.description!.toLowerCase())
           : '';
           
-      // البحث عن تطابق جزئي
-      return normalizedName.contains(searchQuery) || 
-             normalizedDescription.contains(searchQuery);
+      // Check for exact word matches first
+      final searchWords = searchQuery.split(' ');
+      final nameWords = normalizedName.split(' ');
+      final descriptionWords = normalizedDescription.split(' ');
+      
+      bool hasExactMatch = searchWords.any((word) => 
+        nameWords.contains(word) || descriptionWords.contains(word));
+      
+      // If no exact match, check for partial matches
+      bool hasPartialMatch = !hasExactMatch && (
+        normalizedName.contains(searchQuery) || 
+        normalizedDescription.contains(searchQuery)
+      );
+
+      return hasExactMatch || hasPartialMatch;
     }).toList();
 
     emit(ProductsLoaded(filteredProducts));
   }
 
-  // دالة لمعالجة النص العربي
   String _normalizeArabicText(String text) {
-    // إزالة التشكيل
+    if (text.isEmpty) return '';
+    
+    // Remove diacritics
     final normalized = text
         .replaceAll('\u064B', '') // فتحتين
         .replaceAll('\u064C', '') // ضمتين
@@ -100,7 +113,14 @@ class ProductsCubit extends Cubit<ProductsState> {
         .replaceAll('\u064F', '') // ضمة
         .replaceAll('\u0650', '') // كسرة
         .replaceAll('\u0651', '') // شدة
-        .replaceAll('\u0652', ''); // سكون
+        .replaceAll('\u0652', '') // سكون
+        // Normalize Alef forms
+        .replaceAll('\u0622', '\u0627') // Alef with madda
+        .replaceAll('\u0623', '\u0627') // Alef with hamza above
+        .replaceAll('\u0625', '\u0627') // Alef with hamza below
+        // Normalize Ya and Alef Maksura
+        .replaceAll('\u0649', '\u064A') // Alef maksura to Ya
+        .trim();
         
     return normalized;
   }
@@ -111,8 +131,7 @@ class ProductsCubit extends Cubit<ProductsState> {
     required bool isNatural,
     required bool hasDiscount,
   }) {
-    if (isClosed) return;
-    var filteredProducts = _allProducts.where((product) {
+    final filteredProducts = _allProducts.where((product) {
       bool priceInRange = product.price >= minPrice && product.price <= maxPrice;
       bool naturalMatch = !isNatural || product.isOrganic;
       bool discountMatch = !hasDiscount || (product.hasDiscount && (product.discountPrice ?? 0) > 0);
@@ -120,14 +139,6 @@ class ProductsCubit extends Cubit<ProductsState> {
       return priceInRange && naturalMatch && discountMatch;
     }).toList();
 
-    if (_currentQuery.isNotEmpty) {
-      filteredProducts = filteredProducts.where((product) {
-        return product.name.toLowerCase().contains(_currentQuery);
-      }).toList();
-    }
-
-    if (!isClosed) {
-      emit(ProductsLoaded(filteredProducts));
-    }
+    emit(ProductsLoaded(filteredProducts));
   }
 }

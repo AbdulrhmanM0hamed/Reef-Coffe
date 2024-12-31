@@ -85,7 +85,7 @@ class CartItemWidget extends StatelessWidget {
                   // Price
                   Text(
                     '${item.price!.toStringAsFixed(2)} EGP',
-                    style: TextStyle(
+                    style:const TextStyle(
                       fontSize: 14,
                       color: TColors.primary,
                       fontWeight: FontWeight.w600,

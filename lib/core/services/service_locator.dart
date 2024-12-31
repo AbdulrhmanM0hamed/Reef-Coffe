@@ -74,6 +74,10 @@ void setupServiceLocator() {
   getIt.registerLazySingleton<ProductRepository>(
     () => ProductRepositoryImpl(getIt<ProductRemoteDataSource>()),
   );
+  
+  getIt.registerLazySingleton<ProductsCubit>(
+    () => ProductsCubit(getIt<ProductRepository>())..getAllProducts(),
+  );
 
   // Special Offers
   getIt.registerLazySingleton<SpecialOffersRemoteDataSource>(
@@ -209,6 +213,5 @@ void setupServiceLocator() {
     () => CommentRepositoryImpl(supabaseClient: getIt()),
   );
 
-  // Product Dependencies
-  getIt.registerLazySingleton(() => ProductsCubit(getIt<ProductRepository>()));
+
 }

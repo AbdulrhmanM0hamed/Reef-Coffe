@@ -10,6 +10,7 @@ import 'package:hyper_market/feature/home/presentation/view/widgets/exclusive_of
 import 'package:hyper_market/feature/home/presentation/view/widgets/home_top_slider.dart';
 import 'package:hyper_market/feature/home/presentation/view/widgets/outline_of_products.dart';
 import 'package:hyper_market/feature/home/presentation/view/widgets/supplements_section.dart';
+import 'package:hyper_market/feature/products/domain/repositories/product_repository.dart';
 import 'package:hyper_market/feature/products/presentation/cubit/products_cubit.dart';
 import 'package:hyper_market/feature/home/presentation/view/pages/exclusive_offers_page.dart';
 import 'package:hyper_market/feature/home/presentation/view/pages/supplements_page.dart';
@@ -17,23 +18,36 @@ import 'package:hyper_market/feature/home/presentation/view/pages/best_selling_p
 
 class HomeViewBody extends StatefulWidget {
   final String userName;
-  HomeViewBody({super.key, required this.userName});
+
+  const HomeViewBody({
+    super.key,
+    required this.userName,
+  });
 
   @override
   State<HomeViewBody> createState() => _HomeViewBodyState();
 }
 
 class _HomeViewBodyState extends State<HomeViewBody> {
+  late final ProductsCubit _productsCubit;
   bool _isVisible = false;
 
   @override
   void initState() {
     super.initState();
+    _productsCubit = ProductsCubit(getIt<ProductRepository>());
+    _productsCubit.getAllProducts();
     Future.delayed(Duration(milliseconds: 100), () {
       setState(() {
         _isVisible = true;
       });
     });
+  }
+
+  @override
+  void dispose() {
+    _productsCubit.close();
+    super.dispose();
   }
 
   @override
@@ -43,8 +57,8 @@ class _HomeViewBodyState extends State<HomeViewBody> {
         BlocProvider(
           create: (context) => getIt<SpecialOffersCubit>()..loadSpecialOffers(),
         ),
-        BlocProvider(
-          create: (context) => getIt<ProductsCubit>()..getAllProducts(),
+        BlocProvider.value(
+          value: _productsCubit,
         ),
       ],
       child: Padding(
