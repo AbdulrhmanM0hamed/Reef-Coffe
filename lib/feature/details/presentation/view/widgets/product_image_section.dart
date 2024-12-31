@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:hyper_market/core/utils/constants/colors.dart';
 import 'package:hyper_market/feature/details/presentation/view/widgets/arrow_back_widget.dart';
 
 class ProductImageSection extends StatelessWidget {

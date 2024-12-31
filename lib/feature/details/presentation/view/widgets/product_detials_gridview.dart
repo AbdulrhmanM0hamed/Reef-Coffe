@@ -27,17 +27,10 @@ class ProductDetialsGridView extends StatelessWidget {
         return Container(
           decoration: BoxDecoration(
             color: Theme.of(context).brightness == Brightness.dark
-                ? TColors.darkerGrey
-                : TColors.white,
+                ? Colors.grey[900]
+                : const Color.fromARGB(255, 230, 229, 229),
             borderRadius: BorderRadius.circular(12),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.grey.withOpacity(0.2),
-                spreadRadius: 2,
-                blurRadius: 5,
-                offset: const Offset(0, 3),
-              ),
-            ],
+            
           ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
