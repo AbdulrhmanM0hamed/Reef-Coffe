@@ -24,7 +24,7 @@ class ProductImageSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: screenHeight * 0.45,
+      height: screenHeight * 0.39,
       child: Stack(
         children: [
           Hero(

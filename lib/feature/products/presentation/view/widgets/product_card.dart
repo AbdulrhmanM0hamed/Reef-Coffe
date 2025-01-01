@@ -67,7 +67,7 @@ class ProductCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Expanded(
-              flex: 4,
+              flex: 5,
               child: Hero(
                 tag: heroTag,
                 child: LayoutBuilder(
@@ -140,7 +140,7 @@ class ProductCard extends StatelessWidget {
                             ),
                             child: Text(
                               '${product.discountPercentage}%',
-                              style: getBoldStyle(
+                              style: getSemiBoldStyle(
                                 fontFamily: FontConstant.cairo,
                                 fontSize: _getDiscountFontSize(size),
                                 color: Colors.red.shade700,
@@ -313,26 +313,26 @@ class ProductCard extends StatelessWidget {
   double _getHorizontalPadding(Size size) {
     final width = size.width;
     if (width >= 1024) {
-      return width * 0.015;
+      return width * 0.010;
     } else if (width >= 768) {
-      return width * 0.02;
+      return width * 0.015;
     } else if (width >= 480) {
-      return width * 0.025;
+      return width * 0.020;
     } else {
-      return width * 0.03;
+      return width * 0.025;
     }
   }
 
   double _getVerticalPadding(Size size) {
     final width = size.width;
     if (width >= 1024) {
-      return 12;
-    } else if (width >= 768) {
       return 10;
+    } else if (width >= 768) {
+      return 7;
     } else if (width >= 390) {
-      return 8;
+      return 4;
     } else {
-      return 6;
+      return 4;
     }
   }
 
