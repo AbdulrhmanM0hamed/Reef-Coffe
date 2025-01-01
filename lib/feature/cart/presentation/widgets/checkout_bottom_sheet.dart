@@ -76,7 +76,7 @@ class _CheckoutBottomSheetState extends State<CheckoutBottomSheet> {
       return 'العنوان لا يجب أن يتجاوز 200 حرف';
     }
     // Check if address has numbers (like building number, apartment number)
-   
+
     return null;
   }
 
@@ -191,46 +191,34 @@ class _CheckoutBottomSheetState extends State<CheckoutBottomSheet> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(_getResponsivePadding(context, 16)),
-      decoration: BoxDecoration(
-        color: Theme.of(context).scaffoldBackgroundColor,
-        borderRadius: BorderRadius.vertical(
-          top: Radius.circular(_getResponsivePadding(context, 20)),
+    return BlocProvider.value(
+      value: context.read<OrdersCubit>(),
+      child: Padding(
+        padding: EdgeInsets.only(
+          bottom: MediaQuery.of(context).viewInsets.bottom,
+          left: 16,
+          right: 16,
+          top: 16,
         ),
-      ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Center(
-            child: Container(
-              width: _getResponsivePadding(context, 50),
-              height: _getResponsivePadding(context, 4),
-              decoration: BoxDecoration(
-                color: Colors.grey[300],
-                borderRadius: BorderRadius.circular(_getResponsivePadding(context, 2)),
-              ),
-            ),
-          ),
-          SizedBox(height: _getResponsivePadding(context, 16)),
-          Text(
-            'معلومات الطلب',
-            style: getBoldStyle(
-              fontFamily: FontConstant.cairo,
-              fontSize: _getResponsiveFontSize(context, 18),
-              color: TColors.dark,
-            ),
-          ),
-          SizedBox(height: _getResponsivePadding(context, 16)),
-          Form(
+        child: SingleChildScrollView(
+          child: Form(
             key: _formKey,
             child: Column(
+              mainAxisSize: MainAxisSize.min,
               children: [
+                Text(
+                  'اتمام الطلب',
+                  style: getBoldStyle(
+                    fontFamily: FontConstant.cairo,
+                    fontSize: _getResponsiveFontSize(context, 20),
+                  ),
+                ),
+                SizedBox(height: _getResponsivePadding(context, 24)),
                 TextFormField(
                   controller: _nameController,
                   validator: _validateName,
                   textInputAction: TextInputAction.next,
+                  textDirection: TextDirection.rtl,
                   decoration: InputDecoration(
                     labelText: 'الاسم',
                     hintText: 'ادخل اسمك الكامل',
@@ -249,9 +237,10 @@ class _CheckoutBottomSheetState extends State<CheckoutBottomSheet> {
                   validator: _validatePhone,
                   keyboardType: TextInputType.phone,
                   textInputAction: TextInputAction.next,
+                  textDirection: TextDirection.ltr,
                   inputFormatters: [
                     FilteringTextInputFormatter.digitsOnly,
-                    LengthLimitingTextInputFormatter(12),
+                    LengthLimitingTextInputFormatter(11),
                   ],
                   decoration: InputDecoration(
                     labelText: 'رقم الهاتف',
@@ -270,6 +259,7 @@ class _CheckoutBottomSheetState extends State<CheckoutBottomSheet> {
                   controller: _addressController,
                   validator: _validateAddress,
                   maxLines: 3,
+                  textDirection: TextDirection.rtl,
                   textInputAction: TextInputAction.done,
                   decoration: InputDecoration(
                     labelText: 'عنوان التوصيل',
@@ -281,34 +271,25 @@ class _CheckoutBottomSheetState extends State<CheckoutBottomSheet> {
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(_getResponsivePadding(context, 8)),
                     ),
+                    alignLabelWithHint: true,
                   ),
                 ),
+                SizedBox(height: _getResponsivePadding(context, 24)),
+                BlocProvider.value(
+                  value: context.read<CartCubit>(),
+                  child: SizedBox(
+                    width: double.infinity,
+                    child: CustomElevatedButton(
+                      onPressed: _submitOrder,
+                      buttonText: "تأكيد الطلب",
+                    ),
+                  ),
+                ),
+                SizedBox(height: _getResponsivePadding(context, 16)),
               ],
             ),
           ),
-          SizedBox(height: _getResponsivePadding(context, 24)),
-          SizedBox(
-            width: double.infinity,
-            height: _getResponsivePadding(context, 48),
-            child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: TColors.primary,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(_getResponsivePadding(context, 12)),
-                ),
-              ),
-              onPressed: _submitOrder,
-              child: Text(
-                'تأكيد الطلب',
-                style: getBoldStyle(
-                  fontFamily: FontConstant.cairo,
-                  fontSize: _getResponsiveFontSize(context, 16),
-                  color: Colors.white,
-                ),
-              ),
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }
