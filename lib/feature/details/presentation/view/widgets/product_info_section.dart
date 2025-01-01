@@ -26,23 +26,12 @@ class ProductInfoSection extends StatelessWidget {
     }
   }
 
-  double _getSpacing(BuildContext context) {
-    final width = MediaQuery.of(context).size.width;
-    if (width >= 1024) {
-      return 16;
-    } else if (width >= 768) {
-      return 14;
-    } else if (width >= 390) {
-      return 12;
-    } else {
-      return 10;
-    }
-  }
+
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 16),
+      padding: EdgeInsets.symmetric(horizontal: 8),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -55,7 +44,6 @@ class ProductInfoSection extends StatelessWidget {
               color: TColors.darkGrey,
             ),
           ),
-          SizedBox(height: _getSpacing(context)),
           ProductDetialsGridView(
             product: product,
           ),

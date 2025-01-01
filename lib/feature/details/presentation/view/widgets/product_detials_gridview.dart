@@ -29,13 +29,13 @@ class ProductDetialsGridView extends StatelessWidget {
   double _getIconSize(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
     if (width >= 1024) {
-      return 24;
+      return 30;
     } else if (width >= 768) {
-      return 22;
+      return 28;
     } else if (width >= 390) {
-      return 20;
+      return 26;
     } else {
-      return 18;
+      return 24;
     }
   }
 
