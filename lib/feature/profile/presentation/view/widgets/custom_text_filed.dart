@@ -45,7 +45,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
       enabled: widget.enabled,
       maxLines: widget.maxLines,
       onChanged: widget.onChanged,
-      style: getRegularStyle(
+      style: getMediumStyle(
         fontFamily: FontConstant.cairo,
         fontSize: FontSize.size16,
         color: Theme.of(context).brightness == Brightness.dark
@@ -54,10 +54,10 @@ class _CustomTextFieldState extends State<CustomTextField> {
       ),
       decoration: InputDecoration(
         hintText: widget.hintText,
-        hintStyle: getRegularStyle(
+        hintStyle: getMediumStyle(
           fontFamily: FontConstant.cairo,
-          fontSize: FontSize.size14,
-          color: TColors.grey,
+          fontSize: FontSize.size16,
+          color: TColors.darkerGrey,
         ),
         prefixIcon: widget.prefixIcon,
         suffixIcon: widget.obscureText
@@ -77,7 +77,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
             const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
         filled: true,
         fillColor: Theme.of(context).brightness == Brightness.dark
-            ? TColors.darkGrey.withOpacity(0.5)
+            ? TColors.dark.withOpacity(0.5)
             : TColors.lightGrey.withOpacity(0.5),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
@@ -85,25 +85,28 @@ class _CustomTextFieldState extends State<CustomTextField> {
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide.none,
+          borderSide: BorderSide(
+            color: TColors.darkGrey.withOpacity(0.5),
+            width: 1.5,
+          ),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide(
+          borderSide:  const BorderSide(
             color: TColors.primary,
             width: 1.5,
           ),
         ),
         errorBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide(
+          borderSide: const BorderSide(
             color: TColors.error,
             width: 1.5,
           ),
         ),
         focusedErrorBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide(
+          borderSide:const BorderSide(
             color: TColors.error,
             width: 1.5,
           ),

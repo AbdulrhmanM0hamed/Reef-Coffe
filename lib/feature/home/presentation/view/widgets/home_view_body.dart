@@ -81,7 +81,7 @@ class _HomeViewBodyState extends State<HomeViewBody> {
                 child: HomeTopSlider(),
               ),
               const SizedBox(height: 4),
-              CustomAnimations.slideFromRight(
+              CustomAnimations.fadeIn(
                 duration: const Duration(milliseconds: 1100),
                 child: OutLineOfProducts(
                   title: "عروض حصرية",
@@ -89,9 +89,7 @@ class _HomeViewBodyState extends State<HomeViewBody> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => CustomAnimations.fadeIn(
-                            duration: const Duration(milliseconds: 250),
-                            child: const ExclusiveOffersPage()),
+                        builder: (context) =>  const ExclusiveOffersPage(),
                       ),
                     );
                   },
@@ -100,10 +98,10 @@ class _HomeViewBodyState extends State<HomeViewBody> {
               const SizedBox(height: 16),
               CustomAnimations.slideFromRight(
                 duration: const Duration(milliseconds: 1200),
-                child: ExclusiveOfferSection(),
+                child:const ExclusiveOfferSection(),
               ),
               const SizedBox(height: 16),
-              CustomAnimations.slideFromLeft(
+              CustomAnimations.fadeIn(
                 duration: const Duration(milliseconds: 1300),
                 child: OutLineOfProducts(
                   title: "المكملات الغذائية",
@@ -111,10 +109,8 @@ class _HomeViewBodyState extends State<HomeViewBody> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => CustomAnimations.fadeIn(
-                          duration: const Duration(milliseconds: 250),
-                          child: const SupplementsPage(),
-                        ),
+                        builder: (context) =>  const SupplementsPage(),
+                       
                       ),
                     );
                   },
@@ -126,7 +122,7 @@ class _HomeViewBodyState extends State<HomeViewBody> {
                 child: const SupplementsSection(),
               ),
               const SizedBox(height: 16),
-              CustomAnimations.slideFromLeft(
+              CustomAnimations.fadeIn(
                 duration: const Duration(milliseconds: 1500),
                 child: OutLineOfProducts(
                   title: "الأكثر طلباً",
@@ -134,10 +130,8 @@ class _HomeViewBodyState extends State<HomeViewBody> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => CustomAnimations.fadeIn(
-                          duration: const Duration(milliseconds: 250),
-                          child: const BestSellingPage(),
-                        ),
+                        builder: (context) =>  const BestSellingPage(),
+                      
                       ),
                     );
                   },
@@ -146,7 +140,7 @@ class _HomeViewBodyState extends State<HomeViewBody> {
               const SizedBox(height: 16),
               CustomAnimations.slideFromRight(
                 duration: const Duration(milliseconds: 1600),
-                child: BestSellingProductsListView(),
+                child: const BestSellingProductsListView(),
               ),
               const SizedBox(height: 20),
             ],
