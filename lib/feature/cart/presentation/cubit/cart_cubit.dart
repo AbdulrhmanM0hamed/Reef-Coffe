@@ -9,8 +9,7 @@ class CartCubit extends Cubit<CartState> {
   final List<CartItem> _items = [];
 
   List<CartItem> getItems() {
-    print('Debug: Getting items from cart. Count: ${_items.length}');
-    print('Debug: Items: ${_items.map((e) => '${e.name} (${e.quantity})').join(', ')}');
+   
     return List.unmodifiable(_items);
   }
 
@@ -20,33 +19,26 @@ class CartCubit extends Cubit<CartState> {
 
   void addItem(CartItem item) {
     try {
-      print('Debug: Adding item to cart: ${item.name}');
-      print('Debug: Item details - ID: ${item.id}, Price: ${item.price}, Quantity: ${item.quantity}');
+   
       
       if (item.price == null || item.price! <= 0) {
-        print('Debug: Invalid price detected: ${item.price}');
         throw Exception('Invalid price for item: ${item.name}');
       }
 
       if (item.quantity <= 0) {
-        print('Debug: Invalid quantity detected: ${item.quantity}');
         throw Exception('Invalid quantity for item: ${item.name}');
       }
 
       final existingIndex = _items.indexWhere((i) => i.productId == item.productId);
-      print('Debug: Existing item index: $existingIndex');
-      print('Debug: Current cart items: ${_items.map((e) => '${e.name} (${e.quantity})').join(', ')}');
-      
+     
       if (existingIndex != -1) {
-        print('Debug: Updating existing item quantity');
+      
         _items[existingIndex].quantity += item.quantity;
       } else {
-        print('Debug: Adding new item to cart');
         _items.add(item);
       }
 
-      print('Debug: Cart items after update: ${_items.length}');
-      print('Debug: Updated cart contents: ${_items.map((e) => '${e.name} (${e.quantity})').join(', ')}');
+    
       
       // Force a state update by creating a new list
       emit(CartUpdated([..._items]));
@@ -62,7 +54,7 @@ class CartCubit extends Cubit<CartState> {
     _items.clear();
     _items.addAll(updatedItems);
     emit(CartUpdated(List.from(_items)));
-  }
+    }
 
   void updateQuantity(String productId, int quantity) {
     List<CartItem> updatedItems = List.from(_items);
