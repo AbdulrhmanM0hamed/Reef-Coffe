@@ -191,103 +191,117 @@ class _CheckoutBottomSheetState extends State<CheckoutBottomSheet> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider.value(
-      value: context.read<OrdersCubit>(),
-      child: Padding(
-        padding: EdgeInsets.only(
-          bottom: MediaQuery.of(context).viewInsets.bottom,
-          left: 16,
-          right: 16,
-          top: 16,
-        ),
-        child: SingleChildScrollView(
-          child: Form(
-            key: _formKey,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  'اتمام الطلب',
-                  style: getBoldStyle(
-                    fontFamily: FontConstant.cairo,
-                    fontSize: _getResponsiveFontSize(context, 20),
-                  ),
-                ),
-                SizedBox(height: _getResponsivePadding(context, 24)),
-                TextFormField(
-                  controller: _nameController,
-                  validator: _validateName,
-                  textInputAction: TextInputAction.next,
-                  textDirection: TextDirection.rtl,
-                  decoration: InputDecoration(
-                    labelText: 'الاسم',
-                    hintText: 'ادخل اسمك الكامل',
-                    prefixIcon: Icon(
-                      Icons.person_outlined,
-                      size: _getResponsiveIconSize(context, 24),
-                    ),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(_getResponsivePadding(context, 8)),
-                    ),
-                  ),
-                ),
-                SizedBox(height: _getResponsivePadding(context, 16)),
-                TextFormField(
-                  controller: _phoneController,
-                  validator: _validatePhone,
-                  keyboardType: TextInputType.phone,
-                  textInputAction: TextInputAction.next,
-                  textDirection: TextDirection.ltr,
-                  inputFormatters: [
-                    FilteringTextInputFormatter.digitsOnly,
-                    LengthLimitingTextInputFormatter(11),
-                  ],
-                  decoration: InputDecoration(
-                    labelText: 'رقم الهاتف',
-                    hintText: '01xxxxxxxxx',
-                    prefixIcon: Icon(
-                      Icons.phone_outlined,
-                      size: _getResponsiveIconSize(context, 24),
-                    ),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(_getResponsivePadding(context, 8)),
-                    ),
-                  ),
-                ),
-                SizedBox(height: _getResponsivePadding(context, 16)),
-                TextFormField(
-                  controller: _addressController,
-                  validator: _validateAddress,
-                  maxLines: 3,
-                  textDirection: TextDirection.rtl,
-                  textInputAction: TextInputAction.done,
-                  decoration: InputDecoration(
-                    labelText: 'عنوان التوصيل',
-                    hintText: 'ادخل عنوان التوصيل كامل مع رقم المبنى/الشقة',
-                    prefixIcon: Icon(
-                      Icons.location_on_outlined,
-                      size: _getResponsiveIconSize(context, 24),
-                    ),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(_getResponsivePadding(context, 8)),
-                    ),
-                    alignLabelWithHint: true,
-                  ),
-                ),
-                SizedBox(height: _getResponsivePadding(context, 24)),
-                BlocProvider.value(
-                  value: context.read<CartCubit>(),
-                  child: SizedBox(
-                    width: double.infinity,
-                    child: CustomElevatedButton(
-                      onPressed: _submitOrder,
-                      buttonText: "تأكيد الطلب",
-                    ),
-                  ),
-                ),
-                SizedBox(height: _getResponsivePadding(context, 16)),
-              ],
+    return Padding(
+      padding: EdgeInsets.only(
+        bottom: MediaQuery.of(context).viewInsets.bottom,
+      ),
+      child: SingleChildScrollView(
+        child: Container(
+          padding: EdgeInsets.all(_getResponsivePadding(context, 16)),
+          decoration: BoxDecoration(
+            color: Theme.of(context).scaffoldBackgroundColor,
+            borderRadius: BorderRadius.vertical(
+              top: Radius.circular(_getResponsivePadding(context, 20)),
             ),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Center(
+                child: Container(
+                  width: _getResponsivePadding(context, 50),
+                  height: _getResponsivePadding(context, 4),
+                  decoration: BoxDecoration(
+                    color: Colors.grey[300],
+                    borderRadius: BorderRadius.circular(
+                        _getResponsivePadding(context, 2)),
+                  ),
+                ),
+              ),
+              SizedBox(height: _getResponsivePadding(context, 16)),
+              Text(
+                'معلومات الطلب',
+                style: getBoldStyle(
+                  fontFamily: FontConstant.cairo,
+                  fontSize: _getResponsiveFontSize(context, 18),
+                  color: TColors.dark,
+                ),
+              ),
+              SizedBox(height: _getResponsivePadding(context, 16)),
+              Form(
+                key: _formKey,
+                child: Column(
+                  children: [
+                    TextFormField(
+                      controller: _nameController,
+                      validator: _validateName,
+                      textDirection: TextDirection.rtl,
+                      decoration: InputDecoration(
+                        labelText: 'الاسم',
+                        hintText: 'ادخل اسمك الكامل',
+                        prefixIcon: Icon(
+                          Icons.person_outlined,
+                          size: _getResponsiveIconSize(context, 24),
+                        ),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(
+                              _getResponsivePadding(context, 8)),
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: _getResponsivePadding(context, 16)),
+                    TextFormField(
+                      controller: _phoneController,
+                      validator: _validatePhone,
+                      keyboardType: TextInputType.phone,
+                      textDirection: TextDirection.ltr,
+                      decoration: InputDecoration(
+                        labelText: 'رقم الهاتف',
+                        hintText: '01xxxxxxxxx',
+                        prefixIcon: Icon(
+                          Icons.phone_outlined,
+                          size: _getResponsiveIconSize(context, 24),
+                        ),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(
+                              _getResponsivePadding(context, 8)),
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: _getResponsivePadding(context, 16)),
+                    TextFormField(
+                      controller: _addressController,
+                      validator: _validateAddress,
+                      maxLines: 3,
+                      textDirection: TextDirection.rtl,
+                      decoration: InputDecoration(
+                        labelText: 'عنوان التوصيل',
+                        hintText: 'ادخل عنوان التوصيل كامل مع رقم المبنى/الشقة',
+                        prefixIcon: Icon(
+                          Icons.location_on_outlined,
+                          size: _getResponsiveIconSize(context, 24),
+                        ),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(
+                              _getResponsivePadding(context, 8)),
+                        ),
+                        alignLabelWithHint: true,
+                      ),
+                    ),
+                    SizedBox(height: _getResponsivePadding(context, 16)),
+                    SizedBox(
+                      width: double.infinity,
+                      child: CustomElevatedButton(
+                        onPressed: _submitOrder,
+                        buttonText: 'تأكيد الطلب',
+                      ),
+                    ),
+                    SizedBox(height: _getResponsivePadding(context, 16)),
+                  ],
+                ),
+              ),
+            ],
           ),
         ),
       ),
