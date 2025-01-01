@@ -14,6 +14,32 @@ class CartItemWidget extends StatelessWidget {
     required this.item,
   }) : super(key: key);
 
+  double _getResponsiveSize(BuildContext context, double baseSize) {
+    final width = MediaQuery.of(context).size.width;
+    if (width >= 1024) {
+      return baseSize * 1.3;
+    } else if (width >= 768) {
+      return baseSize * 1.2;
+    } else if (width >= 390) {
+      return baseSize;
+    } else {
+      return baseSize * 0.8;
+    }
+  }
+
+  double _getResponsiveFontSize(BuildContext context, double baseSize) {
+    final width = MediaQuery.of(context).size.width;
+    if (width >= 1024) {
+      return baseSize * 1.2;
+    } else if (width >= 768) {
+      return baseSize * 1.1;
+    } else if (width >= 390) {
+      return baseSize;
+    } else {
+      return baseSize * 0.9;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size.width;
@@ -43,8 +69,8 @@ class CartItemWidget extends StatelessWidget {
                 borderRadius: BorderRadius.circular(12),
                 child: CachedNetworkImage(
                   imageUrl: item.image,
-                  width: 100,
-                  height: 100,
+                  width: _getResponsiveSize(context, 100),
+                  height: _getResponsiveSize(context, 100),
                   fit: BoxFit.contain,
                   placeholder: (context, url) => Container(
                     color: Colors.grey[100],
@@ -54,10 +80,10 @@ class CartItemWidget extends StatelessWidget {
                   ),
                   errorWidget: (context, url, error) => Container(
                     color: Colors.grey[100],
-                    child: const Icon(
+                    child: Icon(
                       Icons.error_outline,
                       color: Colors.grey,
-                      size: 32,
+                      size: _getResponsiveSize(context, 32),
                     ),
                   ),
                 ),
@@ -73,8 +99,8 @@ class CartItemWidget extends StatelessWidget {
                   // Product Name
                   Text(
                     item.name,
-                    style: const TextStyle(
-                      fontSize: 16,
+                    style: TextStyle(
+                      fontSize: _getResponsiveFontSize(context, 16),
                       fontWeight: FontWeight.bold,
                     ),
                     maxLines: 2,
@@ -85,10 +111,10 @@ class CartItemWidget extends StatelessWidget {
                   // Price
                   Text(
                     '${item.price!.toStringAsFixed(2)} ريال',
-                    style:const TextStyle(
-                      fontSize: 14,
+                    style: TextStyle(
+                      fontSize: _getResponsiveFontSize(context, 14),
                       color: TColors.primary,
-                      fontWeight: FontWeight.w600,
+                      fontWeight: FontWeight.w700,
                     ),
                   ),
                   const SizedBox(height: 8),

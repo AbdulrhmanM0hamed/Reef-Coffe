@@ -9,39 +9,58 @@ class ProductInfoSection extends StatelessWidget {
   final Product product;
 
   const ProductInfoSection({
-    super.key,
+    Key? key,
     required this.product,
-  });
+  }) : super(key: key);
+
+  double _getTitleFontSize(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
+    if (width >= 1024) {
+      return 20;
+    } else if (width >= 768) {
+      return 18;
+    } else if (width >= 390) {
+      return 16;
+    } else {
+      return 14;
+    }
+  }
+
+  double _getSpacing(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
+    if (width >= 1024) {
+      return 16;
+    } else if (width >= 768) {
+      return 14;
+    } else if (width >= 390) {
+      return 12;
+    } else {
+      return 10;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        final width = constraints.maxWidth;
-        final isTablet = MediaQuery.of(context).size.width >= 768;
-        
-        return SizedBox(
-          width: width,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'معلومات المنتج',
-                style: getBoldStyle(
-                  fontFamily: FontConstant.cairo,
-                  fontSize: isTablet ? 20 : 18,
-                  color: TColors.darkGrey,
-                ),
-              ),
-              
-              ProductDetialsGridView(
-                product: product,
-              ),
-            ],
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 16),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'معلومات المنتج',
+            style: getBoldStyle(
+               fontFamily: FontConstant.cairo,
+              fontSize: _getTitleFontSize(context),
+              color: TColors.darkGrey,
+            ),
           ),
-        );
-      },
+          SizedBox(height: _getSpacing(context)),
+          ProductDetialsGridView(
+            product: product,
+          ),
+        ],
+      ),
     );
   }
 }

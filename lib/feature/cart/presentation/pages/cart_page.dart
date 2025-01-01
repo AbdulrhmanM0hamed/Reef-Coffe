@@ -12,6 +12,45 @@ class CartPage extends StatelessWidget {
   const CartPage({Key? key}) : super(key: key);
   static const String routeName = 'cart_page';
 
+  double _getResponsiveFontSize(BuildContext context, double baseSize) {
+    final width = MediaQuery.of(context).size.width;
+    if (width >= 1024) {
+      return baseSize * 1.2;
+    } else if (width >= 768) {
+      return baseSize * 1.1;
+    } else if (width >= 390) {
+      return baseSize;
+    } else {
+      return baseSize * 0.9;
+    }
+  }
+
+  double _getResponsiveSpacing(BuildContext context, double baseSpacing) {
+    final width = MediaQuery.of(context).size.width;
+    if (width >= 1024) {
+      return baseSpacing * 1.5;
+    } else if (width >= 768) {
+      return baseSpacing * 1.25;
+    } else if (width >= 390) {
+      return baseSpacing;
+    } else {
+      return baseSpacing * 0.75;
+    }
+  }
+
+  double _getResponsiveIconSize(BuildContext context, double baseSize) {
+    final width = MediaQuery.of(context).size.width;
+    if (width >= 1024) {
+      return baseSize * 1.3;
+    } else if (width >= 768) {
+      return baseSize * 1.2;
+    } else if (width >= 390) {
+      return baseSize;
+    } else {
+      return baseSize * 0.8;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<CartCubit, CartState>(
@@ -26,7 +65,8 @@ class CartPage extends StatelessWidget {
             title: Text(
               'سلة التسوق',
               style: getBoldStyle(
-                  fontFamily: FontConstant.cairo, fontSize: FontSize.size20),
+                  fontFamily: FontConstant.cairo, 
+                  fontSize: _getResponsiveFontSize(context, FontSize.size20)),
             ),
             actions: items.isNotEmpty
                 ? [
@@ -36,8 +76,8 @@ class CartPage extends StatelessWidget {
                           onTap: () => context.read<CartCubit>().clearCart(),
                           child: SvgPicture.asset(
                             "assets/images/trash.svg",
-                            width: 24,
-                            height: 24,
+                            width: _getResponsiveIconSize(context, 24),
+                            height: _getResponsiveIconSize(context, 24),
                           )),
                     )
                   ]
@@ -63,7 +103,7 @@ class CartPage extends StatelessWidget {
                         'سلة التسوق فارغة',
                         style: getBoldStyle(
                             fontFamily: FontConstant.cairo,
-                            fontSize: FontSize.size18,
+                            fontSize: _getResponsiveFontSize(context, FontSize.size18),
                             color: TColors.darkGrey),
                       ),
                       const SizedBox(
@@ -71,8 +111,8 @@ class CartPage extends StatelessWidget {
                       ),
                       SvgPicture.asset(
                         "assets/images/basket.svg",
-                        width: 50,
-                        height: 50,
+                        width: _getResponsiveIconSize(context, 50),
+                        height: _getResponsiveIconSize(context, 50),
                       )
                     ],
                   ),
@@ -92,7 +132,7 @@ class CartPage extends StatelessWidget {
                     ),
                   ),
                   Container(
-                    padding: const EdgeInsets.all(16),
+                    padding: EdgeInsets.all(_getResponsiveSpacing(context, 16)),
                     decoration: BoxDecoration(
                       borderRadius: const BorderRadius.only(
                           topLeft: Radius.circular(16),
@@ -117,11 +157,11 @@ class CartPage extends StatelessWidget {
                               'المجموع',
                               style: getBoldStyle(
                                   fontFamily: FontConstant.cairo,
-                                  fontSize: FontSize.size20,
+                                  fontSize: _getResponsiveFontSize(context, FontSize.size20),
                                   color: TColors.primary),
                             ),
                             Text(
-                              '${context.read<CartCubit>().getTotal()} ج.م',
+                              '${context.read<CartCubit>().getTotal()} ريال',
                               style: getBoldStyle(
                                   fontFamily: FontConstant.cairo,
                                   fontSize:

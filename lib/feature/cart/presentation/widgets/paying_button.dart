@@ -15,6 +15,32 @@ import 'package:hyper_market/core/errors/network_error_handler.dart';
 class PayingButton extends StatelessWidget {
   const PayingButton({super.key});
 
+  double _getResponsiveSize(BuildContext context, double baseSize) {
+    final width = MediaQuery.of(context).size.width;
+    if (width >= 1024) {
+      return baseSize * 1.3;
+    } else if (width >= 768) {
+      return baseSize * 1.2;
+    } else if (width >= 390) {
+      return baseSize;
+    } else {
+      return baseSize * 0.8;
+    }
+  }
+
+  double _getResponsivePadding(BuildContext context, double basePadding) {
+    final width = MediaQuery.of(context).size.width;
+    if (width >= 1024) {
+      return basePadding * 1.5;
+    } else if (width >= 768) {
+      return basePadding * 1.25;
+    } else if (width >= 390) {
+      return basePadding;
+    } else {
+      return basePadding * 0.75;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<CartCubit, CartState>(
@@ -144,14 +170,17 @@ class PayingButton extends StatelessWidget {
               borderRadius: BorderRadius.circular(16),
             ),
             backgroundColor: TColors.primary,
-            padding: const EdgeInsets.symmetric(
-              horizontal: 32,
-              vertical: 16,
+            padding: EdgeInsets.symmetric(
+              horizontal: _getResponsivePadding(context, 32),
+              vertical: _getResponsivePadding(context, 16),
             ),
           ),
           child: Text(
             'اتمام الشراء',
-            style: getBoldStyle(fontFamily: FontConstant.cairo, fontSize: 16),
+            style: getBoldStyle(
+              fontFamily: FontConstant.cairo, 
+              fontSize: _getResponsiveSize(context, 16)
+            ),
           ),
         );
       },

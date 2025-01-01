@@ -157,7 +157,7 @@ void didUpdateWidget(DetailsViewBody oldWidget) {
               ProductInfoSection(
                 product: widget.product,
               ),
-              SizedBox(height: screenHeight * 0.02),
+              SizedBox(height: 10),
               _buildAddToCartButton(),
             ],
           ),

@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hyper_market/core/utils/common/elvated_button.dart';
+import 'package:hyper_market/core/utils/constants/colors.dart';
 import 'package:hyper_market/core/utils/constants/font_manger.dart';
 import 'package:hyper_market/core/utils/constants/styles_manger.dart';
 import 'package:hyper_market/feature/cart/data/models/cart_item_model.dart';
@@ -81,6 +82,45 @@ class _CheckoutBottomSheetState extends State<CheckoutBottomSheet> {
 
   final supabaseClient = Supabase.instance.client;
 
+  double _getResponsivePadding(BuildContext context, double basePadding) {
+    final width = MediaQuery.of(context).size.width;
+    if (width >= 1024) {
+      return basePadding * 1.5;
+    } else if (width >= 768) {
+      return basePadding * 1.25;
+    } else if (width >= 390) {
+      return basePadding;
+    } else {
+      return basePadding * 0.75;
+    }
+  }
+
+  double _getResponsiveFontSize(BuildContext context, double baseSize) {
+    final width = MediaQuery.of(context).size.width;
+    if (width >= 1024) {
+      return baseSize * 1.2;
+    } else if (width >= 768) {
+      return baseSize * 1.1;
+    } else if (width >= 390) {
+      return baseSize;
+    } else {
+      return baseSize * 0.9;
+    }
+  }
+
+  double _getResponsiveIconSize(BuildContext context, double baseSize) {
+    final width = MediaQuery.of(context).size.width;
+    if (width >= 1024) {
+      return baseSize * 1.3;
+    } else if (width >= 768) {
+      return baseSize * 1.2;
+    } else if (width >= 390) {
+      return baseSize;
+    } else {
+      return baseSize * 0.8;
+    }
+  }
+
   void _submitOrder() {
     final userId = supabaseClient.auth.currentUser?.id;
     if (userId == null) {
@@ -151,29 +191,42 @@ class _CheckoutBottomSheetState extends State<CheckoutBottomSheet> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider.value(
-      value: context.read<OrdersCubit>(),
-      child: Padding(
-        padding: EdgeInsets.only(
-          bottom: MediaQuery.of(context).viewInsets.bottom,
-          left: 16,
-          right: 16,
-          top: 16,
+    return Container(
+      padding: EdgeInsets.all(_getResponsivePadding(context, 16)),
+      decoration: BoxDecoration(
+        color: Theme.of(context).scaffoldBackgroundColor,
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(_getResponsivePadding(context, 20)),
         ),
-        child: SingleChildScrollView(
-          child: Form(
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Center(
+            child: Container(
+              width: _getResponsivePadding(context, 50),
+              height: _getResponsivePadding(context, 4),
+              decoration: BoxDecoration(
+                color: Colors.grey[300],
+                borderRadius: BorderRadius.circular(_getResponsivePadding(context, 2)),
+              ),
+            ),
+          ),
+          SizedBox(height: _getResponsivePadding(context, 16)),
+          Text(
+            'معلومات الطلب',
+            style: getBoldStyle(
+              fontFamily: FontConstant.cairo,
+              fontSize: _getResponsiveFontSize(context, 18),
+              color: TColors.dark,
+            ),
+          ),
+          SizedBox(height: _getResponsivePadding(context, 16)),
+          Form(
             key: _formKey,
             child: Column(
-              mainAxisSize: MainAxisSize.min,
               children: [
-                Text(
-                  'اتمام الطلب',
-                  style: getBoldStyle(
-                    fontFamily: FontConstant.cairo,
-                    fontSize: FontSize.size20,
-                  ),
-                ),
-                const SizedBox(height: 24),
                 TextFormField(
                   controller: _nameController,
                   validator: _validateName,
@@ -181,13 +234,16 @@ class _CheckoutBottomSheetState extends State<CheckoutBottomSheet> {
                   decoration: InputDecoration(
                     labelText: 'الاسم',
                     hintText: 'ادخل اسمك الكامل',
-                    prefixIcon: const Icon(Icons.person_outlined),
+                    prefixIcon: Icon(
+                      Icons.person_outlined,
+                      size: _getResponsiveIconSize(context, 24),
+                    ),
                     border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
+                      borderRadius: BorderRadius.circular(_getResponsivePadding(context, 8)),
                     ),
                   ),
                 ),
-                const SizedBox(height: 16),
+                SizedBox(height: _getResponsivePadding(context, 16)),
                 TextFormField(
                   controller: _phoneController,
                   validator: _validatePhone,
@@ -200,13 +256,16 @@ class _CheckoutBottomSheetState extends State<CheckoutBottomSheet> {
                   decoration: InputDecoration(
                     labelText: 'رقم الهاتف',
                     hintText: '01xxxxxxxxx',
-                    prefixIcon: const Icon(Icons.phone_outlined),
+                    prefixIcon: Icon(
+                      Icons.phone_outlined,
+                      size: _getResponsiveIconSize(context, 24),
+                    ),
                     border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
+                      borderRadius: BorderRadius.circular(_getResponsivePadding(context, 8)),
                     ),
                   ),
                 ),
-                const SizedBox(height: 16),
+                SizedBox(height: _getResponsivePadding(context, 16)),
                 TextFormField(
                   controller: _addressController,
                   validator: _validateAddress,
@@ -215,28 +274,41 @@ class _CheckoutBottomSheetState extends State<CheckoutBottomSheet> {
                   decoration: InputDecoration(
                     labelText: 'عنوان التوصيل',
                     hintText: 'ادخل عنوان التوصيل كامل مع رقم المبنى/الشقة',
-                    prefixIcon: const Icon(Icons.location_on_outlined),
+                    prefixIcon: Icon(
+                      Icons.location_on_outlined,
+                      size: _getResponsiveIconSize(context, 24),
+                    ),
                     border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
+                      borderRadius: BorderRadius.circular(_getResponsivePadding(context, 8)),
                     ),
                   ),
                 ),
-                const SizedBox(height: 24),
-                BlocProvider.value(
-                  value: context.read<CartCubit>(),
-                  child: SizedBox(
-                    width: double.infinity,
-                    child: CustomElevatedButton(
-                      onPressed: _submitOrder,
-                      buttonText: "تأكيد الطلب",
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 16),
               ],
             ),
           ),
-        ),
+          SizedBox(height: _getResponsivePadding(context, 24)),
+          SizedBox(
+            width: double.infinity,
+            height: _getResponsivePadding(context, 48),
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: TColors.primary,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(_getResponsivePadding(context, 12)),
+                ),
+              ),
+              onPressed: _submitOrder,
+              child: Text(
+                'تأكيد الطلب',
+                style: getBoldStyle(
+                  fontFamily: FontConstant.cairo,
+                  fontSize: _getResponsiveFontSize(context, 16),
+                  color: Colors.white,
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

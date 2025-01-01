@@ -13,6 +13,45 @@ class ProductDetialsGridView extends StatelessWidget {
 
   final Product product;
 
+  double _getFontSize(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
+    if (width >= 1024) {
+      return 16;
+    } else if (width >= 768) {
+      return 14;
+    } else if (width >= 390) {
+      return 12;
+    } else {
+      return 10;
+    }
+  }
+
+  double _getIconSize(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
+    if (width >= 1024) {
+      return 24;
+    } else if (width >= 768) {
+      return 22;
+    } else if (width >= 390) {
+      return 20;
+    } else {
+      return 18;
+    }
+  }
+
+  double _getSpacing(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
+    if (width >= 1024) {
+      return 12;
+    } else if (width >= 768) {
+      return 10;
+    } else if (width >= 390) {
+      return 8;
+    } else {
+      return 6;
+    }
+  }
+
   Widget buildInfoCard({
     required String mainText,
     required String subText,
@@ -41,7 +80,7 @@ class ProductDetialsGridView extends StatelessWidget {
                 mainText,
                 style: getBoldStyle(
                   fontFamily: FontConstant.cairo,
-                  fontSize: isTablet ? 16 : 14,
+                  fontSize: _getFontSize(context),
                   color: TColors.primary,
                 ),
                 textAlign: TextAlign.center,
@@ -52,7 +91,7 @@ class ProductDetialsGridView extends StatelessWidget {
                   extraText,
                   style: getMediumStyle(
                     fontFamily: FontConstant.cairo,
-                    fontSize: isTablet ? 14 : 12,
+                    fontSize: _getFontSize(context),
                     color: TColors.darkGrey,
                   ),
                   textAlign: TextAlign.center,
@@ -64,7 +103,7 @@ class ProductDetialsGridView extends StatelessWidget {
                   subText,
                   style: getMediumStyle(
                     fontFamily: FontConstant.cairo,
-                    fontSize: isTablet ? 14 : 12,
+                    fontSize: _getFontSize(context),
                     color: TColors.darkGrey,
                   ),
                   textAlign: TextAlign.center,
@@ -80,7 +119,6 @@ class ProductDetialsGridView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isTablet = MediaQuery.of(context).size.width >= 768;
-    final iconSize = isTablet ? 45.0 : 40.0;
 
     return Container(
       constraints: BoxConstraints(
@@ -91,8 +129,8 @@ class ProductDetialsGridView extends StatelessWidget {
         physics: const NeverScrollableScrollPhysics(),
         crossAxisCount: 2,
         childAspectRatio: isTablet ? 1.3 : 1.4,
-        mainAxisSpacing: 12,
-        crossAxisSpacing: 12,
+        mainAxisSpacing: _getSpacing(context),
+        crossAxisSpacing: _getSpacing(context),
      
         children: [
               buildInfoCard(
@@ -101,8 +139,8 @@ class ProductDetialsGridView extends StatelessWidget {
             extraText: 'سعرة حرارية',
             iconInfo: SvgPicture.asset(
               'assets/images/calory.svg',
-              width: iconSize,
-              height: iconSize,
+              width: _getIconSize(context),
+              height: _getIconSize(context),
               fit: BoxFit.contain,
             ),
           ),
@@ -111,8 +149,8 @@ class ProductDetialsGridView extends StatelessWidget {
             subText: 'وقت التحضير',
             iconInfo: SvgPicture.asset(
               'assets/images/cooking-time.svg',
-              width: iconSize,
-              height: iconSize,
+              width: _getIconSize(context),
+              height: _getIconSize(context),
               fit: BoxFit.contain,
             ),
           ),
@@ -122,8 +160,8 @@ class ProductDetialsGridView extends StatelessWidget {
             extraText: 'جرام',
             iconInfo: SvgPicture.asset(
               'assets/images/weight.svg',
-              width: iconSize,
-              height: iconSize,
+              width: _getIconSize(context),
+              height: _getIconSize(context),
               fit: BoxFit.contain,
             ),
           ),
@@ -133,8 +171,8 @@ class ProductDetialsGridView extends StatelessWidget {
             subText: product.isOrganic ? '100% صحى' : 'غير صحى',
             iconInfo: SvgPicture.asset(
               'assets/images/lotus.svg',
-              width: iconSize,
-              height: iconSize,
+              width: _getIconSize(context),
+              height: _getIconSize(context),
               fit: BoxFit.contain,
             ),
           ),

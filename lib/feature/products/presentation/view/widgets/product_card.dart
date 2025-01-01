@@ -92,7 +92,7 @@ class ProductCard extends StatelessWidget {
                               return Icon(
                                 Icons.error_outline,
                                 color: Colors.grey.shade400,
-                                size: constraints.maxWidth * 0.3,
+                                size: _getErrorIconSize(size),
                               );
                             },
                           ),
@@ -127,8 +127,8 @@ class ProductCard extends StatelessWidget {
                         if (product.hasDiscount)
                           Container(
                             padding: EdgeInsets.symmetric(
-                              horizontal: _getHorizontalPadding(size),
-                              vertical: _getVerticalPadding(size),
+                              horizontal: 2,
+                              vertical: 2,
                             ),
                             decoration: BoxDecoration(
                               color: Colors.red.shade50,
@@ -286,10 +286,55 @@ class ProductCard extends StatelessWidget {
   }
 
   // Responsive helper methods
-  double _getBorderRadius(Size size) => size.width * 0.03;
-  double _getSpacing(Size size) => size.height * 0.01;
-  double _getHorizontalPadding(Size size) => size.width * 0.015;
-  double _getVerticalPadding(Size size) => size.height * 0.004;
+  double _getBorderRadius(Size size) {
+    final width = size.width;
+    if (width >= 1024) {
+      return 12;
+    } else if (width >= 768) {
+      return 10;
+    } else {
+      return 8;
+    }
+  }
+
+  double _getSpacing(Size size) {
+    final width = size.width;
+    if (width >= 1024) {
+      return 8;
+    } else if (width >= 768) {
+      return 6;
+    } else if (width >= 390) {
+      return 4;
+    } else {
+      return 4;
+    }
+  }
+
+  double _getHorizontalPadding(Size size) {
+    final width = size.width;
+    if (width >= 1024) {
+      return width * 0.015;
+    } else if (width >= 768) {
+      return width * 0.02;
+    } else if (width >= 480) {
+      return width * 0.025;
+    } else {
+      return width * 0.03;
+    }
+  }
+
+  double _getVerticalPadding(Size size) {
+    final width = size.width;
+    if (width >= 1024) {
+      return 12;
+    } else if (width >= 768) {
+      return 10;
+    } else if (width >= 390) {
+      return 8;
+    } else {
+      return 6;
+    }
+  }
 
   double _getTitleFontSize(Size size) {
     if (size.width < 360) {
@@ -319,30 +364,42 @@ class ProductCard extends StatelessWidget {
   }
 
   double _getDiscountFontSize(Size size) {
-    if (size.width < 360) {
-      return FontSize.size10;
-    } else if (size.width < 600) {
-      return FontSize.size12;
+    final width = size.width;
+    if (width >= 1024) {
+      return width * 0.014;
+    } else if (width >= 768) {
+      return width * 0.018;
+    } else if (width >= 480) {
+      return width * 0.035;
+    } else {
+      return width * 0.04;
     }
-    return FontSize.size14;
   }
 
   double _getOrganicFontSize(Size size) {
-    if (size.width < 360) {
-      return FontSize.size10;
-    } else if (size.width < 600) {
-      return FontSize.size12;
+    final width = size.width;
+    if (width >= 1024) {
+      return 16;
+    } else if (width >= 768) {
+      return 14;
+    } else if (width >= 390) {
+      return 12;
+    } else {
+      return 10;
     }
-    return FontSize.size14;
   }
 
   double _getIconSize(Size size) {
-    if (size.width < 360) {
-      return size.width * 0.04;
-    } else if (size.width < 600) {
-      return size.width * 0.05;
+    final width = size.width;
+    if (width >= 1024) { 
+      return 24;
+    } else if (width >= 768) { 
+      return 22;
+    } else if (width >= 390) { 
+      return 20;
+    } else { 
+      return 18;
     }
-    return size.width * 0.06;
   }
 
   double _getErrorIconSize(Size size) {
