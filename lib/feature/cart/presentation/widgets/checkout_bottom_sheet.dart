@@ -225,7 +225,6 @@ class _CheckoutBottomSheetState extends State<CheckoutBottomSheet> {
                 style: getBoldStyle(
                   fontFamily: FontConstant.cairo,
                   fontSize: _getResponsiveFontSize(context, 18),
-                  color: TColors.dark,
                 ),
               ),
               SizedBox(height: _getResponsivePadding(context, 16)),
