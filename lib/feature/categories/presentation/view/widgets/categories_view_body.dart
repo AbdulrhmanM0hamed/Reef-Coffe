@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hyper_market/core/errors/network_error_handler.dart';
-import 'package:hyper_market/feature/categories/presentation/cubit/categories_cubit.dart';
-import 'package:hyper_market/feature/categories/presentation/cubit/categories_state.dart';
+import 'package:hyper_market/feature/categories/presentation/controller/categories_cubit.dart';
+import 'package:hyper_market/feature/categories/presentation/controller/categories_state.dart';
 import 'package:hyper_market/feature/categories/presentation/view/widgets/category_cart.dart';
 import 'package:hyper_market/feature/home/presentation/view/widgets/custom_text_field.dart';
 

@@ -43,7 +43,6 @@ class CartCubit extends Cubit<CartState> {
       // Force a state update by creating a new list
       emit(CartUpdated([..._items]));
     } catch (e) {
-      print('Error adding item to cart: $e');
       rethrow;
     }
   }

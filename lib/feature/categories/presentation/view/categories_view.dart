@@ -4,7 +4,7 @@ import 'package:hyper_market/core/services/service_locator.dart';
 import 'package:hyper_market/core/utils/constants/font_manger.dart';
 import 'package:hyper_market/core/utils/constants/styles_manger.dart';
 import 'package:hyper_market/core/utils/constants/strings_manager.dart';
-import 'package:hyper_market/feature/categories/presentation/cubit/categories_cubit.dart';
+import 'package:hyper_market/feature/categories/presentation/controller/categories_cubit.dart';
 import 'package:hyper_market/feature/categories/presentation/view/widgets/categories_view_body.dart';
 
 class CategoriesViewApp extends StatelessWidget {

@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hyper_market/core/utils/constants/colors.dart';
 import 'package:hyper_market/core/utils/constants/font_manger.dart';
 import 'package:hyper_market/core/utils/constants/styles_manger.dart';
-import 'package:hyper_market/feature/details/presentation/cubit/comments_cubit.dart';
+import 'package:hyper_market/feature/details/presentation/controller/comments_cubit.dart';
 import 'package:hyper_market/feature/details/presentation/view/product_reviewss_view.dart';
 import 'package:hyper_market/feature/details/presentation/view/widgets/details_view_body.dart';
 

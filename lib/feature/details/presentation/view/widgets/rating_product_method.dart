@@ -1,7 +1,7 @@
  import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hyper_market/core/utils/constants/colors.dart';
-import 'package:hyper_market/feature/details/presentation/cubit/rating_cubit.dart';
+import 'package:hyper_market/feature/details/presentation/controller/rating_cubit.dart';
 import 'package:hyper_market/feature/details/presentation/view/widgets/rating_dialog.dart';
 import 'package:hyper_market/feature/products/domain/entities/product.dart';
 

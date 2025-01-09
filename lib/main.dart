@@ -15,24 +15,35 @@ import 'package:hyper_market/feature/profile/presentation/cubit/theme_cubit.dart
 import 'package:hyper_market/feature/splash/view/splash_view.dart';
 import 'package:hyper_market/generated/l10n.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 void main() async {
   try {
     WidgetsFlutterBinding.ensureInitialized();
+
+    dotenv.env['SUPABASE_URL'] = 'https://kizgmgaocdhnarvqtzvf.supabase.co';
+    dotenv.env['SUPABASE_ANON_KEY'] =
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtpemdtZ2FvY2RobmFydnF0enZmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzMzMjQ5NjksImV4cCI6MjA0ODkwMDk2OX0.LwosgMdM5ZcZAeVxn3b84lIeO4K6_-l4BsYF5pxxkJg';
 
     await Prefs.init();
     await Prefs.clearInvalidData();
 
     setupServiceLocator();
 
+    final supabaseUrl = dotenv.env['SUPABASE_URL'];
+    final supabaseKey = dotenv.env['SUPABASE_ANON_KEY'];
+
+    if (supabaseUrl == null || supabaseKey == null) {
+      throw Exception('Missing Supabase configuration');
+    }
+
     await getIt<SupabaseService>().initialize(
-      supabaseUrl: 'https://kizgmgaocdhnarvqtzvf.supabase.co',
-      supabaseKey:
-          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtpemdtZ2FvY2RobmFydnF0enZmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzMzMjQ5NjksImV4cCI6MjA0ODkwMDk2OX0.LwosgMdM5ZcZAeVxn3b84lIeO4K6_-l4BsYF5pxxkJg',
+      supabaseUrl: supabaseUrl,
+      supabaseKey: supabaseKey,
     );
 
     await getIt<LocalStorageService>().init();
-    
+
     await NotificationService.init();
 
     final notificationRepo = NotificationRepositoryImpl();
@@ -40,7 +51,9 @@ void main() async {
 
     runApp(const MyApp());
   } catch (e) {
-    print(e);
+    print("Initialization error: $e");
+
+    rethrow;
   }
 }
 
@@ -85,6 +98,4 @@ class MyApp extends StatelessWidget {
       ),
     );
   }
-
-
 }
