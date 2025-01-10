@@ -616,8 +616,7 @@ class _ProductReviewsViewState extends State<ProductReviewsView> {
 
   void _showAddCommentDialog(BuildContext context) {
     final commentController = TextEditingController();
-    final size = MediaQuery.of(context).size;
-    final textScaleFactor = MediaQuery.of(context).textScaler;
+
 
     showDialog(
       context: context,
