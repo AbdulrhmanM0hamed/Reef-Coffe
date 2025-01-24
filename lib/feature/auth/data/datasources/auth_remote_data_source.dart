@@ -111,46 +111,48 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
 
 
 
-
-  @override
+@override
   Future<User> signInWithGoogle() async {
     try {
       final GoogleSignIn googleSignIn = GoogleSignIn(
         scopes: ['email'],
-        clientId:
-            '904000175391-7jj5ffb8bgon6djhjlmjca0gkicg2bp9.apps.googleusercontent.com',
+        serverClientId: '904000175391-0ijobvfb8vhn3trgi78d4902n4qfd7o6.apps.googleusercontent.com',  // Web Client ID
       );
 
       await googleSignIn.signOut();
-
-      final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
-
+      final googleUser = await googleSignIn.signIn();
       if (googleUser == null) {
         throw const CustomException(message: 'تم إلغاء تسجيل الدخول');
       }
 
-      final GoogleSignInAuthentication googleAuth =
-          await googleUser.authentication;
+      final googleAuth = await googleUser.authentication;
+      final accessToken = googleAuth.accessToken;
+      final idToken = googleAuth.idToken;
 
-      // استخدم توكن جوجل للمصادقة مع Supabase
+      if (accessToken == null) {
+        throw const CustomException(message: 'لم يتم العثور على Access Token');
+      }
+      if (idToken == null) {
+        throw const CustomException(message: 'لم يتم العثور على ID Token');
+      }
+
       final response = await supabaseClient.auth.signInWithIdToken(
         provider: OAuthProvider.google,
-        idToken: googleAuth.idToken!,
-        accessToken: googleAuth.accessToken,
+        idToken: idToken,
+        accessToken: accessToken,
       );
 
       if (response.user == null) {
         throw const CustomException(message: 'فشل في تسجيل الدخول بواسطة جوجل');
       }
 
-      // تحقق مما إذا كان البروفايل موجودًا
+      // تحقق من وجود البروفايل
       final profile = await supabaseClient
           .from('profiles')
           .select()
           .eq('id', response.user!.id)
           .maybeSingle();
 
-      // إذا لم يكن البروفايل موجودًا، قم بإنشائه
       if (profile == null) {
         await supabaseClient.from('profiles').insert({
           'id': response.user!.id,
@@ -165,6 +167,9 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       throw CustomException(message: e.toString());
     }
   }
+
+
+
 
   @override
   Future<User> signInWithApple() async {

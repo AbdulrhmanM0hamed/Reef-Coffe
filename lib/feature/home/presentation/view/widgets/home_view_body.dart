@@ -60,66 +60,69 @@ class _HomeViewBodyState extends State<HomeViewBody> {
         builder: (context, state) {
           if (state is ProductsLoading) {
             return const Center(
-              child: CircularProgressIndicator( color: TColors.primary,),
+              child: CircularProgressIndicator(color: TColors.primary),
             );
           }
-
-          return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  CustomHomeAppBar(userName: widget.userName),
-                  const SizedBox(height: 20),
-                  const CustomSearchTextField(),
-                  const SizedBox(height: 20),
-                  HomeTopSlider(),
-                  const SizedBox(height: 4),
-                  OutLineOfProducts(
-                    title: "عروض حصرية",
-                    onSeeMorePressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const ExclusiveOffersPage(),
-                        ),
-                      );
-                    },
+          return CustomScrollView(
+            slivers: [
+              SliverPadding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                sliver: SliverList(
+                  delegate: SliverChildListDelegate(
+                    [
+                      CustomHomeAppBar(userName: widget.userName),
+                      const SizedBox(height: 20),
+                      const CustomSearchTextField(),
+                      const SizedBox(height: 20),
+                      HomeTopSlider(),
+                      const SizedBox(height: 4),
+                      OutLineOfProducts(
+                        title: "عروض حصرية",
+                        onSeeMorePressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const ExclusiveOffersPage(),
+                            ),
+                          );
+                        },
+                      ),
+                      const SizedBox(height: 16),
+                      const ExclusiveOfferSection(),
+                      const SizedBox(height: 16),
+                      OutLineOfProducts(
+                        title: "المكملات الغذائية",
+                        onSeeMorePressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const SupplementsPage(),
+                            ),
+                          );
+                        },
+                      ),
+                      const SizedBox(height: 16),
+                      const SupplementsSection(),
+                      const SizedBox(height: 16),
+                      OutLineOfProducts(
+                        title: "الأكثر طلباً",
+                        onSeeMorePressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const BestSellingPage(),
+                            ),
+                          );
+                        },
+                      ),
+                      const SizedBox(height: 16),
+                      const BestSellingProductsListView(),
+                      const SizedBox(height: 20),
+                    ],
                   ),
-                  const SizedBox(height: 16),
-                  const ExclusiveOfferSection(),
-                  const SizedBox(height: 16),
-                  OutLineOfProducts(
-                    title: "المكملات الغذائية",
-                    onSeeMorePressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const SupplementsPage(),
-                        ),
-                      );
-                    },
-                  ),
-                  const SizedBox(height: 16),
-                  const SupplementsSection(),
-                  const SizedBox(height: 16),
-                  OutLineOfProducts(
-                    title: "الأكثر طلباً",
-                    onSeeMorePressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const BestSellingPage(),
-                        ),
-                      );
-                    },
-                  ),
-                  const SizedBox(height: 16),
-                  const BestSellingProductsListView(),
-                  const SizedBox(height: 20),
-                ],
+                ),
               ),
-            ),
+            ],
           );
         },
       ),

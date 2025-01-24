@@ -15,25 +15,21 @@ import 'package:hyper_market/feature/profile/presentation/cubit/theme_cubit.dart
 import 'package:hyper_market/feature/splash/view/splash_view.dart';
 import 'package:hyper_market/generated/l10n.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 void main() async {
   try {
     WidgetsFlutterBinding.ensureInitialized();
     
-    await dotenv.load(fileName: ".env");  // Load environment variables from .env file
-    
     await Prefs.init();
     await Prefs.clearInvalidData();
 
     setupServiceLocator();
 
-    final supabaseUrl = dotenv.env['SUPABASE_URL'] ?? 'https://kizgmgaocdhnarvqtzvf.supabase.co';
-    final supabaseKey = dotenv.env['SUPABASE_ANON_KEY'] ?? 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtpemdtZ2FvY2RobmFydnF0enZmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzMzMjQ5NjksImV4cCI6MjA0ODkwMDk2OX0.LwosgMdM5ZcZAeVxn3b84lIeO4K6_-l4BsYF5pxxkJg';
+    const supabaseUrl = 'https://kizgmgaocdhnarvqtzvf.supabase.co';
+    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtpemdtZ2FvY2RobmFydnF0enZmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzMzMjQ5NjksImV4cCI6MjA0ODkwMDk2OX0.LwosgMdM5ZcZAeVxn3b84lIeO4K6_-l4BsYF5pxxkJg';
 
     // Initialize Supabase first
-    
     await Supabase.initialize(
       url: supabaseUrl,
       anonKey: supabaseKey,
@@ -55,7 +51,7 @@ void main() async {
     runApp(const MyApp());
   } catch (e, stackTrace) {
     print("Initialization error: $e");
-    print("Stack trace: $stackTrace");  // Added stack trace for better debugging
+    print("Stack trace: $stackTrace");
   }
 }
 
