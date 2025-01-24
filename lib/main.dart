@@ -20,23 +20,16 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 void main() async {
   try {
     WidgetsFlutterBinding.ensureInitialized();
-    
+
     await Prefs.init();
     await Prefs.clearInvalidData();
 
     setupServiceLocator();
 
     const supabaseUrl = 'https://kizgmgaocdhnarvqtzvf.supabase.co';
-    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtpemdtZ2FvY2RobmFydnF0enZmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzMzMjQ5NjksImV4cCI6MjA0ODkwMDk2OX0.LwosgMdM5ZcZAeVxn3b84lIeO4K6_-l4BsYF5pxxkJg';
+    const supabaseKey =
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtpemdtZ2FvY2RobmFydnF0enZmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzMzMjQ5NjksImV4cCI6MjA0ODkwMDk2OX0.LwosgMdM5ZcZAeVxn3b84lIeO4K6_-l4BsYF5pxxkJg';
 
-    // Initialize Supabase first
-    await Supabase.initialize(
-      url: supabaseUrl,
-      anonKey: supabaseKey,
-      debug: true,
-    );
-
-    // Then initialize the service
     await getIt<SupabaseService>().initialize(
       supabaseUrl: supabaseUrl,
       supabaseKey: supabaseKey,
@@ -46,12 +39,12 @@ void main() async {
     await NotificationService.init();
 
     final notificationRepo = NotificationRepositoryImpl();
-    notificationRepo.listenToOrderChanges(); 
+    notificationRepo.listenToOrderChanges();
 
     runApp(const MyApp());
-  } catch (e, stackTrace) {
+  } catch (e) {
     print("Initialization error: $e");
-    print("Stack trace: $stackTrace");
+    rethrow;
   }
 }
 
