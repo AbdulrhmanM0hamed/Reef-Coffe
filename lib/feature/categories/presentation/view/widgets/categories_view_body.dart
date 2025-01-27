@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hyper_market/core/errors/network_error_handler.dart';
+import 'package:hyper_market/core/utils/constants/colors.dart';
 import 'package:hyper_market/feature/categories/presentation/controller/categories_cubit.dart';
 import 'package:hyper_market/feature/categories/presentation/controller/categories_state.dart';
 import 'package:hyper_market/feature/categories/presentation/view/widgets/category_cart.dart';
@@ -26,7 +27,9 @@ class CategoriesViewBodyApp extends StatelessWidget {
             child: BlocBuilder<CategoriesCubit, CategoriesState>(
               builder: (context, state) {
                 if (state is CategoriesLoading) {
-                  return const Center(child: CircularProgressIndicator());
+                  return const Center(child: CircularProgressIndicator(
+                    color: TColors.primary,
+                  ));
                 } else if (state is CategoriesError) {
                   return NetworkErrorHandler.buildErrorWidget(
                     state.message,

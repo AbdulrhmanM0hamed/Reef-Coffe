@@ -107,14 +107,14 @@ class _SplashViewBodyState extends State<SplashViewBody>
   }
 
   void excuteNavigation(BuildContext context) async {
-  try {
-    await Future.delayed(const Duration(seconds: 2));
-    if (!mounted) return;
-    Navigator.pushReplacementNamed(context, OnBordaingView.routeName);
-  } catch (e) {
-    debugPrint('Error in navigation: $e');
-    if (!mounted) return;
-    Navigator.pushReplacementNamed(context, OnBordaingView.routeName);
+    try {
+      await Future.delayed(const Duration(seconds: 2));
+      if (!mounted) return;
+      Navigator.pushReplacementNamed(context, OnBordaingView.routeName);
+    } catch (e) {
+      debugPrint('Error in navigation: $e');
+      if (!mounted) return;
+      Navigator.pushReplacementNamed(context, OnBordaingView.routeName);
+    }
   }
-}
 }

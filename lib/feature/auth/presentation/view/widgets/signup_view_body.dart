@@ -126,7 +126,7 @@ class _SignupViewBodyState extends State<SignupViewBody> {
                       });
                     },
                   ),
-                  const TermsAndConditons(),
+                  const TermsAndCondition(),
                 ],
               ),
               SizedBox(height: screenHeight * 0.03),

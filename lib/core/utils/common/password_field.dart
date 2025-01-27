@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:hyper_market/core/utils/common/custom_text_form_field.dart';
-import 'package:hyper_market/generated/l10n.dart';
 
 class PasswordField extends StatefulWidget {
   const PasswordField({

@@ -1,4 +1,4 @@
-import 'dart:developer';
+
 
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -101,7 +101,6 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
 
     return response.user!;
   } on AuthException catch (e) {
-    debugPrint('AuthException occurred: ${e.message}');
     throw AuthException(e.message);
   } catch (e) {
     throw const AuthException('حدث خطأ في إنشاء الحساب');

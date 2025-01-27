@@ -3,7 +3,6 @@ import 'package:flutter_svg/svg.dart';
 import 'package:hyper_market/core/utils/constants/assets.dart';
 import 'package:hyper_market/core/utils/constants/colors.dart';
 import 'package:hyper_market/core/utils/constants/font_manger.dart';
-import 'package:hyper_market/core/utils/constants/strings_manager.dart';
 import 'package:hyper_market/core/utils/constants/styles_manger.dart';
 
 class LogoWithAppName extends StatelessWidget {

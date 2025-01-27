@@ -22,6 +22,8 @@ import 'package:hyper_market/feature/profile/presentation/view/update_profile/up
 import 'package:hyper_market/feature/profile/presentation/view/widgets/profiel_menu_switch.dart';
 import 'package:hyper_market/feature/profile/presentation/view/widgets/profile_header.dart';
 import 'package:hyper_market/feature/profile/presentation/view/widgets/profile_menu_item.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ProfileViewBody extends StatelessWidget {
   const ProfileViewBody(
@@ -29,6 +31,168 @@ class ProfileViewBody extends StatelessWidget {
       : super(key: key);
   final String userName;
   final String userEmail;
+
+  Future<void> _launchLinkedIn() async {
+    final Uri url =
+        Uri.parse('https://www.linkedin.com/in/abdulrhman-mohamed-/');
+    try {
+      if (!await launchUrl(url, mode: LaunchMode.externalApplication)) {
+        throw 'Could not launch $url';
+      }
+    } catch (e) {
+      debugPrint('Error launching URL: $e');
+    }
+  }
+
+  void _showAboutDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(
+          'من نحن',
+          style: getBoldStyle(
+            fontFamily: FontConstant.cairo,
+            fontSize: FontSize.size18,
+            color: TColors.primary,
+          ),
+          textAlign: TextAlign.center,
+        ),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              'ريف القهوة هو مطعم رائد في تقديم الوجبات الصحية والمكملات الغذائية عالية الجودة، نهتم بصحتك ولياقتك ',
+              style: getRegularStyle(
+                fontFamily: FontConstant.cairo,
+                fontSize: FontSize.size14,
+                color: TColors.grey,
+              ),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 20),
+            Text(
+              'تطوير',
+              style: getSemiBoldStyle(
+                fontFamily: FontConstant.cairo,
+                fontSize: FontSize.size16,
+                color: TColors.primary,
+              ),
+            ),
+            const SizedBox(height: 5),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'Abdulrhman Mohamed',
+                  style: getMediumStyle(
+                    fontFamily: FontConstant.cairo,
+                    fontSize: FontSize.size14,
+                    color: TColors.grey,
+                  ),
+                ),
+                const SizedBox(width: 8),
+                GestureDetector(
+                  onTap: _launchLinkedIn,
+                  child: SvgPicture.asset(
+                    'assets/images/linked.svg',
+                    height: 20,
+                    width: 20,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 10),
+            Text(
+              'الإصدار 1.0.0',
+              style: getRegularStyle(
+                fontFamily: FontConstant.cairo,
+                fontSize: FontSize.size14,
+                color: TColors.grey,
+              ),
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text(
+              'حسناً',
+              style: getMediumStyle(
+                fontFamily: FontConstant.cairo,
+                fontSize: FontSize.size16,
+                color: TColors.primary,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showHelpDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(
+          'المساعدة',
+          style: getBoldStyle(
+            fontFamily: FontConstant.cairo,
+            fontSize: FontSize.size18,
+            color: TColors.primary,
+          ),
+          textAlign: TextAlign.center,
+        ),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _buildHelpSection('للتواصل معنا:', 'support@reefcoffee.com'),
+            const SizedBox(height: 10),
+            _buildHelpSection('رقم الهاتف:', '+966 50 XXX XXXX'),
+            const SizedBox(height: 10),
+            _buildHelpSection('ساعات العمل:', '9 صباحاً - 11 مساءً'),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text(
+              'حسناً',
+              style: getMediumStyle(
+                fontFamily: FontConstant.cairo,
+                fontSize: FontSize.size16,
+                color: TColors.primary,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildHelpSection(String title, String content) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          title,
+          style: getSemiBoldStyle(
+            fontFamily: FontConstant.cairo,
+            fontSize: FontSize.size14,
+            color: TColors.primary,
+          ),
+        ),
+        Text(
+          content,
+          style: getRegularStyle(
+            fontFamily: FontConstant.cairo,
+            fontSize: FontSize.size14,
+            color: TColors.grey,
+          ),
+        ),
+      ],
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -142,15 +306,14 @@ class ProfileViewBody extends StatelessWidget {
                 icon: Icons.help_outline,
                 title: 'المساعدة',
                 onTap: () {
-                  // Navigate to help
+                  // يمكن إضافة صفحة مساعدة منفصلة
+                  _showHelpDialog(context);
                 },
               ),
               ProfileMenuItem(
                 icon: Icons.info_outline,
                 title: 'من نحن',
-                onTap: () {
-                  // Navigate to about
-                },
+                onTap: () => _showAboutDialog(context),
               ),
 
               SizedBox(height: MediaQuery.of(context).size.height * 0.03),

@@ -73,22 +73,6 @@ class _ProductFilterSheetState extends State<ProductFilterSheet> {
           const SizedBox(height: 16),
           SwitchListTile(
             title: Text(
-              'منتجات طبيعية فقط',
-              style: getRegularStyle(
-                fontFamily: FontConstant.cairo,
-                fontSize: FontSize.size14,
-              ),
-            ),
-            value: _isNatural,
-            activeColor: TColors.primary,
-            onChanged: (value) {
-              setState(() {
-                _isNatural = value;
-              });
-            },
-          ),
-          SwitchListTile(
-            title: Text(
               'منتجات بها خصم فقط',
               style: getRegularStyle(
                 fontFamily: FontConstant.cairo,
