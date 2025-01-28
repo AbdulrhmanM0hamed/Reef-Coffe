@@ -65,7 +65,7 @@ class ProfileViewBody extends StatelessWidget {
               style: getRegularStyle(
                 fontFamily: FontConstant.cairo,
                 fontSize: FontSize.size14,
-                color: TColors.grey,
+              
               ),
               textAlign: TextAlign.center,
             ),
@@ -82,12 +82,17 @@ class ProfileViewBody extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(
-                  'Abdulrhman Mohamed',
-                  style: getMediumStyle(
-                    fontFamily: FontConstant.cairo,
-                    fontSize: FontSize.size14,
-                    color: TColors.grey,
+                GestureDetector(
+                  onTap: () {
+                    _launchLinkedIn();
+                  },
+                  child: Text(
+                    'Abdulrhman Mohamed',
+                    style: getBoldStyle(
+                      fontFamily: FontConstant.cairo,
+                      fontSize: FontSize.size16,
+                               
+                    ),
                   ),
                 ),
                 const SizedBox(width: 8),
@@ -107,7 +112,7 @@ class ProfileViewBody extends StatelessWidget {
               style: getRegularStyle(
                 fontFamily: FontConstant.cairo,
                 fontSize: FontSize.size14,
-                color: TColors.grey,
+             
               ),
             ),
           ],
@@ -146,11 +151,13 @@ class ProfileViewBody extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _buildHelpSection('للتواصل معنا:', 'support@reefcoffee.com'),
+            _buildHelpSection('للتواصل معنا:', 'reefcafe58@gmail.com'),
             const SizedBox(height: 10),
-            _buildHelpSection('رقم الهاتف:', '+966 50 XXX XXXX'),
+            _buildHelpSection('رقم الهاتف:', '5171 511 56 966+'),
             const SizedBox(height: 10),
-            _buildHelpSection('ساعات العمل:', '9 صباحاً - 11 مساءً'),
+            _buildHelpSection('رقم الهاتف:', '0901 141 056'),
+            const SizedBox(height: 10),
+            _buildHelpSection('ساعات العمل:', '8 صباحاً -10 مساءً'),
           ],
         ),
         actions: [
@@ -187,7 +194,7 @@ class ProfileViewBody extends StatelessWidget {
           style: getRegularStyle(
             fontFamily: FontConstant.cairo,
             fontSize: FontSize.size14,
-            color: TColors.grey,
+         
           ),
         ),
       ],
