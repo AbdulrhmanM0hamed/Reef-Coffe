@@ -126,9 +126,8 @@ class ProductCard extends StatelessWidget {
                         ),
                         if (product.hasDiscount)
                           Container(
-                            padding: EdgeInsets.symmetric(
+                            padding: const EdgeInsets.symmetric(
                               horizontal: 2,
-                              vertical: 2,
                             ),
                             decoration: BoxDecoration(
                               color: Colors.red.shade50,
@@ -302,7 +301,7 @@ class ProductCard extends StatelessWidget {
     if (width >= 1024) {
       return 8;
     } else if (width >= 768) {
-      return 6;
+      return 7;
     } else if (width >= 390) {
       return 4;
     } else {
@@ -326,13 +325,13 @@ class ProductCard extends StatelessWidget {
   double _getVerticalPadding(Size size) {
     final width = size.width;
     if (width >= 1024) {
-      return 10;
+      return 9;
     } else if (width >= 768) {
-      return 7;
+      return 5;
     } else if (width >= 390) {
-      return 4;
+      return 3;
     } else {
-      return 4;
+      return 2;
     }
   }
 

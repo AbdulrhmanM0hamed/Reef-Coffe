@@ -16,6 +16,7 @@ c. Third-Party Services
 We may use services such as Google Analytics for Firebase to improve the Application’s functionality and user experience.
 2. How We Use Your Information
 We use the collected information to:
+
 ✔ Improve the functionality and performance of the Application.
 ✔ Provide customer support and respond to inquiries.
 ✔ Personalize user experience and recommend relevant products.
@@ -39,6 +40,7 @@ We take appropriate security measures to protect your personal data from unautho
 Account Deletion: You may request to delete your account and associated data by contacting us at reefcafe58@gmail.com.
 Marketing Communications: You can opt out of receiving promotional messages via email or app settings.
 Device Permissions: You can modify location, camera, or notification permissions in your device settings.
+
 6. Data Retention
 We retain your data only as long as necessary for business and legal purposes. If you request data deletion, we will securely erase your information from our systems.
 
