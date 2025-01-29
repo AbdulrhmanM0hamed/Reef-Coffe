@@ -21,12 +21,12 @@ android {
 
     compileOptions {
         coreLibraryDesugaringEnabled true
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
     }
 
     kotlinOptions {
-        jvmTarget = '1.8'
+        jvmTarget = '11'
     }
 
     defaultConfig {
@@ -62,11 +62,18 @@ android {
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            ndk {
+                abiFilters 'armeabi-v7a', 'arm64-v8a', 'x86', 'x86_64'
+            }
         }
         debug {
             minifyEnabled false
             shrinkResources false
         }
+    }
+
+    dexOptions {
+        javaMaxHeapSize "4g"
     }
 }
 
@@ -74,14 +81,12 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'com.facebook.android:facebook-android-sdk:latest.release'
     implementation 'androidx.multidex:multidex:2.0.1'
-//    implementation 'com.google.android.play:core:1.10.3'
-//    implementation 'com.google.android.play:core-ktx:1.8.1'
-    implementation 'com.google.android.play:app-update:2.1.0'
-    implementation 'com.google.android.play:feature-delivery:2.1.0'
     implementation 'androidx.work:work-runtime:2.8.1'
-
-
-    // تحديث إصدار desugar_jdk_libs
+    
+    // تحديث إلى أحدث إصدار متوافق مع Android 14
+    implementation 'com.google.android.play:app-update:2.1.0'
+    implementation 'com.google.android.play:review:2.0.1'
+    
     coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.2.2'
 }
 
