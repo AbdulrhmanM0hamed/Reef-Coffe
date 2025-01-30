@@ -9,5 +9,6 @@ class AssetsManager {
   static const String  googleIcon = "assets/images/google_icon.svg";
   static const String  facebookIcon = "assets/images/facebook_icon.svg";
   static const String  appleIcon = "assets/images/appl_icon.svg";
+  static const String  guestIcon = "assets/images/gest.svg";
   
 }

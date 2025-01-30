@@ -2,14 +2,18 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hyper_market/core/services/service_locator.dart';
+import 'package:hyper_market/core/services/shared_preferences.dart';
 import 'package:hyper_market/core/utils/common/elvated_button.dart';
 import 'package:hyper_market/core/utils/constants/colors.dart';
+import 'package:hyper_market/core/utils/constants/constants.dart';
 import 'package:hyper_market/core/utils/constants/font_manger.dart';
 import 'package:hyper_market/core/utils/constants/styles_manger.dart';
+import 'package:hyper_market/feature/auth/presentation/view/signin_view.dart';
 import 'package:hyper_market/feature/cart/data/models/cart_item_model.dart';
 import 'package:hyper_market/feature/cart/presentation/cubit/cart_cubit.dart';
 import 'package:hyper_market/feature/home/domain/entities/special_offer.dart';
 import 'package:hyper_market/feature/special_offers/presentation/widgets/offer_quantity_selector.dart';
+
 
 class SpecialOfferViewBody extends StatefulWidget {
   final SpecialOffer offer;
@@ -339,10 +343,44 @@ class _SpecialOfferViewBodyState extends State<SpecialOfferViewBody> {
   }
 
   Widget _buildAddToCartSection() {
+    final isLoggedIn = !Prefs.getBool(KIsGuestUser) && Prefs.getBool(KIsloginSuccess) == true;
+
+    if (!isLoggedIn) {
+      return InkWell(
+        onTap: () => Navigator.pushNamed(context, SigninView.routeName),
+        child: Container(
+          padding: const EdgeInsets.all(12),
+          decoration: BoxDecoration(
+            color: TColors.primary.withOpacity(0.1),
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Icon(
+                Icons.login,
+                color: TColors.primary,
+                size: 20,
+              ),
+              const SizedBox(width: 8),
+              Text(
+                'يجب تسجيل الدخول لإضافة المنتج للسلة',
+                style: getMediumStyle(
+                  fontFamily: FontConstant.cairo,
+                  fontSize: FontSize.size14,
+                  color: TColors.primary,
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+
     return Column(
       children: [
         OfferQuantitySelector(
-          offer: widget.offer , 
+          offer: widget.offer,
           onQuantityChanged: _updateQuantity,
         ),
         const SizedBox(height: 16),
@@ -352,55 +390,55 @@ class _SpecialOfferViewBodyState extends State<SpecialOfferViewBody> {
   }
 
   Widget _buildAddToCartButton() {
-    return BlocListener<CartCubit, CartState>(
-      listener: (context, state) {
-        if (state is CartUpdated) {
-          ScaffoldMessenger.of(context).showSnackBar(
-             SnackBar(
-              content: Text('تم إضافة العرض إلى السلة بنجاح' , style: getRegularStyle(fontFamily: FontConstant.cairo ,fontSize: FontSize.size16,color: Colors.white),),
-              backgroundColor: TColors.primary,
-            ),
-          );
-        }
-      },
-      child: CustomElevatedButton(
-        buttonText: 'اضافة للسلة',
-        onPressed: () => _handleAddToCart(),
-      ),
+    final isLoggedIn = !Prefs.getBool(KIsGuestUser) && Prefs.getBool(KIsloginSuccess) == true;
+    
+    return CustomElevatedButton(
+      buttonText: 'اضافة للسلة',
+      onPressed: isLoggedIn 
+        ? () {
+            if (_quantity <= 0) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('الرجاء تحديد الكمية'),
+                  backgroundColor: Colors.red,
+                  duration: Duration(seconds: 2),
+                ),
+              );
+              return;
+            }
+            final cartItem = CartItem(
+              id: widget.offer.id,
+              productId: widget.offer.id,
+              name: widget.offer.title,
+              price: widget.offer.offerPrice,
+              image: widget.offer.image1,
+              quantity: _quantity,
+            );
+            getIt<CartCubit>().addItem(cartItem);
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(
+                  'تم إضافة العرض إلى السلة بنجاح',
+                  style: getRegularStyle(
+                    fontFamily: FontConstant.cairo,
+                    fontSize: FontSize.size16,
+                    color: Colors.white,
+                  ),
+                ),
+                backgroundColor: TColors.primary,
+              ),
+            );
+          }
+        : () {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text('يجب تسجيل الدخول لإضافة المنتج للسلة'),
+                duration: Duration(seconds: 2),
+              ),
+            );
+            Navigator.pushNamed(context, SigninView.routeName);
+          },
     );
-  }
-
-  void _handleAddToCart() {
-    try {
-      if (_quantity <= 0) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('الرجاء تحديد الكمية'),
-            backgroundColor: Colors.red,
-            duration: Duration(seconds: 2),
-          ),
-        );
-        return;
-      }
-
-      final cartItem = CartItem(
-        id: widget.offer.id,
-        productId: widget.offer.id,
-        name: widget.offer.title,
-        price: widget.offer.offerPrice,
-        image: widget.offer.image1,
-        quantity: _quantity,
-      );
-
-      getIt<CartCubit>().addItem(cartItem);
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('حدث خطأ أثناء إضافة العرض إلى السلة'),
-          backgroundColor: TColors.error,
-        ),
-      );
-    }
   }
 
   Widget _buildNotAvailableMessage() {

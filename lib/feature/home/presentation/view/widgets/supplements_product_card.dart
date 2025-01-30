@@ -3,13 +3,17 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hyper_market/core/services/shared_preferences.dart';
 import 'package:hyper_market/core/utils/constants/colors.dart';
+import 'package:hyper_market/core/utils/constants/constants.dart';
 import 'package:hyper_market/core/utils/constants/font_manger.dart';
 import 'package:hyper_market/core/utils/constants/styles_manger.dart';
+import 'package:hyper_market/feature/auth/presentation/view/signin_view.dart';
 import 'package:hyper_market/feature/cart/data/models/cart_item_model.dart';
 import 'package:hyper_market/feature/cart/presentation/cubit/cart_cubit.dart';
 import 'package:hyper_market/feature/details/presentation/view/details_view.dart';
 import 'package:hyper_market/feature/products/domain/entities/product.dart';
+import 'package:hyper_market/feature/products/presentation/view/widgets/add_product_snackbar.dart';
 
 class SupplementProductCard extends StatelessWidget {
   final Product product;
@@ -248,30 +252,33 @@ class SupplementProductCard extends StatelessWidget {
   }
 
   void _addToCart(BuildContext context) {
-    final newItem = CartItem(
-      id: product.id!,
-      productId: product.id!,
-      name: product.name,
-      price: product.hasDiscount ? product.discountPrice! : product.price,
-      image: product.imageUrl ?? '',
-      quantity: 1,
-    );
-
-    context.read<CartCubit>().addItem(newItem);
-
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(
-          'تم إضافة ${product.name} إلى السلة',
-          style: getSemiBoldStyle(
-            fontSize: FontSize.size14,
-            fontFamily: FontConstant.cairo,
-            color: Colors.white,
-          ),
+    final isLoggedIn = !Prefs.getBool(KIsGuestUser) && Prefs.getBool(KIsloginSuccess) == true;
+    
+    if (isLoggedIn) {
+      final cartItem = CartItem(
+        id: product.id!,
+        productId: product.id!,
+        name: product.name,
+        price: product.hasDiscount ? product.discountPrice! : product.price,
+        image: product.imageUrl ?? '',
+        quantity: 1,
+      );
+      context.read<CartCubit>().addItem(cartItem);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: AddProductSnackbar(product: product),
+          backgroundColor: TColors.primary,
+          duration: const Duration(seconds: 1),
         ),
-        backgroundColor: TColors.primary,
-        duration: const Duration(seconds: 2),
-      ),
-    );
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('يجب تسجيل الدخول لإضافة المنتج للسلة'),
+          duration: Duration(seconds: 2),
+        ),
+      );
+      Navigator.pushNamed(context, SigninView.routeName);
+    }
   }
 }

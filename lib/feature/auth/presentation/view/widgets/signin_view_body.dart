@@ -16,6 +16,8 @@ import 'package:hyper_market/feature/auth/presentation/view/widgets/custom_divid
 import 'package:hyper_market/feature/auth/presentation/view/widgets/dont_have_account.dart';
 import 'package:hyper_market/feature/auth/presentation/view/widgets/socail_button.dart';
 import 'package:hyper_market/core/utils/animations/custom_animations.dart';
+import 'package:hyper_market/feature/home/presentation/cubit/user_cubit.dart';
+import 'package:hyper_market/feature/home/presentation/view/home_view.dart';
 import '../../../../../generated/l10n.dart';
 
 class SigninViewBody extends StatefulWidget {
@@ -68,7 +70,7 @@ class _SigninViewBodyState extends State<SigninViewBody> {
               ),
               SizedBox(height: size.height * 0.02),
               CustomAnimations.slideFromTop(
-                duration:const Duration(milliseconds: 900),
+                duration: const Duration(milliseconds: 900),
                 child: PasswordField(
                   hintText: S.current!.password,
                   onSaved: (value) => password = value!,
@@ -76,7 +78,7 @@ class _SigninViewBodyState extends State<SigninViewBody> {
               ),
               SizedBox(height: size.height * 0.01),
               CustomAnimations.fadeIn(
-                duration:const Duration(milliseconds: 1000),
+                duration: const Duration(milliseconds: 1000),
                 child: TextButton(
                   onPressed: () {
                     Navigator.pushNamed(
@@ -98,21 +100,8 @@ class _SigninViewBodyState extends State<SigninViewBody> {
               CustomAnimations.fadeIn(
                 duration: const Duration(milliseconds: 1100),
                 child: CustomElevatedButton(
-
                   buttonText: S.current!.login,
-                  onPressed: () {
-                 //   Prefs.setBool(KIsloginSuccess, true);
-                    if (formKey.currentState!.validate()) {
-                      formKey.currentState!.save();
-                      context.read<SignInCubit>().signInWithEmail(
-                            email,
-                            password,
-                          );
-                    } else {
-                      autovalidateMode = AutovalidateMode.always;
-                      setState(() {});
-                    }
-                  },
+                  onPressed: _signInWithEmail,
                 ),
               ),
               SizedBox(height: size.height * 0.02),
@@ -127,43 +116,56 @@ class _SigninViewBodyState extends State<SigninViewBody> {
                   children: [
                     SocialButton(
                       onPressed: () {
-                        context.read<SignInCubit>().signInWithGoogle().then((_) {
+                        Prefs.setBool(KIsGuestUser, true);
+                        Navigator.pushReplacementNamed(
+                            context, HomeView.routeName);
+                      },
+                      iconPath: AssetsManager.guestIcon,
+                      buttonText: "الدخول كزائر",
+                    ),
+                    SizedBox(height: size.height * 0.015),
+
+                    SocialButton(
+                      onPressed: () {
+                        context
+                            .read<SignInCubit>()
+                            .signInWithGoogle()
+                            .then((_) {
                           Prefs.setBool(KIsloginSuccess, true);
                         });
                       },
                       iconPath: AssetsManager.googleIcon,
                       buttonText: "تسجيل بواسطة Google",
                     ),
-                   
-                  //   SocialButton(
-                  //     onPressed: () {
-                  // //      context.read<SignInCubit>().signInWithFacebook();
-                  //     },
-                  //     iconPath: AssetsManager.facebookIcon,
-                  //     buttonText: "تسجيل بواسطة Facebook",
-                  //   ),
+
+                    //   SocialButton(
+                    //     onPressed: () {
+                    // //      context.read<SignInCubit>().signInWithFacebook();
+                    //     },
+                    //     iconPath: AssetsManager.facebookIcon,
+                    //     buttonText: "تسجيل بواسطة Facebook",
+                    //   ),
                     SizedBox(height: size.height * 0.015),
 
-                    Platform.isIOS  ?
-                      SocialButton(
-                        onPressed: () {
-                          context.read<SignInCubit>().signInWithApple();
-                        },
-                        iconPath: AssetsManager.appleIcon,
-                        buttonText: "تسجيل بواسطة Apple",
-                      ) : 
-                      Tooltip(
-                        message: 'متوفر فقط على أجهزة iOS',
-                        child: Opacity(
-                          opacity: 0.5,
-                          child: SocialButton(
-                            onPressed: () {},
+                    Platform.isIOS
+                        ? SocialButton(
+                            onPressed: () {
+                              context.read<SignInCubit>().signInWithApple();
+                            },
                             iconPath: AssetsManager.appleIcon,
-                            buttonText: "تسجيل بواسطة Apple ",
+                            buttonText: "تسجيل بواسطة Apple",
+                          )
+                        : Tooltip(
+                            message: 'متوفر فقط على أجهزة iOS',
+                            child: Opacity(
+                              opacity: 0.5,
+                              child: SocialButton(
+                                onPressed: () {},
+                                iconPath: AssetsManager.appleIcon,
+                                buttonText: "تسجيل بواسطة Apple ",
+                              ),
+                            ),
                           ),
-                        ),
-                      ),
-                   
                   ],
                 ),
               ),
@@ -177,5 +179,24 @@ class _SigninViewBodyState extends State<SigninViewBody> {
         ),
       ),
     );
+  }
+
+  void _signInWithEmail() {
+    if (formKey.currentState!.validate()) {
+      formKey.currentState!.save();
+      context.read<SignInCubit>().signInWithEmail(email, password).then((_) {
+        Prefs.setBool(KIsGuestUser, false);
+        Prefs.setBool(KIsloginSuccess, true);
+
+        // تهيئة UserCubit بعد تسجيل الدخول
+        context.read<UserCubit>().getCurrentUserData();
+
+        Navigator.pushReplacementNamed(context, HomeView.routeName);
+      });
+    } else {
+      setState(() {
+        autovalidateMode = AutovalidateMode.always;
+      });
+    }
   }
 }

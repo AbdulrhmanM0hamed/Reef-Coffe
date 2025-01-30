@@ -32,7 +32,7 @@ class _CustomHomeAppBarState extends State<CustomHomeAppBar> {
 
   void _setupRealtimeListeners() {
     final supabase = Supabase.instance.client;
-    final userId = supabase.auth.currentUser!.id;
+    final userId = supabase.auth.currentUser?.id;
     
     // مراقبة جدول الإشعارات
     _notificationsChannel = supabase.channel('public:notifications')

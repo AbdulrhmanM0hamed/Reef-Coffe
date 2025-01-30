@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hyper_market/core/services/shared_preferences.dart';
 import 'package:hyper_market/core/utils/constants/colors.dart';
 import 'package:hyper_market/core/utils/constants/font_manger.dart';
 import 'package:hyper_market/core/utils/constants/styles_manger.dart';
@@ -10,6 +11,8 @@ import 'package:hyper_market/feature/details/presentation/view/details_view.dart
 import 'package:hyper_market/feature/products/presentation/view/widgets/add_product_snackbar.dart';
 import '../../../domain/entities/product.dart';
 import 'dart:math';
+import 'package:hyper_market/core/utils/constants/constants.dart';
+import 'package:hyper_market/feature/auth/presentation/view/signin_view.dart';
 
 class ProductCard extends StatelessWidget {
   final Product product;
@@ -182,7 +185,8 @@ class ProductCard extends StatelessWidget {
                           fontSize: _getPriceFontSize(size),
                         ),
                       ),
-                    SizedBox(height: _getSpacing(size)),
+                   SizedBox(height: _getSpacing(size) * 0.9),
+
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -220,57 +224,10 @@ class ProductCard extends StatelessWidget {
                             ),
                           )
                         else
-                          const SizedBox.shrink(),
-                        InkWell(
-                          onTap: () {
-                            try {
-                              final cartItem = CartItem(
-                                id: product.id!,
-                                productId: product.id!,
-                                name: product.name,
-                                price: product.hasDiscount
-                                    ? product.discountPrice!
-                                    : product.price,
-                                image: product.imageUrl!,
-                                quantity: 1,
-                              );
-
-                              final cartCubit = context.read<CartCubit>();
-                              cartCubit.addItem(cartItem);
-
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: AddProductSnackbar(product: product),
-                                  backgroundColor: TColors.primary,
-                                  duration: const Duration(seconds: 1),
-                                ),
-                              );
-                            } catch (e) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content: Text('حدث خطأ أثناء الإضافة إلى السلة'),
-                                  backgroundColor: Colors.red,
-                                  duration: Duration(seconds: 2),
-                                ),
-                              );
-                            }
-                          },
-                          child: Container(
-                            padding: EdgeInsets.symmetric(
-                              horizontal: MediaQuery.of(context).size.width * 0.030,
-                              vertical: _getVerticalPadding(size),
-                            ),
-                            decoration: BoxDecoration(
-                              color: TColors.primary,
-                              borderRadius: BorderRadius.circular(_getBorderRadius(size)),
-                            ),
-                            child: Icon(
-                              Icons.add_shopping_cart_outlined,
-                              size: _getIconSize(size),
-                              color: Colors.white,
-                            ),
+                           SizedBox(
+                            height: 2,
                           ),
-                        ),
+                        _buildAddToCartButton(context),
                       ],
                     ),
                   ],
@@ -278,6 +235,57 @@ class ProductCard extends StatelessWidget {
               ),
             ),
           ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildAddToCartButton(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+    final isLoggedIn = !Prefs.getBool(KIsGuestUser) && Prefs.getBool(KIsloginSuccess) == true;
+    
+    return InkWell(
+      onTap: isLoggedIn 
+        ? () {
+            final cartItem = CartItem(
+              id: product.id!,
+              productId: product.id!,
+              name: product.name,
+              price: product.hasDiscount ? product.discountPrice! : product.price,
+              image: product.imageUrl ?? '',
+              quantity: 1,
+            );
+            context.read<CartCubit>().addItem(cartItem);
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: AddProductSnackbar(product: product),
+                backgroundColor: TColors.primary,
+                duration: const Duration(seconds: 1),
+              ),
+            );
+          }
+        : () {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text('يجب تسجيل الدخول لإضافة المنتج للسلة'),
+                duration: Duration(seconds: 2),
+              ),
+            );
+            Navigator.pushNamed(context, SigninView.routeName);
+          },
+      child: Container(
+        padding: EdgeInsets.symmetric(
+          horizontal: size.width * 0.030,
+          vertical: _getVerticalPadding(size),
+        ),
+        decoration: BoxDecoration(
+          color: TColors.primary,
+          borderRadius: BorderRadius.circular(_getBorderRadius(size)),
+        ),
+        child: Icon(
+          Icons.add_shopping_cart_outlined,
+          size: _getIconSize(size),
+          color: Colors.white,
         ),
       ),
     );

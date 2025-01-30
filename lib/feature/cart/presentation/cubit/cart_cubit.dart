@@ -71,7 +71,10 @@ class CartCubit extends Cubit<CartState> {
   }
 
   void clearCart() {
-    _items.clear();
-    emit(CartUpdated(List.from(_items)));
+    if (!isClosed) {
+      _items.clear();
+     
+      emit(CartUpdated(List.from(_items)));
+    }
   }
 }

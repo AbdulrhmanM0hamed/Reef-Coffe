@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hyper_market/core/services/shared_preferences.dart';
 import 'package:hyper_market/core/utils/common/elvated_button.dart';
 import 'package:hyper_market/core/utils/constants/colors.dart';
 import 'package:hyper_market/core/utils/constants/font_manger.dart';
@@ -17,6 +18,8 @@ import 'package:hyper_market/feature/details/presentation/view/widgets/title_wit
 import 'package:hyper_market/feature/products/domain/entities/product.dart';
 import 'package:hyper_market/feature/products/presentation/view/widgets/add_product_snackbar.dart';
 import 'package:hyper_market/core/services/service_locator.dart';
+import 'package:hyper_market/core/utils/constants/constants.dart';
+import 'package:hyper_market/feature/auth/presentation/view/signin_view.dart';
 
 class DetailsViewBody extends StatefulWidget {
   final Product product;
@@ -144,11 +147,7 @@ void didUpdateWidget(DetailsViewBody oldWidget) {
                 product: widget.product,
                 onQuantityChanged: _updateQuantity,
               ),
-              RatingSection(
-                product: widget.product,
-                screenWidth: screenWidth,
-                isSmallScreen: isSmallScreen,
-              ),
+              _buildRatingSection(screenWidth, isSmallScreen),
               SizedBox(height: screenHeight * 0.02),
               _buildDescription(isSmallScreen),
               SizedBox(height: screenHeight * 0.02),
@@ -186,10 +185,43 @@ void didUpdateWidget(DetailsViewBody oldWidget) {
     );
   }
 
+  Widget _buildRatingSection(double screenWidth, bool isSmallScreen) {
+    final isLoggedIn = !Prefs.getBool(KIsGuestUser) && Prefs.getBool(KIsloginSuccess) == true;
+    
+    return isLoggedIn 
+      ? RatingSection(
+        product: widget.product,
+        screenWidth: screenWidth,
+        isSmallScreen: isSmallScreen,
+      )
+      : _buildLoginPrompt("يجب تسجيل الدخول لإضافة تقييم");
+  }
+
   Widget _buildAddToCartButton() {
-    return CustomElevatedButton(
-      onPressed: () => _handleAddToCart(context),
-      buttonText: 'اضافة للسلة',
+    final isLoggedIn = !Prefs.getBool(KIsGuestUser) && Prefs.getBool(KIsloginSuccess) == true;
+    
+    return isLoggedIn
+      ? CustomElevatedButton(
+        onPressed: () => _handleAddToCart(context),
+        buttonText: 'اضافة للسلة',
+      )
+      : _buildLoginPrompt("يجب تسجيل الدخول لإضافة المنتج للسلة");
+  }
+
+  Widget _buildLoginPrompt(String message) {
+    return InkWell(
+      onTap: () => Navigator.pushNamed(context, SigninView.routeName),
+      child: Container(
+        padding: const EdgeInsets.all(8),
+        child: Text(
+          message,
+          style: getMediumStyle(
+            fontFamily: FontConstant.cairo,
+            color: TColors.primary,
+            fontSize: FontSize.size14,
+          ),
+        ),
+      ),
     );
   }
 

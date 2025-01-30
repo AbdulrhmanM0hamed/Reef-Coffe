@@ -32,6 +32,7 @@ class UserCubit extends Cubit<UserState> {
       },
     );
 
-    emit(UserLoadedState(name: name, email: email));
-  }
+if (!isClosed) {
+  emit(UserLoadedState(name: name, email: email));
+}  }
 }
