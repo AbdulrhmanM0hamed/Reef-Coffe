@@ -125,18 +125,21 @@ class _SigninViewBodyState extends State<SigninViewBody> {
                     ),
                     SizedBox(height: size.height * 0.015),
 
-                    SocialButton(
-                      onPressed: () {
-                        context
-                            .read<SignInCubit>()
-                            .signInWithGoogle()
-                            .then((_) {
-                          Prefs.setBool(KIsloginSuccess, true);
-                        });
-                      },
-                      iconPath: AssetsManager.googleIcon,
-                      buttonText: "تسجيل بواسطة Google",
-                    ),
+                    if (Platform.isAndroid)
+                      SocialButton(
+                        onPressed: () {
+                          context
+                              .read<SignInCubit>()
+                              .signInWithGoogle()
+                              .then((_) {
+                            Prefs.setBool(KIsloginSuccess, true);
+                          });
+                        },
+                        iconPath: AssetsManager.googleIcon,
+                        buttonText: "تسجيل بواسطة Google",
+                      ),
+
+                    SizedBox(height: size.height * 0.015),
 
                     //   SocialButton(
                     //     onPressed: () {
@@ -147,25 +150,25 @@ class _SigninViewBodyState extends State<SigninViewBody> {
                     //   ),
                     SizedBox(height: size.height * 0.015),
 
-                    Platform.isIOS
-                        ? SocialButton(
-                            onPressed: () {
-                              context.read<SignInCubit>().signInWithApple();
-                            },
-                            iconPath: AssetsManager.appleIcon,
-                            buttonText: "تسجيل بواسطة Apple",
-                          )
-                        : Tooltip(
-                            message: 'متوفر فقط على أجهزة iOS',
-                            child: Opacity(
-                              opacity: 0.5,
-                              child: SocialButton(
-                                onPressed: () {},
-                                iconPath: AssetsManager.appleIcon,
-                                buttonText: "تسجيل بواسطة Apple ",
-                              ),
-                            ),
-                          ),
+                    // Platform.isIOS
+                    //     ? SocialButton(
+                    //         onPressed: () {
+                    //           context.read<SignInCubit>().signInWithApple();
+                    //         },
+                    //         iconPath: AssetsManager.appleIcon,
+                    //         buttonText: "تسجيل بواسطة Apple",
+                    //       )
+                    //     : Tooltip(
+                    //         message: 'متوفر فقط على أجهزة iOS',
+                    //         child: Opacity(
+                    //           opacity: 0.5,
+                    //           child: SocialButton(
+                    //             onPressed: () {},
+                    //             iconPath: AssetsManager.appleIcon,
+                    //             buttonText: "تسجيل بواسطة Apple ",
+                    //           ),
+                    //         ),
+                    //       ),
                   ],
                 ),
               ),
