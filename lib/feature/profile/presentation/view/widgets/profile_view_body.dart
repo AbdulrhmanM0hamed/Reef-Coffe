@@ -354,6 +354,7 @@ class ProfileViewBody extends StatelessWidget {
         }
       },
     );
+    
   }
 
   Widget _buildProfileHeader() {
