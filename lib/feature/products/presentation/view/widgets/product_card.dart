@@ -8,7 +8,6 @@ import 'package:hyper_market/feature/cart/data/models/cart_item_model.dart';
 import 'package:hyper_market/feature/cart/presentation/cubit/cart_cubit.dart';
 import 'package:hyper_market/feature/details/presentation/view/details_view.dart';
 import 'package:hyper_market/feature/products/presentation/view/widgets/add_product_snackbar.dart';
-import 'package:page_transition/page_transition.dart';
 import '../../../domain/entities/product.dart';
 import 'dart:math';
 

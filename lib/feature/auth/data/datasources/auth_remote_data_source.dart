@@ -1,9 +1,10 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:hyper_market/core/error/excptions.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
+import 'dart:convert';
+import 'package:crypto/crypto.dart';
 
 abstract class AuthRemoteDataSource {
   Future<User> signInWithEmail(String email, String password);
@@ -173,32 +174,58 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   @override
   Future<User> signInWithApple() async {
     try {
-      final response = await supabaseClient.auth.signInWithOAuth(
-        OAuthProvider.apple,
-        redirectTo: 'hypermarket://callback',
+      final rawNonce = supabaseClient.auth.generateRawNonce();
+      final hashedNonce = sha256.convert(utf8.encode(rawNonce)).toString();
+
+      final credential = await SignInWithApple.getAppleIDCredential(
+        scopes: [
+          AppleIDAuthorizationScopes.email,
+          AppleIDAuthorizationScopes.fullName,
+        ],
+        nonce: hashedNonce,
       );
 
-      if (!response) {
+      final idToken = credential.identityToken;
+      if (idToken == null) {
+        throw const AuthException('Could not find ID Token from credential.');
+      }
+
+      final response = await supabaseClient.auth.signInWithIdToken(
+        provider: OAuthProvider.apple,
+        idToken: idToken,
+        nonce: rawNonce,
+      );
+
+      if (response.user == null) {
         throw const CustomException(message: 'فشل في تسجيل الدخول باستخدام Apple');
       }
 
-      final user = supabaseClient.auth.currentUser;
-      if (user == null) {
-        throw const CustomException(message: 'فشل في تسجيل الدخول باستخدام Apple');
+      // التحقق من البروفايل
+      final profile = await supabaseClient
+          .from('profiles')
+          .select()
+          .eq('id', response.user!.id)
+          .maybeSingle();
+
+      if (profile == null) {
+        await supabaseClient.from('profiles').insert({
+          'id': response.user!.id,
+          'name': '${credential.givenName ?? ''} ${credential.familyName ?? ''}',
+          'email': credential.email,
+          "provider": "apple",
+        });
       }
 
-      return user;
+      return response.user!;
     } catch (e) {
-      if (e is AuthException) {
-        String message = e.message;
-        if (e.message.contains("User cancelled")) {
-          message = "تم إلغاء تسجيل الدخول";
-        }
-        throw CustomException(message: message);
+      if (e is SignInWithAppleAuthorizationException) {
+        throw const CustomException(message: 'تم إلغاء تسجيل الدخول');
       }
       throw const CustomException(message: 'فشل في تسجيل الدخول باستخدام Apple');
     }
   }
+
+  
 
   // @override
   // Future<User> signInWithFacebook() async {

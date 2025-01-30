@@ -1,4 +1,4 @@
-
+import 'dart:io' show Platform;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hyper_market/core/services/shared_preferences.dart';
@@ -144,25 +144,25 @@ class _SigninViewBodyState extends State<SigninViewBody> {
                   //   ),
                     SizedBox(height: size.height * 0.015),
 
-                    // Platform.isIOS  ?
-                    //   SocialButton(
-                    //     onPressed: () {
-                    //       context.read<SignInCubit>().signInWithApple();
-                    //     },
-                    //     iconPath: AssetsManager.appleIcon,
-                    //     buttonText: "تسجيل بواسطة Apple",
-                    //   ) : 
-                    //   Tooltip(
-                    //     message: 'متوفر فقط على أجهزة iOS',
-                    //     child: Opacity(
-                    //       opacity: 0.5,
-                    //       child: SocialButton(
-                    //         onPressed: () {},
-                    //         iconPath: AssetsManager.appleIcon,
-                    //         buttonText: "تسجيل بواسطة Apple ",
-                    //       ),
-                    //     ),
-                    //   ),
+                    Platform.isIOS  ?
+                      SocialButton(
+                        onPressed: () {
+                          context.read<SignInCubit>().signInWithApple();
+                        },
+                        iconPath: AssetsManager.appleIcon,
+                        buttonText: "تسجيل بواسطة Apple",
+                      ) : 
+                      Tooltip(
+                        message: 'متوفر فقط على أجهزة iOS',
+                        child: Opacity(
+                          opacity: 0.5,
+                          child: SocialButton(
+                            onPressed: () {},
+                            iconPath: AssetsManager.appleIcon,
+                            buttonText: "تسجيل بواسطة Apple ",
+                          ),
+                        ),
+                      ),
                    
                   ],
                 ),
