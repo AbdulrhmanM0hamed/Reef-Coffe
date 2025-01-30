@@ -37,7 +37,7 @@ class ProfileViewBody extends StatelessWidget {
 
   Future<void> _launchLinkedIn() async {
     final Uri url =
-        Uri.parse('https://www.linkedin.com/in/abdulrhman-mohamed-/');
+    Uri.parse('https://www.linkedin.com/in/abdulrhman-mohamed-/');
     try {
       if (!await launchUrl(url, mode: LaunchMode.externalApplication)) {
         throw 'Could not launch $url';
@@ -306,6 +306,48 @@ class ProfileViewBody extends StatelessWidget {
               const SizedBox(height: 16),
               // زر تسجيل الدخول للزائر أو تسجيل الخروج للمستخدم المسجل
               _buildAuthButton(context, isGuestUser),
+
+              // إضافة زر حذف الحساب للمستخدمين المسجلين فقط
+              if (!isGuestUser) ...[
+                const SizedBox(height: 12),
+                CustomElevatedButton(
+                  buttonText: 'حذف الحساب',
+                  onPressed: () async {
+                    try {
+                      // مسح محتويات السلة أولاً
+                      final cartCubit = getIt<CartCubit>();
+                      cartCubit.clearCart();
+
+                      // ثم تسجيل الخروج
+                      await getIt<AuthRemoteDataSource>().signOut();
+
+                      // تحديث حالة المستخدم
+                      await Prefs.setBool(KIsGuestUser, false);
+                      await Prefs.setBool(KIsloginSuccess, false);
+                      await Prefs.remove(KUserName);
+                      await Prefs.remove(KUserEmail);
+
+                      if (context.mounted) {
+                        Navigator.pushNamedAndRemoveUntil(
+                          context,
+                          SigninView.routeName,
+                              (route) => false,
+                        );
+                      }
+                    } catch (e) {
+                      if (context.mounted) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('حدث خطأ أثناء حذف الحساب'),
+                            backgroundColor: TColors.error,
+                          ),
+                        );
+                      }
+                    }
+                  },
+                  buttonColor: Colors.red,
+                ),
+              ],
             ],
           ),
         ),
@@ -338,7 +380,7 @@ class ProfileViewBody extends StatelessWidget {
               Navigator.pushNamedAndRemoveUntil(
                 context,
                 SigninView.routeName,
-                (route) => false,
+                    (route) => false,
               );
             }
           } catch (e) {
@@ -354,7 +396,6 @@ class ProfileViewBody extends StatelessWidget {
         }
       },
     );
-    
   }
 
   Widget _buildProfileHeader() {
