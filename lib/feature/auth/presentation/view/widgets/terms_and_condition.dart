@@ -111,7 +111,6 @@ class TermsAndCondition extends StatelessWidget {
           style: getSemiBoldStyle(
             fontFamily: FontConstant.cairo,
             fontSize: FontSize.size14,
-            color: TColors.grey,
           ),
           children: [
             TextSpan(

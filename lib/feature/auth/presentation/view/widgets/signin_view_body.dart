@@ -169,7 +169,7 @@ class _SigninViewBodyState extends State<SigninViewBody> {
                   ],
                 ),
               ),
-              SizedBox(height: size.height * 0.01),
+              SizedBox(height: size.height * 0.02),
               CustomAnimations.fadeIn(
                 duration: const Duration(milliseconds: 1400),
                 child: const DontHaveAccount(),
