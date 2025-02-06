@@ -94,7 +94,7 @@ class TermsAndCondition extends StatelessWidget {
           style: getRegularStyle(
             fontFamily: FontConstant.cairo,
             fontSize: FontSize.size14,
-            color: TColors.grey,
+           
           ),
         ),
       ],
