@@ -48,136 +48,153 @@ class _SigninViewBodyState extends State<SigninViewBody> {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
 
-    return SingleChildScrollView(
-      child: Padding(
-        padding: EdgeInsets.symmetric(
-          vertical: size.height * 0.04,
-          horizontal: size.width * 0.05,
-        ),
-        child: Form(
-          key: formKey,
-          autovalidateMode: autovalidateMode,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              CustomAnimations.slideFromTop(
-                duration: const Duration(milliseconds: 800),
-                child: CustomTextFormField(
-                  onSaved: (value) => email = value!,
-                  hintText: S.current!.email,
-                  suffixIcon: const Icon(Icons.email),
+    return BlocListener<SignInCubit, SignInState>(
+      listener: (context, state) {
+        if (state is SignInSuccessState) {
+          Prefs.setBool(KIsGuestUser, false);
+          Prefs.setBool(KIsloginSuccess, true);
+          context.read<UserCubit>().getCurrentUserData();
+          Navigator.pushReplacementNamed(context, HomeView.routeName);
+        } else if (state is SignInErrorState) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(state.message),
+              backgroundColor: Colors.red,
+            ),
+          );
+        }
+      },
+      child: SingleChildScrollView(
+        child: Padding(
+          padding: EdgeInsets.symmetric(
+            vertical: size.height * 0.04,
+            horizontal: size.width * 0.05,
+          ),
+          child: Form(
+            key: formKey,
+            autovalidateMode: autovalidateMode,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                CustomAnimations.slideFromTop(
+                  duration: const Duration(milliseconds: 800),
+                  child: CustomTextFormField(
+                    onSaved: (value) => email = value!,
+                    hintText: S.current!.email,
+                    suffixIcon: const Icon(Icons.email),
+                  ),
                 ),
-              ),
-              SizedBox(height: size.height * 0.02),
-              CustomAnimations.slideFromTop(
-                duration: const Duration(milliseconds: 900),
-                child: PasswordField(
-                  hintText: S.current!.password,
-                  onSaved: (value) => password = value!,
+                SizedBox(height: size.height * 0.02),
+                CustomAnimations.slideFromTop(
+                  duration: const Duration(milliseconds: 900),
+                  child: PasswordField(
+                    hintText: S.current!.password,
+                    onSaved: (value) => password = value!,
+                  ),
                 ),
-              ),
-              SizedBox(height: size.height * 0.01),
-              CustomAnimations.fadeIn(
-                duration: const Duration(milliseconds: 1000),
-                child: TextButton(
-                  onPressed: () {
-                    Navigator.pushNamed(
-                      context,
-                      ForgotPasswordView.routeName,
-                    );
-                  },
-                  child: Text(
-                    "نسيت كلمة المرور؟",
-                    style: getSemiBoldStyle(
-                      fontFamily: FontConstant.cairo,
-                      fontSize: size.height * 0.016,
-                      color: TColors.primary,
+                SizedBox(height: size.height * 0.01),
+                CustomAnimations.fadeIn(
+                  duration: const Duration(milliseconds: 1000),
+                  child: TextButton(
+                    onPressed: () {
+                      Navigator.pushNamed(
+                        context,
+                        ForgotPasswordView.routeName,
+                      );
+                    },
+                    child: Text(
+                      "نسيت كلمة المرور؟",
+                      style: getSemiBoldStyle(
+                        fontFamily: FontConstant.cairo,
+                        fontSize: size.height * 0.016,
+                        color: TColors.primary,
+                      ),
                     ),
                   ),
                 ),
-              ),
-              SizedBox(height: size.height * 0.02),
-              CustomAnimations.fadeIn(
-                duration: const Duration(milliseconds: 1100),
-                child: CustomElevatedButton(
-                  buttonText: S.current!.login,
-                  onPressed: _signInWithEmail,
+                SizedBox(height: size.height * 0.02),
+                CustomAnimations.fadeIn(
+                  duration: const Duration(milliseconds: 1100),
+                  child: CustomElevatedButton(
+                    buttonText: S.current!.login,
+                    onPressed: _signInWithEmail,
+                  ),
                 ),
-              ),
-              SizedBox(height: size.height * 0.02),
-              CustomAnimations.fadeIn(
-                duration: const Duration(milliseconds: 1200),
-                child: const CustomDivider(),
-              ),
-              SizedBox(height: size.height * 0.02),
-              CustomAnimations.slideFromBottom(
-                duration: const Duration(milliseconds: 1300),
-                child: Column(
-                  children: [
-                    SocialButton(
-                      onPressed: () {
-                        Prefs.setBool(KIsGuestUser, true);
-                        Navigator.pushReplacementNamed(
-                            context, HomeView.routeName);
-                      },
-                      iconPath: AssetsManager.guestIcon,
-                      buttonText: "الدخول كزائر",
-                    ),
-                    SizedBox(height: size.height * 0.015),
-
-                    if (Platform.isAndroid)
+                SizedBox(height: size.height * 0.02),
+                CustomAnimations.fadeIn(
+                  duration: const Duration(milliseconds: 1200),
+                  child: const CustomDivider(),
+                ),
+                SizedBox(height: size.height * 0.02),
+                CustomAnimations.slideFromBottom(
+                  duration: const Duration(milliseconds: 1300),
+                  child: Column(
+                    children: [
                       SocialButton(
                         onPressed: () {
-                          context
-                              .read<SignInCubit>()
-                              .signInWithGoogle()
-                              .then((_) {
-                            Prefs.setBool(KIsloginSuccess, true);
-                          });
+                          Prefs.setBool(KIsGuestUser, true);
+                          Navigator.pushReplacementNamed(
+                              context, HomeView.routeName);
                         },
-                        iconPath: AssetsManager.googleIcon,
-                        buttonText: "تسجيل بواسطة Google",
+                        iconPath: AssetsManager.guestIcon,
+                        buttonText: "الدخول كزائر",
                       ),
+                      SizedBox(height: size.height * 0.015),
 
-                    SizedBox(height: size.height * 0.015),
+                      if (Platform.isAndroid)
+                        SocialButton(
+                          onPressed: () {
+                            context
+                                .read<SignInCubit>()
+                                .signInWithGoogle()
+                                .then((_) {
+                              Prefs.setBool(KIsloginSuccess, true);
+                            });
+                          },
+                          iconPath: AssetsManager.googleIcon,
+                          buttonText: "تسجيل بواسطة Google",
+                        ),
 
-                    //   SocialButton(
-                    //     onPressed: () {
-                    // //      context.read<SignInCubit>().signInWithFacebook();
-                    //     },
-                    //     iconPath: AssetsManager.facebookIcon,
-                    //     buttonText: "تسجيل بواسطة Facebook",
-                    //   ),
-                    SizedBox(height: size.height * 0.015),
+                      SizedBox(height: size.height * 0.015),
 
-                    // Platform.isIOS
-                    //     ? SocialButton(
-                    //         onPressed: () {
-                    //           context.read<SignInCubit>().signInWithApple();
-                    //         },
-                    //         iconPath: AssetsManager.appleIcon,
-                    //         buttonText: "تسجيل بواسطة Apple",
-                    //       )
-                    //     : Tooltip(
-                    //         message: 'متوفر فقط على أجهزة iOS',
-                    //         child: Opacity(
-                    //           opacity: 0.5,
-                    //           child: SocialButton(
-                    //             onPressed: () {},
-                    //             iconPath: AssetsManager.appleIcon,
-                    //             buttonText: "تسجيل بواسطة Apple ",
-                    //           ),
-                    //         ),
-                    //       ),
-                  ],
+                      //   SocialButton(
+                      //     onPressed: () {
+                      // //      context.read<SignInCubit>().signInWithFacebook();
+                      //     },
+                      //     iconPath: AssetsManager.facebookIcon,
+                      //     buttonText: "تسجيل بواسطة Facebook",
+                      //   ),
+                      SizedBox(height: size.height * 0.015),
+
+                      // Platform.isIOS
+                      //     ? SocialButton(
+                      //         onPressed: () {
+                      //           context.read<SignInCubit>().signInWithApple();
+                      //         },
+                      //         iconPath: AssetsManager.appleIcon,
+                      //         buttonText: "تسجيل بواسطة Apple",
+                      //       )
+                      //     : Tooltip(
+                      //         message: 'متوفر فقط على أجهزة iOS',
+                      //         child: Opacity(
+                      //           opacity: 0.5,
+                      //           child: SocialButton(
+                      //             onPressed: () {},
+                      //             iconPath: AssetsManager.appleIcon,
+                      //             buttonText: "تسجيل بواسطة Apple ",
+                      //           ),
+                      //         ),
+                      //       ),
+                    ],
+                  ),
                 ),
-              ),
-              SizedBox(height: size.height * 0.02),
-              CustomAnimations.fadeIn(
-                duration: const Duration(milliseconds: 1400),
-                child: const DontHaveAccount(),
-              ),
-            ],
+                SizedBox(height: size.height * 0.02),
+                CustomAnimations.fadeIn(
+                  duration: const Duration(milliseconds: 1400),
+                  child: const DontHaveAccount(),
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -187,15 +204,7 @@ class _SigninViewBodyState extends State<SigninViewBody> {
   void _signInWithEmail() {
     if (formKey.currentState!.validate()) {
       formKey.currentState!.save();
-      context.read<SignInCubit>().signInWithEmail(email, password).then((_) {
-        Prefs.setBool(KIsGuestUser, false);
-        Prefs.setBool(KIsloginSuccess, true);
-
-        // تهيئة UserCubit بعد تسجيل الدخول
-        context.read<UserCubit>().getCurrentUserData();
-
-        Navigator.pushReplacementNamed(context, HomeView.routeName);
-      });
+      context.read<SignInCubit>().signInWithEmail(email, password);
     } else {
       setState(() {
         autovalidateMode = AutovalidateMode.always;

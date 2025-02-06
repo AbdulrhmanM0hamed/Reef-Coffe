@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hyper_market/core/services/service_locator.dart';
@@ -308,7 +309,7 @@ class ProfileViewBody extends StatelessWidget {
               _buildAuthButton(context, isGuestUser),
 
               // إضافة زر حذف الحساب للمستخدمين المسجلين فقط
-              if (!isGuestUser) ...[
+              if (!isGuestUser && !Platform.isAndroid) ...[
                 const SizedBox(height: 12),
                 CustomElevatedButton(
                   buttonText: 'حذف الحساب',
