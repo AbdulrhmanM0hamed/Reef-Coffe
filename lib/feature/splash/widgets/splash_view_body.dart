@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:hyper_market/core/services/shared_preferences.dart';
 import 'package:hyper_market/core/utils/constants/assets.dart';
 import 'package:hyper_market/core/utils/constants/colors.dart';
-import 'package:hyper_market/core/utils/constants/constants.dart';
 import 'package:hyper_market/core/utils/constants/font_manger.dart';
 import 'package:hyper_market/core/utils/constants/styles_manger.dart';
-import 'package:hyper_market/feature/auth/presentation/view/signin_view.dart';
-import 'package:hyper_market/feature/home/presentation/view/home_view.dart';
 import 'package:hyper_market/feature/onBoarding/presentation/view/on_bordaing_view.dart';
 
 class SplashViewBody extends StatefulWidget {
@@ -111,14 +107,14 @@ class _SplashViewBodyState extends State<SplashViewBody>
   }
 
   void excuteNavigation(BuildContext context) async {
-  try {
-    await Future.delayed(const Duration(seconds: 2));
-    if (!mounted) return;
-    Navigator.pushReplacementNamed(context, OnBordaingView.routeName);
-  } catch (e) {
-    debugPrint('Error in navigation: $e');
-    if (!mounted) return;
-    Navigator.pushReplacementNamed(context, OnBordaingView.routeName);
+    try {
+      await Future.delayed(const Duration(seconds: 2));
+      if (!mounted) return;
+      Navigator.pushReplacementNamed(context, OnBordaingView.routeName);
+    } catch (e) {
+      debugPrint('Error in navigation: $e');
+      if (!mounted) return;
+      Navigator.pushReplacementNamed(context, OnBordaingView.routeName);
+    }
   }
-}
 }

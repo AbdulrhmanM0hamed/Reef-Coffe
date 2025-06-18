@@ -3,7 +3,6 @@ import 'package:hyper_market/core/errors/network_error_handler.dart';
 
 import '../../../../core/services/supabase/supabase_initialize.dart';
 import '../models/category_model.dart';
-import 'dart:io';
 
 abstract class CategoryRemoteDataSource {
   Future<List<CategoryModel>> getAllCategories();

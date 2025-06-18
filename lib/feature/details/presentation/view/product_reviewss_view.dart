@@ -97,7 +97,7 @@ class _ProductReviewsViewState extends State<ProductReviewsView> {
               borderRadius: BorderRadius.circular(12),
               boxShadow: [
                 BoxShadow(
-                  color: Theme.of(context).shadowColor.withOpacity(0.1),
+                  color: Theme.of(context).shadowColor.withValues(alpha: 0.1),
                   spreadRadius: 1,
                   blurRadius: 5,
                 )
@@ -393,12 +393,13 @@ class _ProductReviewsViewState extends State<ProductReviewsView> {
                                         color: isCurrentUserComment
                                             ? Theme.of(context)
                                                 .primaryColor
-                                                .withOpacity(0.2)
+                                                .withValues(alpha: 0.2)
                                             : Colors.transparent,
                                       ),
                                     ),
                                     child: Padding(
-                                      padding: EdgeInsets.all(size.width * 0.04),
+                                      padding:
+                                          EdgeInsets.all(size.width * 0.04),
                                       child: Column(
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
@@ -411,18 +412,22 @@ class _ProductReviewsViewState extends State<ProductReviewsView> {
                                               CircleAvatar(
                                                 radius: size.width * 0.05,
                                                 backgroundColor:
-                                                    _getAvatarColor(comment.userName),
+                                                    _getAvatarColor(
+                                                        comment.userName),
                                                 child: Text(
-                                                  comment.userName.characters.first
+                                                  comment
+                                                      .userName.characters.first
                                                       .toUpperCase(),
                                                   style: TextStyle(
                                                     color: Colors.white,
-                                                    fontSize: 16 * textScaleFactor,
+                                                    fontSize:
+                                                        16 * textScaleFactor,
                                                     fontWeight: FontWeight.bold,
                                                   ),
                                                 ),
                                               ),
-                                              SizedBox(width: size.width * 0.03),
+                                              SizedBox(
+                                                  width: size.width * 0.03),
                                               // Comment Content
                                               Expanded(
                                                 child: Column(
@@ -439,10 +444,12 @@ class _ProductReviewsViewState extends State<ProductReviewsView> {
                                                             comment.userName,
                                                             style: getBoldStyle(
                                                               fontFamily:
-                                                                  FontConstant.cairo,
+                                                                  FontConstant
+                                                                      .cairo,
                                                               fontSize: 16 *
                                                                   textScaleFactor,
-                                                              color: Theme.of(context)
+                                                              color: Theme.of(
+                                                                      context)
                                                                   .textTheme
                                                                   .titleMedium
                                                                   ?.color,
@@ -451,22 +458,27 @@ class _ProductReviewsViewState extends State<ProductReviewsView> {
                                                         ),
                                                         if (isCurrentUserComment)
                                                           Container(
-                                                            decoration: BoxDecoration(
-                                                              color: Theme.of(context)
+                                                            decoration:
+                                                                BoxDecoration(
+                                                              color: Theme.of(
+                                                                      context)
                                                                   .primaryColor
-                                                                  .withOpacity(0.1),
+                                                                  .withValues(
+                                                                      alpha:
+                                                                          0.1),
                                                               borderRadius:
                                                                   BorderRadius
-                                                                      .circular(8),
+                                                                      .circular(
+                                                                          8),
                                                             ),
                                                             child: IconButton(
                                                               icon: Icon(
                                                                 Icons.edit,
                                                                 size: 20 *
                                                                     textScaleFactor,
-                                                                color:
-                                                                    Theme.of(context)
-                                                                        .primaryColor,
+                                                                color: Theme.of(
+                                                                        context)
+                                                                    .primaryColor,
                                                               ),
                                                               onPressed: () =>
                                                                   _showEditCommentDialog(
@@ -477,21 +489,24 @@ class _ProductReviewsViewState extends State<ProductReviewsView> {
                                                               constraints:
                                                                   BoxConstraints(
                                                                 minWidth:
-                                                                    size.width * 0.08,
+                                                                    size.width *
+                                                                        0.08,
                                                                 minHeight:
-                                                                    size.width * 0.08,
+                                                                    size.width *
+                                                                        0.08,
                                                               ),
                                                             ),
                                                           ),
                                                       ],
                                                     ),
                                                     SizedBox(
-                                                        height: size.height * 0.01),
+                                                        height:
+                                                            size.height * 0.01),
                                                     Text(
                                                       comment.comment,
                                                       style: TextStyle(
-                                                        fontSize:
-                                                            14 * textScaleFactor,
+                                                        fontSize: 14 *
+                                                            textScaleFactor,
                                                         color: Theme.of(context)
                                                             .textTheme
                                                             .bodyMedium
@@ -500,29 +515,36 @@ class _ProductReviewsViewState extends State<ProductReviewsView> {
                                                       ),
                                                     ),
                                                     SizedBox(
-                                                        height: size.height * 0.01),
+                                                        height:
+                                                            size.height * 0.01),
                                                     Row(
                                                       children: [
                                                         Icon(
                                                           Icons.access_time,
-                                                          size: 14 * textScaleFactor,
-                                                          color: Theme.of(context)
-                                                              .textTheme
-                                                              .bodySmall
-                                                              ?.color,
+                                                          size: 14 *
+                                                              textScaleFactor,
+                                                          color:
+                                                              Theme.of(context)
+                                                                  .textTheme
+                                                                  .bodySmall
+                                                                  ?.color,
                                                         ),
                                                         SizedBox(
-                                                            width: size.width * 0.01),
+                                                            width: size.width *
+                                                                0.01),
                                                         Text(
                                                           timeago.format(
                                                               comment.createdAt,
                                                               locale: 'ar'),
-                                                          style: getRegularStyle(
+                                                          style:
+                                                              getRegularStyle(
                                                             fontFamily:
-                                                                FontConstant.cairo,
-                                                            fontSize:
-                                                                12 * textScaleFactor,
-                                                            color: Theme.of(context)
+                                                                FontConstant
+                                                                    .cairo,
+                                                            fontSize: 12 *
+                                                                textScaleFactor,
+                                                            color: Theme.of(
+                                                                    context)
                                                                 .textTheme
                                                                 .bodySmall
                                                                 ?.color,
@@ -549,7 +571,8 @@ class _ProductReviewsViewState extends State<ProductReviewsView> {
                               child: ElevatedButton(
                                 onPressed: () => _showAddCommentDialog(context),
                                 style: ElevatedButton.styleFrom(
-                                  minimumSize: Size(size.width * 0.9, size.height * 0.06),
+                                  minimumSize: Size(
+                                      size.width * 0.9, size.height * 0.06),
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(12),
                                   ),
@@ -606,7 +629,8 @@ class _ProductReviewsViewState extends State<ProductReviewsView> {
       return false;
     }
 
-    RegExp gibberishPattern = RegExp(r'[bcdfghjklmnpqrstvwxyzBCDFGHJKLMNPQRSTVWXYZ]{5,}');
+    RegExp gibberishPattern =
+        RegExp(r'[bcdfghjklmnpqrstvwxyzBCDFGHJKLMNPQRSTVWXYZ]{5,}');
     if (gibberishPattern.hasMatch(comment)) {
       return false;
     }
@@ -656,12 +680,13 @@ class _ProductReviewsViewState extends State<ProductReviewsView> {
                 if (!_isValidComment(comment)) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(
-                      content: Text('التعليق غير صالح. يجب أن يكون أقل من 25 حرف ولا يحتوي على نص عشوائي'),
+                      content: Text(
+                          'التعليق غير صالح. يجب أن يكون أقل من 25 حرف ولا يحتوي على نص عشوائي'),
                     ),
                   );
                   return;
                 }
-                
+
                 if (!_hasExistingComment) {
                   await _commentCubit.addComment(
                     widget.productId,
@@ -718,7 +743,8 @@ class _ProductReviewsViewState extends State<ProductReviewsView> {
                 if (!_isValidComment(newComment)) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(
-                      content: Text('التعليق غير صالح. يجب أن يكون أقل من 25 حرف ولا يحتوي على نص عشوائي'),
+                      content: Text(
+                          'التعليق غير صالح. يجب أن يكون أقل من 25 حرف ولا يحتوي على نص عشوائي'),
                     ),
                   );
                   return;
@@ -734,7 +760,8 @@ class _ProductReviewsViewState extends State<ProductReviewsView> {
                 }
               }
             },
-            child: Text('تحديث', style: getBoldStyle(fontFamily: FontConstant.cairo)),
+            child: Text('تحديث',
+                style: getBoldStyle(fontFamily: FontConstant.cairo)),
           ),
         ],
       ),

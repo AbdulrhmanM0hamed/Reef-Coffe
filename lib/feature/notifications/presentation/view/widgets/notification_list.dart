@@ -20,7 +20,7 @@ class NotificationList extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(
+            const Icon(
               Icons.notifications_none,
               size: 64,
               color: TColors.darkGrey,

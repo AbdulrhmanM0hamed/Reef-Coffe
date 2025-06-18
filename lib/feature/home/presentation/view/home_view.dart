@@ -61,11 +61,11 @@ class _HomeViewState extends State<HomeView> {
                   if (state is UserLoadedState) {
                     return HomeViewBody(userName: state.name);
                   }
-                  return HomeViewBody(userName: 'زائر');
+                  return const HomeViewBody(userName: 'زائر');
                 },
               ),
-              CategoriesViewApp(),
-              CartPage(),
+              const CategoriesViewApp(),
+              const CartPage(),
               BlocBuilder<UserCubit, UserState>(
                 builder: (context, state) {
                   if (state is UserLoadedState) {
@@ -74,7 +74,7 @@ class _HomeViewState extends State<HomeView> {
                       userEmail: state.email,
                     );
                   }
-                  return HomeViewBody(userName: 'زائر');
+                  return const HomeViewBody(userName: 'زائر');
                 },
               ),
             ],
