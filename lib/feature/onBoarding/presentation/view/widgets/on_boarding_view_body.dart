@@ -7,13 +7,8 @@ import 'package:hyper_market/feature/auth/presentation/view/signin_view.dart';
 import 'package:hyper_market/feature/home/presentation/view/home_view.dart';
 import 'package:hyper_market/core/utils/animations/custom_animations.dart';
 
-<<<<<<< HEAD
 class OnBoardingScreen extends StatelessWidget {
-  const OnBoardingScreen({Key? key}) : super(key: key);
-=======
-class OnBoardingScreen extends StatefulWidget {
   const OnBoardingScreen({super.key});
->>>>>>> origin/temp_branch
 
   @override
   Widget build(BuildContext context) {
@@ -30,11 +25,7 @@ class OnBoardingScreen extends StatefulWidget {
           
           // طبقة التعتيم
           Container(
-<<<<<<< HEAD
-            color: Colors.black.withOpacity(0.3),
-=======
-            color: Colors.black.withValues(alpha:0.3), // طبقة شفافة فوق الفيديو
->>>>>>> origin/temp_branch
+            color: Colors.black.withValues(alpha:0.3),
           ),
 
           // الزر

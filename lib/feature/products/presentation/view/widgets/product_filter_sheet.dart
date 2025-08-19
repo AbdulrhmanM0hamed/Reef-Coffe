@@ -17,7 +17,7 @@ class ProductFilterSheet extends StatefulWidget {
 
 class _ProductFilterSheetState extends State<ProductFilterSheet> {
   RangeValues _priceRange = const RangeValues(0, 1000);
-  bool _isNatural = false;
+  final bool _isNatural = false;
   bool _hasDiscount = false;
 
   @override

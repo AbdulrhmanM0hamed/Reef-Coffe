@@ -1,7 +1,4 @@
-<<<<<<< HEAD
-=======
 import 'package:flutter_dotenv/flutter_dotenv.dart';
->>>>>>> origin/temp_branch
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -23,26 +20,14 @@ import 'package:shared_preferences/shared_preferences.dart';
 void main() async {
   try {
     WidgetsFlutterBinding.ensureInitialized();
-<<<<<<< HEAD
-=======
     await dotenv.load(fileName: ".env");
-
->>>>>>> origin/temp_branch
     await Prefs.init();
     await Prefs.clearInvalidData();
     setupServiceLocator();
-    const supabaseUrl = 'https://kizgmgaocdhnarvqtzvf.supabase.co';
-    const supabaseKey =
-        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtpemdtZ2FvY2RobmFydnF0enZmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzMzMjQ5NjksImV4cCI6MjA0ODkwMDk2OX0.LwosgMdM5ZcZAeVxn3b84lIeO4K6_-l4BsYF5pxxkJg';
 
     await getIt<SupabaseService>().initialize(
-<<<<<<< HEAD
-      supabaseUrl: supabaseUrl,
-      supabaseKey: supabaseKey,
-=======
       supabaseUrl: dotenv.env['SUPABASE_URL']!,
       supabaseKey: dotenv.env['SUPABASE_KEY']!,
->>>>>>> origin/temp_branch
     );
 
     await getIt<LocalStorageService>().init();
@@ -53,11 +38,7 @@ void main() async {
 
     runApp(const MyApp());
   } catch (e) {
-<<<<<<< HEAD
-    rethrow;
-=======
    // print(e);
->>>>>>> origin/temp_branch
   }
 }
 

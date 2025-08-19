@@ -1,6 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hyper_market/core/services/service_locator.dart';
 import 'package:hyper_market/core/services/shared_preferences.dart';
 import 'package:hyper_market/core/utils/common/elvated_button.dart';

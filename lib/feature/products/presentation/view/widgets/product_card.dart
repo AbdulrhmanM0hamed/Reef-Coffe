@@ -230,69 +230,12 @@ class ProductCard extends StatelessWidget {
                             ),
                           )
                         else
-<<<<<<< HEAD
-                           SizedBox(
-                            height: 2,
-=======
                           const SizedBox.shrink(),
-                        InkWell(
-                          onTap: () {
-                            try {
-                              final cartItem = CartItem(
-                                id: product.id!,
-                                productId: product.id!,
-                                name: product.name,
-                                price: product.hasDiscount
-                                    ? product.discountPrice!
-                                    : product.price,
-                                image: product.imageUrl!,
-                                quantity: 1,
-                              );
-
-                              final cartCubit = context.read<CartCubit>();
-                              cartCubit.addItem(cartItem);
-
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: AddProductSnackbar(product: product),
-                                  backgroundColor: TColors.primary,
-                                  duration: const Duration(seconds: 1),
-                                ),
-                              );
-                            } catch (e) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content:
-                                      Text('حدث خطأ أثناء الإضافة إلى السلة'),
-                                  backgroundColor: Colors.red,
-                                  duration: Duration(seconds: 2),
-                                ),
-                              );
-                            }
-                          },
-                          child: Container(
-                            padding: EdgeInsets.symmetric(
-                              horizontal:
-                                  MediaQuery.of(context).size.width * 0.030,
-                              vertical: _getVerticalPadding(size),
-                            ),
-                            decoration: BoxDecoration(
-                              color: TColors.primary,
-                              borderRadius:
-                                  BorderRadius.circular(_getBorderRadius(size)),
-                            ),
-                            child: Icon(
-                              Icons.add_shopping_cart_outlined,
-                              size: _getIconSize(size),
-                              color: Colors.white,
-                            ),
->>>>>>> origin/temp_branch
-                          ),
                         _buildAddToCartButton(context),
                       ],
                     ),
                   ],
-                ),
+              ),
               ),
             ),
           ],

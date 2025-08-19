@@ -69,7 +69,7 @@ class SupabaseService {
       await _client.realtime.connect();
    
 
-    } catch (e, stackTrace) {
+    } catch (e) {
    
       _reconnectRealtimeAfterDelay();
     }
@@ -83,7 +83,6 @@ class SupabaseService {
       }
       await Future.delayed(const Duration(seconds: 1));
       await _setupRealtimeConnection();
-;
     } catch (e) {
       _reconnectRealtimeAfterDelay();
     }

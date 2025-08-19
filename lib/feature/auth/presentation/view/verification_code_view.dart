@@ -24,11 +24,16 @@ class VerificationCodeView extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           centerTitle: true,
-          leading: IconButton(onPressed: () {
-            Navigator.pop(context);
-            
-          }, icon: const Icon(Icons.arrow_back_ios_new_outlined)),
-          title:  Text( 'التحقق من البريد الإلكتروني' , style: getBoldStyle(fontFamily: FontConstant.cairo , fontSize: FontSize.size20),),
+          leading: IconButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              icon: const Icon(Icons.arrow_back_ios_new_outlined)),
+          title: Text(
+            'التحقق من البريد الإلكتروني',
+            style: getBoldStyle(
+                fontFamily: FontConstant.cairo, fontSize: FontSize.size20),
+          ),
         ),
         body: VerificationCodeViewBody(email: email),
       ),

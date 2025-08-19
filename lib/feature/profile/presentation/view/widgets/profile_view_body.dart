@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -10,13 +9,10 @@ import 'package:hyper_market/core/utils/constants/constants.dart';
 import 'package:hyper_market/core/utils/constants/font_manger.dart';
 import 'package:hyper_market/core/utils/constants/styles_manger.dart';
 import 'package:hyper_market/feature/auth/data/datasources/auth_remote_data_source.dart';
-import 'package:hyper_market/feature/auth/domain/entities/user_entity.dart';
-import 'package:hyper_market/feature/auth/presentation/controller/signin/signin_cubit.dart';
 import 'package:hyper_market/feature/auth/presentation/view/signin_view.dart';
 import 'package:hyper_market/feature/cart/presentation/cubit/cart_cubit.dart';
 import 'package:hyper_market/feature/favorites/presentation/cubit/favorite_cubit.dart';
 import 'package:hyper_market/feature/favorites/presentation/view/favorites_view.dart';
-import 'package:hyper_market/feature/home/presentation/cubit/user_cubit.dart';
 import 'package:hyper_market/feature/orders/presentation/cubit/orders_cubit.dart';
 import 'package:hyper_market/feature/orders/presentation/view/orders_view.dart';
 import 'package:hyper_market/feature/profile/presentation/cubit/profile_cubit.dart';
@@ -318,25 +314,8 @@ class ProfileViewBody extends StatelessWidget {
                       final cartCubit = getIt<CartCubit>();
                       cartCubit.clearCart();
 
-<<<<<<< HEAD
                       // ثم تسجيل الخروج
                       await getIt<AuthRemoteDataSource>().signOut();
-=======
-                    if (shouldLogout == true) {
-                      // Get current user ID before clearing data
-                      final userDataJson = Prefs.getString(KUserData);
-                      if (userDataJson != null && userDataJson.isNotEmpty) {
-                        try {
-                          final userData = json.decode(userDataJson);
-                          final user = UserEntity.fromJson(userData);
-                          // Clear user specific favorites
-                          await Prefs.setString(
-                              '$KUserFavorites${user.id}', '[]');
-                        } catch (e) {
-                          debugPrint('Error clearing favorites: $e');
-                        }
-                      }
->>>>>>> origin/temp_branch
 
                       // تحديث حالة المستخدم
                       await Prefs.setBool(KIsGuestUser, false);

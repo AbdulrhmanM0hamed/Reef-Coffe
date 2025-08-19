@@ -27,11 +27,7 @@ class ProfileMenuItem extends StatelessWidget {
       
         ),
       ),
-<<<<<<< HEAD
-      trailing:const Icon(
-=======
       trailing: const Icon(
->>>>>>> origin/temp_branch
         Icons.arrow_forward_ios,
         size: 16,
         color: TColors.darkGrey,

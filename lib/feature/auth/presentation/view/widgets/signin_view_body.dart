@@ -48,7 +48,6 @@ class _SigninViewBodyState extends State<SigninViewBody> {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
 
-<<<<<<< HEAD
     return BlocListener<SignInCubit, SignInState>(
       listener: (context, state) {
         if (state is SignInSuccessState) {
@@ -81,7 +80,7 @@ class _SigninViewBodyState extends State<SigninViewBody> {
                   duration: const Duration(milliseconds: 800),
                   child: CustomTextFormField(
                     onSaved: (value) => email = value!,
-                    hintText: S.current!.email,
+                    hintText: S.current.email,
                     suffixIcon: const Icon(Icons.email),
                   ),
                 ),
@@ -89,37 +88,9 @@ class _SigninViewBodyState extends State<SigninViewBody> {
                 CustomAnimations.slideFromTop(
                   duration: const Duration(milliseconds: 900),
                   child: PasswordField(
-                    hintText: S.current!.password,
+                    hintText: S.current.password,
                     onSaved: (value) => password = value!,
                   ),
-=======
-    return SingleChildScrollView(
-      child: Padding(
-        padding: EdgeInsets.symmetric(
-          vertical: size.height * 0.04,
-          horizontal: size.width * 0.05,
-        ),
-        child: Form(
-          key: formKey,
-          autovalidateMode: autovalidateMode,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              CustomAnimations.slideFromTop(
-                duration: const Duration(milliseconds: 800),
-                child: CustomTextFormField(
-                  onSaved: (value) => email = value!,
-                  hintText: S.current.email,
-                  suffixIcon: const Icon(Icons.email),
-                ),
-              ),
-              SizedBox(height: size.height * 0.02),
-              CustomAnimations.slideFromTop(
-                duration:const Duration(milliseconds: 900),
-                child: PasswordField(
-                  hintText: S.current.password,
-                  onSaved: (value) => password = value!,
->>>>>>> origin/temp_branch
                 ),
                 SizedBox(height: size.height * 0.01),
                 CustomAnimations.fadeIn(
@@ -141,36 +112,13 @@ class _SigninViewBodyState extends State<SigninViewBody> {
                     ),
                   ),
                 ),
-<<<<<<< HEAD
                 SizedBox(height: size.height * 0.02),
                 CustomAnimations.fadeIn(
                   duration: const Duration(milliseconds: 1100),
                   child: CustomElevatedButton(
-                    buttonText: S.current!.login,
+                    buttonText: S.current.login,
                     onPressed: _signInWithEmail,
                   ),
-=======
-              ),
-              SizedBox(height: size.height * 0.02),
-              CustomAnimations.fadeIn(
-                duration: const Duration(milliseconds: 1100),
-                child: CustomElevatedButton(
-
-                  buttonText: S.current.login,
-                  onPressed: () {
-                 //   Prefs.setBool(KIsloginSuccess, true);
-                    if (formKey.currentState!.validate()) {
-                      formKey.currentState!.save();
-                      context.read<SignInCubit>().signInWithEmail(
-                            email,
-                            password,
-                          );
-                    } else {
-                      autovalidateMode = AutovalidateMode.always;
-                      setState(() {});
-                    }
-                  },
->>>>>>> origin/temp_branch
                 ),
                 SizedBox(height: size.height * 0.02),
                 CustomAnimations.fadeIn(

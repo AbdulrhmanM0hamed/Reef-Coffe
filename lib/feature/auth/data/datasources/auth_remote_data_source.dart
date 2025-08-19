@@ -100,37 +100,15 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     } catch (e) {
       throw const AuthException('حدث خطأ في إنشاء الحساب');
     }
-<<<<<<< HEAD
-
-    
-    // Create profile
-    try {
-      await supabaseClient.from('profiles').insert({
-        'id': response.user!.id,
-        'name': name,
-        'email': email,
-        'phone_number': phoneNumber,
-      });
-    } catch (e) {
-      throw e;
-    }
-
-    return response.user!;
-  } on AuthException catch (e) {
-    throw AuthException(e.message);
-  } catch (e) {
-    throw const AuthException('حدث خطأ في إنشاء الحساب');
-=======
->>>>>>> origin/temp_branch
   }
 
   @override
   Future<User> signInWithGoogle() async {
     try {
       final GoogleSignIn googleSignIn = GoogleSignIn(
-        scopes: ['email'],
-        serverClientId:
+        clientId:
             '904000175391-0ijobvfb8vhn3trgi78d4902n4qfd7o6.apps.googleusercontent.com', // Web Client ID
+        scopes: ['email'],
       );
 
       await googleSignIn.signOut();
@@ -196,7 +174,6 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         nonce: hashedNonce,
       );
 
-<<<<<<< HEAD
       final idToken = credential.identityToken;
       if (idToken == null) {
         throw const AuthException('Could not find ID Token from credential.');
@@ -209,7 +186,8 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       );
 
       if (response.user == null) {
-        throw const CustomException(message: 'فشل في تسجيل الدخول باستخدام Apple');
+        throw const CustomException(
+            message: 'فشل في تسجيل الدخول باستخدام Apple');
       }
 
       // التحقق من البروفايل
@@ -222,21 +200,11 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       if (profile == null) {
         await supabaseClient.from('profiles').insert({
           'id': response.user!.id,
-          'name': '${credential.givenName ?? ''} ${credential.familyName ?? ''}',
+          'name':
+              '${credential.givenName ?? ''} ${credential.familyName ?? ''}',
           'email': credential.email,
           "provider": "apple",
         });
-=======
-      if (!response) {
-        throw const CustomException(
-            message: 'فشل في تسجيل الدخول باستخدام Apple');
-      }
-
-      final user = supabaseClient.auth.currentUser;
-      if (user == null) {
-        throw const CustomException(
-            message: 'فشل في تسجيل الدخول باستخدام Apple');
->>>>>>> origin/temp_branch
       }
 
       return response.user!;
@@ -248,8 +216,6 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
           message: 'فشل في تسجيل الدخول باستخدام Apple');
     }
   }
-
-  
 
   // @override
   // Future<User> signInWithFacebook() async {
@@ -477,10 +443,10 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   @override
   Future<void> sendResetCode(String email) async {
     try {
-    //  final response = await supabaseClient.auth.resetPasswordForEmail(
-    //     email,
-    //     redirectTo: null,
-    //   );
+      //  final response = await supabaseClient.auth.resetPasswordForEmail(
+      //     email,
+      //     redirectTo: null,
+      //   );
     } catch (e) {
       if (e is AuthException) {
         String message = e.message;
@@ -504,11 +470,11 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   @override
   Future<void> verifyResetCode(String email, String code) async {
     try {
-    //  final response = await supabaseClient.auth.verifyOTP(
-    //    email: email,
-    //    token: code,
-    //    type: OtpType.recovery,
-    //  );
+      //  final response = await supabaseClient.auth.verifyOTP(
+      //    email: email,
+      //    token: code,
+      //    type: OtpType.recovery,
+      //  );
     } catch (e) {
       if (e is AuthException) {
         String message = e.message;
@@ -528,7 +494,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   @override
   Future<void> resetPasswordWithCode(String email, String newPassword) async {
     try {
-    //  final
+      //  final
       // final response = await supabaseClient.auth.updateUser(
       //   UserAttributes(password: newPassword),
       // );
