@@ -11,13 +11,13 @@ class BottomSheetTextField extends StatelessWidget {
   final String? Function(String?)? validator;
 
   const BottomSheetTextField({
-    Key? key,
+    super.key,
     required this.controller,
     required this.labelText,
     required this.prefixIcon,
     this.keyboardType,
     this.validator,
-  }) : super(key: key);
+  });
 
   double _getResponsivePadding(BuildContext context, double basePadding) {
     final width = MediaQuery.of(context).size.width;

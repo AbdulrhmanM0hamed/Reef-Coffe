@@ -6,16 +6,16 @@ class CustomCheckBox extends StatefulWidget {
   final ValueChanged<bool> onChanged;
 
   const CustomCheckBox({
-    Key? key,
+    super.key,
     this.initialValue = false,
     required this.onChanged,
-  }) : super(key: key);
+  });
 
   @override
-  _CustomCheckBoxState createState() => _CustomCheckBoxState();
+  CustomCheckBoxState createState() => CustomCheckBoxState();
 }
 
-class _CustomCheckBoxState extends State<CustomCheckBox> {
+class CustomCheckBoxState extends State<CustomCheckBox> {
   late bool isChecked;
 
   @override
@@ -40,7 +40,7 @@ class _CustomCheckBoxState extends State<CustomCheckBox> {
           },
           side: BorderSide(
             width: 1,
-            color: TColors.darkGrey.withOpacity(0.5),
+            color: TColors.darkGrey.withValues(alpha: 0.5),
           ),
           activeColor: TColors.primary, // Color when checked
         ),

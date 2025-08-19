@@ -16,7 +16,7 @@ class CustomTextField extends StatefulWidget {
   final void Function(String)? onChanged;
 
   const CustomTextField({
-    Key? key,
+    super.key,
     required this.controller,
     required this.hintText,
     this.validator,
@@ -27,7 +27,7 @@ class CustomTextField extends StatefulWidget {
     this.enabled,
     this.maxLines = 1,
     this.onChanged,
-  }) : super(key: key);
+  });
 
   @override
   State<CustomTextField> createState() => _CustomTextFieldState();
@@ -77,8 +77,8 @@ class _CustomTextFieldState extends State<CustomTextField> {
             const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
         filled: true,
         fillColor: Theme.of(context).brightness == Brightness.dark
-            ? TColors.dark.withOpacity(0.5)
-            : TColors.lightGrey.withOpacity(0.5),
+            ? TColors.dark.withValues(alpha:0.5)
+            : TColors.lightGrey.withValues(alpha:0.5),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
           borderSide: BorderSide.none,
@@ -86,7 +86,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
           borderSide: BorderSide(
-            color: TColors.darkGrey.withOpacity(0.5),
+            color: TColors.darkGrey.withValues(alpha:0.5),
             width: 1.5,
           ),
         ),

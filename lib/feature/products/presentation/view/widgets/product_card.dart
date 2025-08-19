@@ -22,7 +22,7 @@ class ProductCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    final isSmallScreen = size.width < 360;
+   // final isSmallScreen = size.width < 360;
     final responsivePadding = size.width * 0.03;
     final random = Random().nextInt(10000);
     final heroTag = 'product_${product.id}_$random';
@@ -32,17 +32,20 @@ class ProductCard extends StatelessWidget {
         Navigator.push(
           context,
           PageRouteBuilder(
-            transitionDuration: const Duration(milliseconds:550),
+            transitionDuration: const Duration(milliseconds: 550),
             reverseTransitionDuration: const Duration(milliseconds: 550),
-            pageBuilder: (context, animation, secondaryAnimation) => DetailsView(
+            pageBuilder: (context, animation, secondaryAnimation) =>
+                DetailsView(
               product: product,
               heroTag: heroTag,
             ),
-            transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            transitionsBuilder:
+                (context, animation, secondaryAnimation, child) {
               var begin = const Offset(0.0, 0.0);
               var end = Offset.zero;
               var curve = Curves.easeInOutCubic;
-              var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+              var tween =
+                  Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
               var offsetAnimation = animation.drive(tween);
 
               return SlideTransition(
@@ -78,13 +81,14 @@ class ProductCard extends StatelessWidget {
                       width: double.infinity,
                       padding: EdgeInsets.all(constraints.maxWidth * 0.05),
                       child: ClipRRect(
-                        borderRadius: BorderRadius.circular(_getBorderRadius(size)),
+                        borderRadius:
+                            BorderRadius.circular(_getBorderRadius(size)),
                         child: AspectRatio(
                           aspectRatio: 1,
                           child: CachedNetworkImage(
                             imageUrl: product.imageUrl ?? '',
                             fit: BoxFit.contain,
-                            placeholder: (context, url) =>  const Center(
+                            placeholder: (context, url) => const Center(
                               child: CircularProgressIndicator(
                                 color: TColors.primary,
                                 strokeWidth: 2,
@@ -133,7 +137,8 @@ class ProductCard extends StatelessWidget {
                             ),
                             decoration: BoxDecoration(
                               color: Colors.red.shade50,
-                              borderRadius: BorderRadius.circular(_getBorderRadius(size) * 0.3),
+                              borderRadius: BorderRadius.circular(
+                                  _getBorderRadius(size) * 0.3),
                               border: Border.all(
                                 color: Colors.red.shade200,
                                 width: 0.5,
@@ -197,10 +202,11 @@ class ProductCard extends StatelessWidget {
                               vertical: _getVerticalPadding(size),
                             ),
                             decoration: BoxDecoration(
-                              color: TColors.primary.withOpacity(.03),
-                              borderRadius: BorderRadius.circular(_getBorderRadius(size) * 0.3),
+                              color: TColors.primary.withValues(alpha: .03),
+                              borderRadius: BorderRadius.circular(
+                                  _getBorderRadius(size) * 0.3),
                               border: Border.all(
-                                color: TColors.primary..withOpacity(.5),
+                                color: TColors.primary..withValues(alpha: .5),
                                 width: 0.5,
                               ),
                             ),
@@ -224,8 +230,63 @@ class ProductCard extends StatelessWidget {
                             ),
                           )
                         else
+<<<<<<< HEAD
                            SizedBox(
                             height: 2,
+=======
+                          const SizedBox.shrink(),
+                        InkWell(
+                          onTap: () {
+                            try {
+                              final cartItem = CartItem(
+                                id: product.id!,
+                                productId: product.id!,
+                                name: product.name,
+                                price: product.hasDiscount
+                                    ? product.discountPrice!
+                                    : product.price,
+                                image: product.imageUrl!,
+                                quantity: 1,
+                              );
+
+                              final cartCubit = context.read<CartCubit>();
+                              cartCubit.addItem(cartItem);
+
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: AddProductSnackbar(product: product),
+                                  backgroundColor: TColors.primary,
+                                  duration: const Duration(seconds: 1),
+                                ),
+                              );
+                            } catch (e) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content:
+                                      Text('حدث خطأ أثناء الإضافة إلى السلة'),
+                                  backgroundColor: Colors.red,
+                                  duration: Duration(seconds: 2),
+                                ),
+                              );
+                            }
+                          },
+                          child: Container(
+                            padding: EdgeInsets.symmetric(
+                              horizontal:
+                                  MediaQuery.of(context).size.width * 0.030,
+                              vertical: _getVerticalPadding(size),
+                            ),
+                            decoration: BoxDecoration(
+                              color: TColors.primary,
+                              borderRadius:
+                                  BorderRadius.circular(_getBorderRadius(size)),
+                            ),
+                            child: Icon(
+                              Icons.add_shopping_cart_outlined,
+                              size: _getIconSize(size),
+                              color: Colors.white,
+                            ),
+>>>>>>> origin/temp_branch
                           ),
                         _buildAddToCartButton(context),
                       ],
@@ -397,13 +458,13 @@ class ProductCard extends StatelessWidget {
 
   double _getIconSize(Size size) {
     final width = size.width;
-    if (width >= 1024) { 
+    if (width >= 1024) {
       return 24;
-    } else if (width >= 768) { 
+    } else if (width >= 768) {
       return 22;
-    } else if (width >= 390) { 
+    } else if (width >= 390) {
       return 20;
-    } else { 
+    } else {
       return 18;
     }
   }

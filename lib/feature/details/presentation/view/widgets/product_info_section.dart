@@ -9,9 +9,9 @@ class ProductInfoSection extends StatelessWidget {
   final Product product;
 
   const ProductInfoSection({
-    Key? key,
+    super.key,
     required this.product,
-  }) : super(key: key);
+  });
 
   double _getTitleFontSize(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
@@ -31,7 +31,7 @@ class ProductInfoSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 8),
+      padding: const EdgeInsets.symmetric(horizontal: 8),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,

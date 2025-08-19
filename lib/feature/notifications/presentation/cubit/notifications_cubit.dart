@@ -15,7 +15,7 @@ class NotificationsCubit extends Cubit<NotificationsState> {
       final notifications = await NotificationService.getNotifications();
       emit(NotificationsLoaded(notifications));
     } catch (e) {
-      print('Error loading notifications: $e');
+    //  print('Error loading notifications: $e');
       emit(const NotificationsError('حدث خطأ أثناء تحميل الإشعارات'));
     }
   }
@@ -43,7 +43,7 @@ class NotificationsCubit extends Cubit<NotificationsState> {
         emit(NotificationsLoaded(updatedNotifications));
       }
     } catch (e) {
-      print('Error marking notification as read: $e');
+    //  print('Error marking notification as read: $e');
       emit(const NotificationsError('حدث خطأ أثناء تحديث الإشعار'));
     }
   }
@@ -54,7 +54,7 @@ class NotificationsCubit extends Cubit<NotificationsState> {
       // إعادة تحميل الإشعارات بعد تحديث حالتها
       await loadNotifications();
     } catch (e) {
-      print('Error marking all notifications as read: $e');
+    //  print('Error marking all notifications as read: $e');
       emit(const NotificationsError('حدث خطأ أثناء تحديث الإشعارات'));
     }
   }
@@ -64,7 +64,7 @@ class NotificationsCubit extends Cubit<NotificationsState> {
       await NotificationService.clearAllNotifications();
       emit(const NotificationsLoaded([]));
     } catch (e) {
-      print('Error clearing notifications: $e');
+    //  print('Error clearing notifications: $e');
       emit(const NotificationsError('حدث خطأ أثناء حذف الإشعارات'));
     }
   }
@@ -79,7 +79,7 @@ class NotificationsCubit extends Cubit<NotificationsState> {
         emit(NotificationsLoaded(updatedNotifications));
       }
     } catch (e) {
-      print('Error deleting notification: $e');
+    //  print('Error deleting notification: $e');
       emit(const NotificationsError('حدث خطأ أثناء حذف الإشعار'));
     }
   }

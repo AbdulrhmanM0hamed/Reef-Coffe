@@ -27,7 +27,7 @@ class VerificationCodeView extends StatelessWidget {
           leading: IconButton(onPressed: () {
             Navigator.pop(context);
             
-          }, icon: Icon(Icons.arrow_back_ios_new_outlined)),
+          }, icon: const Icon(Icons.arrow_back_ios_new_outlined)),
           title:  Text( 'التحقق من البريد الإلكتروني' , style: getBoldStyle(fontFamily: FontConstant.cairo , fontSize: FontSize.size20),),
         ),
         body: VerificationCodeViewBody(email: email),

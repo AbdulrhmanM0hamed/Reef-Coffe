@@ -45,28 +45,27 @@ class ContentOfCarsoulCart extends StatelessWidget {
             ),
           Row(
             children: [
-              if (offer.image1 != null)
-                Expanded(
-                  flex: 2,
-                  child: Padding(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: size.width * 0.009),
-                    child: ClipRRect(
-                      borderRadius: const BorderRadius.only(
-                        topLeft: Radius.circular(25),
+              Expanded(
+                flex: 2,
+                child: Padding(
+                  padding:
+                      EdgeInsets.symmetric(horizontal: size.width * 0.009),
+                  child: ClipRRect(
+                    borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(25),
+                    ),
+                    child: CachedNetworkImage(
+                      imageUrl: offer.image1,
+                      fit: BoxFit.contain,
+                      errorWidget: (context, url, error) => Icon(
+                        Icons.image_not_supported,
+                        color: Colors.grey.shade400,
                       ),
-                      child: CachedNetworkImage(
-                        imageUrl: offer.image1!,
-                        fit: BoxFit.contain,
-                        errorWidget: (context, url, error) => Icon(
-                          Icons.image_not_supported,
-                          color: Colors.grey.shade400,
-                        ),
-                        
-                      ),
+                      
                     ),
                   ),
                 ),
+              ),
               Expanded(
                 flex: 3,
                 child: Padding(

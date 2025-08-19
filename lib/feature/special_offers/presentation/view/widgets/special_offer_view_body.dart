@@ -259,7 +259,7 @@ class _SpecialOfferViewBodyState extends State<SpecialOfferViewBody> {
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
           decoration: BoxDecoration(
-            color: TColors.primary.withOpacity(0.1),
+            color: TColors.primary.withValues(alpha:0.1),
             borderRadius: BorderRadius.circular(12),
           ),
           child: Column(
@@ -445,7 +445,7 @@ class _SpecialOfferViewBodyState extends State<SpecialOfferViewBody> {
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: TColors.error.withOpacity(0.1),
+        color: TColors.error.withValues(alpha:0.1),
         borderRadius: BorderRadius.circular(8),
       ),
       child: Row(

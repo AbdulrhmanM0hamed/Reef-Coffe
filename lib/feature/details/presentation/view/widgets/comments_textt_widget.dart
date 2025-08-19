@@ -78,7 +78,7 @@ void didUpdateWidget(CommentsTextWidget oldWidget) {
             ),
           );
         } else {
-          return Text('0');// الحالة الافتراضية
+          return const Text('0');// الحالة الافتراضية
         }
 
         return TextButton(
@@ -92,7 +92,7 @@ void didUpdateWidget(CommentsTextWidget oldWidget) {
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(Icons.comment_outlined, size: 22),
+              const Icon(Icons.comment_outlined, size: 22),
               Text(
                 'التعليقات',
                 style: getBoldStyle(

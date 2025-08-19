@@ -15,7 +15,7 @@ class Prefs {
       bool? isLoginSuccess = _instance.getBool('isLoginSuccess');
       bool? isOnboardingViewSeen = _instance.getBool('isOnboardingViewSeen');
       bool? isUserLogout = _instance.getBool('isUserLogout');
-      String? userData = _instance.getString('userData');
+    //  String? userData = _instance.getString('userData');
 
       // If any of these are null when they shouldn't be, clear all data
       if (isLoginSuccess == null || isOnboardingViewSeen == null || isUserLogout == null) {

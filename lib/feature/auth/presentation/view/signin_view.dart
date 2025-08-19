@@ -20,6 +20,7 @@ class SigninView extends StatelessWidget {
         BlocProvider(create: (context) => UserCubit(authRepository: getIt())),
       ],
       child: Scaffold(
+<<<<<<< HEAD
         appBar: AppBar(
           centerTitle: true,
           title: Text(
@@ -27,6 +28,9 @@ class SigninView extends StatelessWidget {
             style: getBoldStyle(fontFamily: FontConstant.cairo, fontSize: 20.0),
           ),
         ),
+=======
+        appBar: customAppBar(context, S.current.login, loginScreen: true),
+>>>>>>> origin/temp_branch
         body: const SiginViewBodyBlocConsmer(),
       ),
     );

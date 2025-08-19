@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hyper_market/core/utils/common/elvated_button.dart';
@@ -16,10 +15,10 @@ class CheckoutBottomSheet extends StatefulWidget {
   final double totalAmount;
 
   const CheckoutBottomSheet({
-    Key? key,
+    super.key,
     required this.cartItems,
     required this.totalAmount,
-  }) : super(key: key);
+  });
 
   @override
   State<CheckoutBottomSheet> createState() => _CheckoutBottomSheetState();

@@ -14,9 +14,9 @@ class SupabaseService {
     try {
       
       // تكوين عنوان Realtime
-      final realtimeUrl = 'wss://kizgmgaocdhnarvqtzvf.supabase.co/realtime/v1/websocket';
+      //const realtimeUrl = 'wss://kizgmgaocdhnarvqtzvf.supabase.co/realtime/v1/websocket';
       
-      final realtimeOptions = RealtimeClientOptions(
+      const realtimeOptions = RealtimeClientOptions(
         logLevel: RealtimeLogLevel.info,
         eventsPerSecond: 10,
       
@@ -58,8 +58,8 @@ class SupabaseService {
         if (error != null) {
       
           _reconnectRealtimeAfterDelay();
-        } else if (status == 'SUBSCRIBED') {
-          print('✅ Channel subscribed successfully');
+        } else if (status == 'READY' || status == 'SUBSCRIBED') {
+         // print('✅ Channel subscribed successfully');
           // اختبار الاتصال
       
         }
@@ -85,6 +85,7 @@ class SupabaseService {
       await _setupRealtimeConnection();
 ;
     } catch (e) {
+      _reconnectRealtimeAfterDelay();
     }
   }
 

@@ -24,7 +24,6 @@ abstract class AuthRemoteDataSource {
   // Future<void> sendOTP(String phoneNumber);
   // Future<bool> verifyOTP(String phoneNumber, String otp);
 
-
   Future<void> sendResetCode(String email);
   Future<void> verifyResetCode(String email, String code);
   Future<void> resetPasswordWithCode(String email, String newPassword);
@@ -64,28 +63,44 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     }
   }
 
-
-
-
   @override
-
   Future<User> signUpWithEmail(
-  String email,
-  String password,
-  String name,
-  String phoneNumber,
-) async {
-  try {
-    
-    // Create auth user
-    final response = await supabaseClient.auth.signUp(
-      email: email,
-      password: password,
-    );
+    String email,
+    String password,
+    String name,
+    String phoneNumber,
+  ) async {
+    try {
+      // Create auth user
+      final response = await supabaseClient.auth.signUp(
+        email: email,
+        password: password,
+      );
 
-    if (response.user == null) {
+      if (response.user == null) {
+        throw const AuthException('حدث خطأ في إنشاء الحساب');
+      }
+
+      // Create profile
+      try {
+        await supabaseClient.from('profiles').insert({
+          'id': response.user!.id,
+          'name': name,
+          'email': email,
+          'phone_number': phoneNumber,
+        });
+      } catch (e) {
+        rethrow;
+      }
+
+      return response.user!;
+    } on AuthException catch (e) {
+      debugPrint('AuthException occurred: ${e.message}');
+      throw AuthException(e.message);
+    } catch (e) {
       throw const AuthException('حدث خطأ في إنشاء الحساب');
     }
+<<<<<<< HEAD
 
     
     // Create profile
@@ -105,18 +120,17 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     throw AuthException(e.message);
   } catch (e) {
     throw const AuthException('حدث خطأ في إنشاء الحساب');
+=======
+>>>>>>> origin/temp_branch
   }
-}
 
-
-
-
-@override
+  @override
   Future<User> signInWithGoogle() async {
     try {
       final GoogleSignIn googleSignIn = GoogleSignIn(
         scopes: ['email'],
-        serverClientId: '904000175391-0ijobvfb8vhn3trgi78d4902n4qfd7o6.apps.googleusercontent.com',  // Web Client ID
+        serverClientId:
+            '904000175391-0ijobvfb8vhn3trgi78d4902n4qfd7o6.apps.googleusercontent.com', // Web Client ID
       );
 
       await googleSignIn.signOut();
@@ -168,9 +182,6 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     }
   }
 
-
-
-
   @override
   Future<User> signInWithApple() async {
     try {
@@ -185,6 +196,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         nonce: hashedNonce,
       );
 
+<<<<<<< HEAD
       final idToken = credential.identityToken;
       if (idToken == null) {
         throw const AuthException('Could not find ID Token from credential.');
@@ -214,6 +226,17 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
           'email': credential.email,
           "provider": "apple",
         });
+=======
+      if (!response) {
+        throw const CustomException(
+            message: 'فشل في تسجيل الدخول باستخدام Apple');
+      }
+
+      final user = supabaseClient.auth.currentUser;
+      if (user == null) {
+        throw const CustomException(
+            message: 'فشل في تسجيل الدخول باستخدام Apple');
+>>>>>>> origin/temp_branch
       }
 
       return response.user!;
@@ -221,7 +244,8 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       if (e is SignInWithAppleAuthorizationException) {
         throw const CustomException(message: 'تم إلغاء تسجيل الدخول');
       }
-      throw const CustomException(message: 'فشل في تسجيل الدخول باستخدام Apple');
+      throw const CustomException(
+          message: 'فشل في تسجيل الدخول باستخدام Apple');
     }
   }
 
@@ -286,12 +310,11 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   }
 
   @override
-
   Future<void> resetPassword(String email) async {
     try {
       await supabaseClient.auth.resetPasswordForEmail(
         email,
-        redirectTo: 'hypermarket://reset-password', 
+        redirectTo: 'hypermarket://reset-password',
       );
     } catch (e) {
       if (e is AuthException) {
@@ -303,7 +326,8 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         }
         throw CustomException(message: message);
       }
-      throw const CustomException(message: 'حدث خطأ في إعادة تعيين كلمة المرور');
+      throw const CustomException(
+          message: 'حدث خطأ في إعادة تعيين كلمة المرور');
     }
   }
 
@@ -331,7 +355,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
             .select('name')
             .eq('id', user.id)
             .single();
-        
+
         return response['name'] as String?;
       }
 
@@ -453,10 +477,10 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   @override
   Future<void> sendResetCode(String email) async {
     try {
-      final response = await supabaseClient.auth.resetPasswordForEmail(
-        email,
-        redirectTo: null, 
-      );
+    //  final response = await supabaseClient.auth.resetPasswordForEmail(
+    //     email,
+    //     redirectTo: null,
+    //   );
     } catch (e) {
       if (e is AuthException) {
         String message = e.message;
@@ -464,7 +488,8 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
           final RegExp regex = RegExp(r'after (\d+) seconds');
           final match = regex.firstMatch(e.message);
           final seconds = match?.group(1) ?? "14";
-          message = "لأسباب أمنية، يرجى الانتظار $seconds ثانية قبل إعادة طلب الكود";
+          message =
+              "لأسباب أمنية، يرجى الانتظار $seconds ثانية قبل إعادة طلب الكود";
         } else if (e.message.contains("Email not found")) {
           message = "البريد الإلكتروني غير مسجل";
         } else if (e.message.contains("Too many requests")) {
@@ -479,11 +504,11 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   @override
   Future<void> verifyResetCode(String email, String code) async {
     try {
-      final response = await supabaseClient.auth.verifyOTP(
-        email: email,
-        token: code,
-        type: OtpType.recovery,
-      );
+    //  final response = await supabaseClient.auth.verifyOTP(
+    //    email: email,
+    //    token: code,
+    //    type: OtpType.recovery,
+    //  );
     } catch (e) {
       if (e is AuthException) {
         String message = e.message;
@@ -503,15 +528,18 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   @override
   Future<void> resetPasswordWithCode(String email, String newPassword) async {
     try {
-      final response = await supabaseClient.auth.updateUser(
-        UserAttributes(password: newPassword),
-      );
+    //  final
+      // final response = await supabaseClient.auth.updateUser(
+      //   UserAttributes(password: newPassword),
+      // );
     } catch (e) {
       if (e is AuthException) {
         String message = e.message;
         if (e.message.contains("New password should be different")) {
-          message = "كلمة المرور الجديدة يجب أن تكون مختلفة عن كلمة المرور القديمة";
-        } else if (e.message.contains("Password should be at least 6 characters")) {
+          message =
+              "كلمة المرور الجديدة يجب أن تكون مختلفة عن كلمة المرور القديمة";
+        } else if (e.message
+            .contains("Password should be at least 6 characters")) {
           message = "كلمة المرور يجب أن تكون 6 أحرف على الأقل";
         } else if (e.message.contains("Token has expired")) {
           message = "انتهت صلاحية الجلسة، يرجى إعادة تسجيل الدخول";
@@ -521,10 +549,10 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       throw const CustomException(message: 'حدث خطأ في تحديث كلمة المرور');
     }
   }
-  
+
   @override
   Future<String?> getCurrentUserEmail() async {
-       try {
+    try {
       final user = supabaseClient.auth.currentUser;
 
       if (user != null) {
@@ -533,7 +561,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
             .select('email')
             .eq('id', user.id)
             .single();
-        
+
         return response['email'] as String?;
       }
 

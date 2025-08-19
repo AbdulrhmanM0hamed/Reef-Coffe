@@ -23,21 +23,21 @@ Future<void> getProductComments(String productId) async {
   emit(CommentLoading()); // إرسال حالة التحميل
 
   final result = await commentRepository.getProductComments(productId);
-  print('Comments for Product ID: $productId'); // طلب التعليقات
+  //print('Comments for Product ID: $productId'); // طلب التعليقات
 
   if (isClosed) return; // تحقق مرة أخرى بعد إكمال الطلب
   
   result.fold(
     (failure) {
       if (!isClosed) {
-            print('Failed to load comments: ${failure.message}');
+            //print('Failed to load comments: ${failure.message}');
 
         emit(CommentError(message: failure.message)); // حالة الخطأ
       }
     },
     (comments) {
       if (!isClosed) {
-    print('Loaded ${comments.length} comments for Product ID: $productId');
+    //print('Loaded ${comments.length} comments for Product ID: $productId');
 
         emit(CommentsLoaded(comments: comments));
          // حالة التحميل الناجح

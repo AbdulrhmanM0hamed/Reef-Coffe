@@ -10,11 +10,11 @@ class SocialButton extends StatelessWidget {
   final String iconPath;
 
   const SocialButton({
-    Key? key,
+    super.key,
     required this.onPressed,
     required this.buttonText,
     required this.iconPath,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

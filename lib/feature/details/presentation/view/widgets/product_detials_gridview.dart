@@ -60,7 +60,12 @@ class ProductDetialsGridView extends StatelessWidget {
   }) {
     return LayoutBuilder(
       builder: (context, constraints) {
+<<<<<<< HEAD
        
+=======
+        // final cardWidth = constraints.maxWidth;
+        // final isTablet = MediaQuery.of(context).size.width >= 768;
+>>>>>>> origin/temp_branch
         
         return Container(
           decoration: BoxDecoration(

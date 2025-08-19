@@ -10,12 +10,12 @@ class ProfileMenuSwitch extends StatelessWidget {
   final ValueChanged<bool> onChanged;
 
   const ProfileMenuSwitch({
-    Key? key,
+    super.key,
     required this.icon,
     required this.title,
     required this.value,
     required this.onChanged,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

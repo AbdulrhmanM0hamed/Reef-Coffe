@@ -19,13 +19,13 @@ class SupplementProductCard extends StatelessWidget {
   final Product product;
 
   const SupplementProductCard({
-    Key? key,
+    super.key,
     required this.product,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
-    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+  //  final isDarkMode = Theme.of(context).brightness == Brightness.dark;
     final size = MediaQuery.of(context).size;
     final isSmallScreen = size.width < 360;
     final random = Random().nextInt(10000);
@@ -76,7 +76,7 @@ class SupplementProductCard extends StatelessWidget {
       },
       child: LayoutBuilder(builder: (context, constraints) {
         final cardWidth = size.width * (isSmallScreen ? 0.85 : 0.75);
-        final imageSize = cardWidth * 0.2;
+        // final imageSize = cardWidth * 0.2;
         final buttonWidth = cardWidth * 0.28;
 
         return Stack(
@@ -91,7 +91,7 @@ class SupplementProductCard extends StatelessWidget {
                 borderRadius: BorderRadius.circular(20),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.2),
+                    color: Colors.black.withValues(alpha:0.2),
                     blurRadius: 10,
                     spreadRadius: 1,
                     offset: const Offset(0, 4),
@@ -213,7 +213,7 @@ class SupplementProductCard extends StatelessWidget {
                     ),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.15),
+                        color: Colors.black.withValues(alpha:0.15),
                         blurRadius: 4,
                         spreadRadius: 0,
                         offset: const Offset(0, 2),

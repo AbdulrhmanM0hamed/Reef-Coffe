@@ -15,10 +15,10 @@ import 'package:hyper_market/feature/special_offers/presentation/view/special_of
 import 'package:page_transition/page_transition.dart';
 
 class HomeTopSlider extends StatefulWidget {
-  HomeTopSlider({Key? key}) : super(key: key);
+  const HomeTopSlider({super.key});
 
   @override
-  _HomeTopSliderState createState() => _HomeTopSliderState();
+  State<HomeTopSlider> createState() => _HomeTopSliderState();
 }
 
 class _HomeTopSliderState extends State<HomeTopSlider> {
@@ -91,7 +91,7 @@ class _HomeTopSliderState extends State<HomeTopSlider> {
                         ),
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.black.withOpacity(0.05),
+                            color: Colors.black.withValues(alpha:0.05),
                             blurRadius: 10,
                             spreadRadius: 2,
                             offset: const Offset(0, 4),
@@ -123,7 +123,7 @@ class _HomeTopSliderState extends State<HomeTopSlider> {
                                 end: Alignment.bottomCenter,
                                 colors: [
                                   Colors.transparent,
-                                  Colors.black.withOpacity(0.7),
+                                  Colors.black.withValues(alpha:0.7),
                                 ],
                               ),
                             ),
@@ -140,7 +140,7 @@ class _HomeTopSliderState extends State<HomeTopSlider> {
                                   color: Colors.red,
                                   boxShadow: [
                                     BoxShadow(
-                                      color: Colors.black.withOpacity(0.2),
+                                      color: Colors.black.withValues(alpha:0.2),
                                       blurRadius: 4,
                                       offset: const Offset(0, 2),
                                     ),
@@ -198,7 +198,7 @@ class _HomeTopSliderState extends State<HomeTopSlider> {
                             left: 15,
                             child: Container(
                               decoration: BoxDecoration(
-                                color: TColors.primary.withOpacity(0.9),
+                                color: TColors.primary.withValues(alpha:0.9),
                                 borderRadius: BorderRadius.circular(20),
                               ),
                               child: Material(
@@ -285,13 +285,13 @@ class _HomeTopSliderState extends State<HomeTopSlider> {
     return 0.75;    // Show more cards on large screens
   }
 
-  double _getHorizontalPadding(Size size) {
-    return size.width * 0.05;  // 3% of screen width
-  }
+  // double _getHorizontalPadding(Size size) {
+  //   return size.width * 0.05;  // 3% of screen width
+  // }
 
-  double _getVerticalPadding(Size size) {
-    return size.height * 0.01;  // 1% of screen height
-  }
+  // double _getVerticalPadding(Size size) {
+  //   return size.height * 0.01;  // 1% of screen height
+  // }
 
   double _getTitleFontSize(Size size) {
     if (size.width < 360) {

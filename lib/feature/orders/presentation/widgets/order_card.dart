@@ -8,12 +8,12 @@ import 'package:intl/intl.dart';
 class OrderCard extends StatelessWidget {
   final OrderEntity order;
 
-  const OrderCard({Key? key, required this.order}) : super(key: key);
+  const OrderCard({super.key, required this.order});
 
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: TColors.accent.withOpacity(.2),
+      color: TColors.accent.withValues(alpha:.2),
       margin: const EdgeInsets.only(bottom: 16),
       child: Padding(
         padding: const EdgeInsets.all(16),

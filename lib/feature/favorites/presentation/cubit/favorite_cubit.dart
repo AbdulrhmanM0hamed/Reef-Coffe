@@ -18,7 +18,7 @@ class FavoriteCubit extends Cubit<FavoriteState> {
   }
 
   Future<void> _loadUserId() async {
-    final userDataJson = await Prefs.getString(KUserData);
+    final userDataJson = Prefs.getString(KUserData);
     if (userDataJson != null && userDataJson.isNotEmpty) {
       try {
         final userData = json.decode(userDataJson);
@@ -31,7 +31,7 @@ class FavoriteCubit extends Cubit<FavoriteState> {
 
   Future<void> updateUserId() async {
     String? newUserId;
-    final userDataJson = await Prefs.getString(KUserData);
+    final userDataJson = Prefs.getString(KUserData);
     if (userDataJson != null && userDataJson.isNotEmpty) {
       try {
         final userData = json.decode(userDataJson);
@@ -54,7 +54,7 @@ class FavoriteCubit extends Cubit<FavoriteState> {
     }
 
     try {
-      final favoritesJson = await Prefs.getString('favorites_${_userId}');
+      final favoritesJson = Prefs.getString('favorites_$_userId');
       if (favoritesJson != null && favoritesJson.isNotEmpty) {
         final List<dynamic> decoded = json.decode(favoritesJson);
         _favorites.clear();
@@ -77,7 +77,7 @@ class FavoriteCubit extends Cubit<FavoriteState> {
     
     try {
       final encoded = json.encode(_favorites.map((e) => e.toJson()).toList());
-      await Prefs.setString('favorites_${_userId}', encoded);
+      await Prefs.setString('favorites_$_userId', encoded);
     } catch (e) {
       debugPrint('Error saving favorites: $e');
     }

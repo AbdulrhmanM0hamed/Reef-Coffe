@@ -31,8 +31,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 class ProfileViewBody extends StatelessWidget {
   const ProfileViewBody(
-      {Key? key, required this.userName, required this.userEmail})
-      : super(key: key);
+      {super.key, required this.userName, required this.userEmail});
   final String userName;
   final String userEmail;
 
@@ -319,8 +318,25 @@ class ProfileViewBody extends StatelessWidget {
                       final cartCubit = getIt<CartCubit>();
                       cartCubit.clearCart();
 
+<<<<<<< HEAD
                       // ثم تسجيل الخروج
                       await getIt<AuthRemoteDataSource>().signOut();
+=======
+                    if (shouldLogout == true) {
+                      // Get current user ID before clearing data
+                      final userDataJson = Prefs.getString(KUserData);
+                      if (userDataJson != null && userDataJson.isNotEmpty) {
+                        try {
+                          final userData = json.decode(userDataJson);
+                          final user = UserEntity.fromJson(userData);
+                          // Clear user specific favorites
+                          await Prefs.setString(
+                              '$KUserFavorites${user.id}', '[]');
+                        } catch (e) {
+                          debugPrint('Error clearing favorites: $e');
+                        }
+                      }
+>>>>>>> origin/temp_branch
 
                       // تحديث حالة المستخدم
                       await Prefs.setBool(KIsGuestUser, false);

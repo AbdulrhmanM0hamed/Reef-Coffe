@@ -12,11 +12,11 @@ class ArrowBackWidget extends StatelessWidget {
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         color: Theme.of(context).brightness == Brightness.dark
-            ? TColors.darkerGrey.withOpacity(0.7)
-            : TColors.white.withOpacity(0.7),
+            ? TColors.darkerGrey.withValues(alpha:0.7)
+            : TColors.white.withValues(alpha:0.7),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.1),
+            color: Colors.black.withValues(alpha:0.1),
             blurRadius: 8,
             offset: const Offset(0, 2),
           ),

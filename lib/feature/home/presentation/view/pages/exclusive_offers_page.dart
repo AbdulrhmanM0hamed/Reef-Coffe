@@ -3,6 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hyper_market/core/services/service_locator.dart';
 import 'package:hyper_market/core/errors/network_error_handler.dart';
 import 'package:hyper_market/core/utils/common/custom_app_bar.dart';
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/temp_branch
 import 'package:hyper_market/feature/products/presentation/cubit/products_cubit.dart';
 import 'package:hyper_market/feature/products/presentation/cubit/products_state.dart';
 import 'package:hyper_market/feature/products/presentation/view/widgets/product_card.dart';

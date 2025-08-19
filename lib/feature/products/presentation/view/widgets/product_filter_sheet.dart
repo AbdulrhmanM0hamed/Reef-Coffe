@@ -7,9 +7,9 @@ class ProductFilterSheet extends StatefulWidget {
   final Function(double, double, bool, bool) onApplyFilter;
 
   const ProductFilterSheet({
-    Key? key,
+    super.key,
     required this.onApplyFilter,
-  }) : super(key: key);
+  });
 
   @override
   State<ProductFilterSheet> createState() => _ProductFilterSheetState();

@@ -7,7 +7,7 @@ import 'package:hyper_market/feature/products/presentation/view/widgets/product_
 import 'package:hyper_market/feature/products/presentation/view/widgets/product_card_shimmer.dart';
 
 class BestSellingProductsListView extends StatelessWidget {
-  const BestSellingProductsListView({Key? key}) : super(key: key);
+  const BestSellingProductsListView({super.key});
 
   @override
   Widget build(BuildContext context) {

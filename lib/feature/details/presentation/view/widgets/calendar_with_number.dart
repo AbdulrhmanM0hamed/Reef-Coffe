@@ -7,7 +7,7 @@ import 'package:hyper_market/core/utils/constants/styles_manger.dart';
 class CalendarWithNumber extends StatelessWidget {
   final String number;
 
-  const CalendarWithNumber({Key? key, required this.number}) : super(key: key);
+  const CalendarWithNumber({super.key, required this.number});
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +18,7 @@ class CalendarWithNumber extends StatelessWidget {
           'assets/images/calener.svg',
           width: 40,
           height: 40,
-          colorFilter: ColorFilter.mode(
+          colorFilter: const ColorFilter.mode(
             TColors.primary,
             BlendMode.srcIn,
           ),

@@ -9,7 +9,7 @@ import '../cubit/cart_cubit.dart';
 import '../widgets/cart_item_widget.dart';
 
 class CartPage extends StatelessWidget {
-  const CartPage({Key? key}) : super(key: key);
+  const CartPage({super.key});
   static const String routeName = 'cart_page';
 
   double _getResponsiveFontSize(BuildContext context, double baseSize) {
@@ -139,7 +139,7 @@ class CartPage extends StatelessWidget {
                           topRight: Radius.circular(16)),
                       boxShadow: [
                         BoxShadow(
-                          color: TColors.darkerGrey.withOpacity(.20),
+                          color: TColors.darkerGrey.withValues(alpha:.20),
                           spreadRadius: 0,
                           blurRadius: 0,
                           offset: const Offset(0, -2),

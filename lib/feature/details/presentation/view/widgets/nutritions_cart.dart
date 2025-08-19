@@ -30,7 +30,7 @@ class NutritionsCart extends StatelessWidget {
             borderRadius: BorderRadius.circular(cardWidth * 0.03),
             boxShadow: [
               BoxShadow(
-                color: Colors.grey.withOpacity(0.4),
+                color: Colors.grey.withValues(alpha:0.4),
                 spreadRadius: cardWidth * 0.005,
                 offset: Offset(0, cardWidth * 0.005),
               ),

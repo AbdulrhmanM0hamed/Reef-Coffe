@@ -2,14 +2,10 @@ import 'package:hyper_market/feature/profile/domain/entities/profile_update.dart
 
 class UpdateProfileModel extends ProfileUpdate {
   const UpdateProfileModel({
-    String? name,
-    String? currentPassword,
-    String? newPassword,
-  }) : super(
-          name: name,
-          currentPassword: currentPassword,
-          newPassword: newPassword,
-        );
+    super.name,
+    super.currentPassword,
+    super.newPassword,
+  });
 
   factory UpdateProfileModel.fromJson(Map<String, dynamic> json) {
     return UpdateProfileModel(

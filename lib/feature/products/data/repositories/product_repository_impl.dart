@@ -16,12 +16,14 @@ class ProductRepositoryImpl implements ProductRepository {
     try {
       final products = await remoteDataSource.getProductsByCategory(categoryId);
       return Right(products);
-    } catch (e) {
-      if (e is PostgrestException) {
-        if (e.message.contains('SocketException')) {
-          throw CustomException(message: 'تحقق من اتصالك بالانترنت');
-        }
+    } on CustomException catch (e) {
+      return Left(ServerFailure(message: e.message));
+    } on PostgrestException catch (e) {
+      if (e.message.contains('SocketException')) {
+        return const Left(ServerFailure(message: 'تحقق من اتصالك بالانترنت'));
       }
+      return Left(ServerFailure(message: e.message));
+    } catch (e) {
       return Left(ServerFailure(message: e.toString()));
     }
   }
@@ -31,12 +33,14 @@ class ProductRepositoryImpl implements ProductRepository {
     try {
       final products = await remoteDataSource.getAllProducts();
       return Right(products);
-    } catch (e) {
-      if (e is PostgrestException) {
-        if (e.message.contains('SocketException')) {
-          throw CustomException(message: 'تحقق من اتصالك بالانترنت');
-        }
+    } on CustomException catch (e) {
+      return Left(ServerFailure(message: e.message));
+    } on PostgrestException catch (e) {
+      if (e.message.contains('SocketException')) {
+        return const Left(ServerFailure(message: 'تحقق من اتصالك بالانترنت'));
       }
+      return Left(ServerFailure(message: e.message));
+    } catch (e) {
       return Left(ServerFailure(message: e.toString()));
     }
   }

@@ -63,6 +63,23 @@ class _HomeViewBodyState extends State<HomeViewBody> {
               child: CircularProgressIndicator(color: TColors.primary),
             );
           }
+
+          if (state is ProductsError) {
+            return Center(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(state.message, style: const TextStyle(color: Colors.red)),
+                  const SizedBox(height: 12),
+                  ElevatedButton(
+                    onPressed: () => _productsCubit.getAllProducts(),
+                    child: const Text('إعادة المحاولة'),
+                  ),
+                ],
+              ),
+            );
+          }
+
           return CustomScrollView(
             slivers: [
               SliverPadding(
@@ -74,7 +91,7 @@ class _HomeViewBodyState extends State<HomeViewBody> {
                       const SizedBox(height: 20),
                       const CustomSearchTextField(),
                       const SizedBox(height: 20),
-                      HomeTopSlider(),
+                      const HomeTopSlider(),
                       const SizedBox(height: 4),
                       OutLineOfProducts(
                         title: "عروض حصرية",

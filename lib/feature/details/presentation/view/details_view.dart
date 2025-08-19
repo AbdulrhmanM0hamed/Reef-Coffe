@@ -15,10 +15,10 @@ class DetailsView extends StatelessWidget {
   final String heroTag;
 
   const DetailsView({
-    Key? key,
+    super.key,
     required this.product,
     required this.heroTag,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
