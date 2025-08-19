@@ -10,7 +10,7 @@ import 'package:hyper_market/feature/profile/presentation/view/widgets/custom_te
 class UpdatePasswordView extends StatefulWidget {
   static const String routeName = '/update-password';
 
-  const UpdatePasswordView({Key? key}) : super(key: key);
+  const UpdatePasswordView({super.key});
 
   @override
   State<UpdatePasswordView> createState() => _UpdatePasswordViewState();

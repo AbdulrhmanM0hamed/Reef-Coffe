@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class CustomTextFieldEmail extends StatelessWidget {
-  CustomTextFieldEmail({
+  const CustomTextFieldEmail({
     super.key,
     required this.hintText,
     required this.suffixIcon,

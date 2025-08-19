@@ -12,7 +12,7 @@ class NewPasswordView extends StatelessWidget {
   static const String routeName = "newPassword";
   final String email;
 
-  const NewPasswordView({Key? key, required this.email}) : super(key: key);
+  const NewPasswordView({super.key, required this.email});
 
   @override
   Widget build(BuildContext context) {
@@ -24,8 +24,10 @@ class NewPasswordView extends StatelessWidget {
       child: Builder(
         builder: (context) {
           final formKey = GlobalKey<FormState>();
-          final TextEditingController passwordController = TextEditingController();
-          final TextEditingController confirmPasswordController = TextEditingController();
+          final TextEditingController passwordController =
+              TextEditingController();
+          final TextEditingController confirmPasswordController =
+              TextEditingController();
 
           return BlocListener<ResetPasswordCubit, ResetPasswordState>(
             listener: (context, state) {
@@ -47,7 +49,14 @@ class NewPasswordView extends StatelessWidget {
               }
             },
             child: Scaffold(
-              appBar: AppBar( centerTitle: true, title:  Text('تعيين كلمة المرور الجديدة' , style: getBoldStyle(fontFamily: FontConstant.cairo, fontSize: FontSize.size20),)),
+              appBar: AppBar(
+                  centerTitle: true,
+                  title: Text(
+                    'تعيين كلمة المرور الجديدة',
+                    style: getBoldStyle(
+                        fontFamily: FontConstant.cairo,
+                        fontSize: FontSize.size20),
+                  )),
               body: Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Form(
@@ -61,7 +70,8 @@ class NewPasswordView extends StatelessWidget {
                       const SizedBox(height: 16),
                       PasswordField(
                         hintText: 'تأكيد كلمة المرور',
-                        onSaved: (value) => confirmPasswordController.text = value!,
+                        onSaved: (value) =>
+                            confirmPasswordController.text = value!,
                       ),
                       const SizedBox(height: 24),
                       CustomElevatedButton(
@@ -70,7 +80,8 @@ class NewPasswordView extends StatelessWidget {
                           if (formKey.currentState!.validate()) {
                             formKey.currentState!.save();
 
-                            if (passwordController.text != confirmPasswordController.text) {
+                            if (passwordController.text !=
+                                confirmPasswordController.text) {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
                                   content: Text('كلمتا المرور غير متطابقتين'),
@@ -81,8 +92,8 @@ class NewPasswordView extends StatelessWidget {
                             }
 
                             context.read<ResetPasswordCubit>().resetPassword(
-                              passwordController.text,
-                            );
+                                  passwordController.text,
+                                );
                           }
                         },
                       ),

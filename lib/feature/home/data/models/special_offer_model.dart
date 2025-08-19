@@ -43,6 +43,7 @@ class SpecialOfferModel extends SpecialOffer {
     );
   }
 
+  @override
   Map<String, dynamic> toJson() {
     return {
       'id': id,

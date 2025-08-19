@@ -28,7 +28,7 @@ class SigninViewBody extends StatefulWidget {
 class _SigninViewBodyState extends State<SigninViewBody> {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   AutovalidateMode autovalidateMode = AutovalidateMode.disabled;
-  bool _isVisible = false;
+  bool isVisible = false;
 
   late String email, password;
 
@@ -37,7 +37,7 @@ class _SigninViewBodyState extends State<SigninViewBody> {
     super.initState();
     Future.delayed(const Duration(milliseconds: 100), () {
       setState(() {
-        _isVisible = true;
+        isVisible = true;
       });
     });
   }
@@ -62,7 +62,7 @@ class _SigninViewBodyState extends State<SigninViewBody> {
                 duration: const Duration(milliseconds: 800),
                 child: CustomTextFormField(
                   onSaved: (value) => email = value!,
-                  hintText: S.current!.email,
+                  hintText: S.current.email,
                   suffixIcon: const Icon(Icons.email),
                 ),
               ),
@@ -70,7 +70,7 @@ class _SigninViewBodyState extends State<SigninViewBody> {
               CustomAnimations.slideFromTop(
                 duration:const Duration(milliseconds: 900),
                 child: PasswordField(
-                  hintText: S.current!.password,
+                  hintText: S.current.password,
                   onSaved: (value) => password = value!,
                 ),
               ),
@@ -99,7 +99,7 @@ class _SigninViewBodyState extends State<SigninViewBody> {
                 duration: const Duration(milliseconds: 1100),
                 child: CustomElevatedButton(
 
-                  buttonText: S.current!.login,
+                  buttonText: S.current.login,
                   onPressed: () {
                  //   Prefs.setBool(KIsloginSuccess, true);
                     if (formKey.currentState!.validate()) {

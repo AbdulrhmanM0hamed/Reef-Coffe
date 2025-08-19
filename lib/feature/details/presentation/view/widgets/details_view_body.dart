@@ -22,9 +22,9 @@ class DetailsViewBody extends StatefulWidget {
   final Product product;
    final String heroTag;
   const DetailsViewBody({
-    Key? key,
+    super.key,
     required this.product, required this.heroTag,
-  }) : super(key: key);
+  });
 
   @override
   State<DetailsViewBody> createState() => _DetailsViewBodyState();
@@ -140,7 +140,7 @@ void didUpdateWidget(DetailsViewBody oldWidget) {
               SizedBox(height: screenHeight * 0.02),
               TitleWithFavorite(product: widget.product),
               SizedBox(height: screenHeight * 0.02),
-              PriceWithButton_add_min(
+              PriceWithButtonAddMin(
                 product: widget.product,
                 onQuantityChanged: _updateQuantity,
               ),
@@ -157,7 +157,7 @@ void didUpdateWidget(DetailsViewBody oldWidget) {
               ProductInfoSection(
                 product: widget.product,
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               _buildAddToCartButton(),
             ],
           ),

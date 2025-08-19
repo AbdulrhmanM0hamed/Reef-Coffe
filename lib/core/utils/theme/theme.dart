@@ -15,7 +15,7 @@ class TAppTheme {
     useMaterial3: true,
     fontFamily: 'Cairo',
     brightness: Brightness.light,
-    primaryColor: Color(0xff019934),
+    primaryColor: const Color(0xff019934),
     scaffoldBackgroundColor: Colors.white,
     textTheme: TTextTheme.lightTextTheme,
     elevatedButtonTheme: TElevatedButtonTheme.lightElevatedButtonTheme,
@@ -26,14 +26,13 @@ class TAppTheme {
     inputDecorationTheme: TTextFormFieldTheme.lightInputDecorationTheme,
     outlinedButtonTheme: OutlinedButtonThemeData(
         style: TOutlinedButtonTheme.lightOutlinedButtonTheme),
-       
   );
 
   static ThemeData darkTheme = ThemeData(
     useMaterial3: true,
     fontFamily: 'Cairo',
     brightness: Brightness.dark,
-    primaryColor: Color(0xff019934),
+    primaryColor: const Color(0xff019934),
     scaffoldBackgroundColor: const Color.fromARGB(255, 19, 19, 19),
     textTheme: TTextTheme.darkTextTheme,
     elevatedButtonTheme: TElevatedButtonTheme.darkElevatedButtonTheme,

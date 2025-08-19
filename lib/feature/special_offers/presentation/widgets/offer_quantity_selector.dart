@@ -9,10 +9,10 @@ class OfferQuantitySelector extends StatefulWidget {
   final Function(int) onQuantityChanged;
 
   const OfferQuantitySelector({
-    Key? key,
+    super.key,
     required this.offer,
     required this.onQuantityChanged,
-  }) : super(key: key);
+  });
 
   @override
   State<OfferQuantitySelector> createState() => _OfferQuantitySelectorState();
@@ -111,7 +111,7 @@ class _OfferQuantitySelectorState extends State<OfferQuantitySelector> {
 
     return Container(
       decoration: BoxDecoration(
-        color: TColors.primary.withOpacity(0.1),
+        color: TColors.primary.withValues(alpha:0.1),
         borderRadius: BorderRadius.circular(isSmallScreen ? 8 : 12),
       ),
       child: Row(

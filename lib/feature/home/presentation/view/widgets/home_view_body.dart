@@ -91,7 +91,7 @@ class _HomeViewBodyState extends State<HomeViewBody> {
                       const SizedBox(height: 20),
                       const CustomSearchTextField(),
                       const SizedBox(height: 20),
-                      HomeTopSlider(),
+                      const HomeTopSlider(),
                       const SizedBox(height: 4),
                       OutLineOfProducts(
                         title: "عروض حصرية",

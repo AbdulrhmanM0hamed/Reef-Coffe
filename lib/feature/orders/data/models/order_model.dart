@@ -1,25 +1,17 @@
 import '../../domain/entities/order.dart';
 
 class OrderModel extends OrderEntity {
-  OrderModel({
-    required String id,
-    required String userId,
-    required List<OrderItem> items,
-    required double totalAmount,
-    required String status,
-    required DateTime createdAt,
-    String? deliveryAddress,
-    String? phoneNumber,
+  const OrderModel({
+    required super.id,
+    required super.userId,
+    required super.items,
+    required super.totalAmount,
+    required super.status,
+    required super.createdAt,
+    super.deliveryAddress,
+    super.phoneNumber,
     String? name,
   }) : super(
-          id: id,
-          userId: userId,
-          items: items,
-          totalAmount: totalAmount,
-          status: status,
-          createdAt: createdAt,
-          deliveryAddress: deliveryAddress,
-          phoneNumber: phoneNumber,
           name: name ?? '',
         );
 
@@ -61,19 +53,13 @@ class OrderModel extends OrderEntity {
 }
 
 class OrderItemModel extends OrderItem {
-  OrderItemModel({
-    required String productId,
-    required String productName,
-    required int quantity,
-    required double price,
-    String? imageUrl,
-  }) : super(
-          productId: productId,
-          productName: productName,
-          quantity: quantity,
-          price: price,
-          imageUrl: imageUrl,
-        );
+  const OrderItemModel({
+    required super.productId,
+    required super.productName,
+    required super.quantity,
+    required super.price,
+    super.imageUrl,
+  });
 
   factory OrderItemModel.fromJson(Map<String, dynamic> json) {
     try {

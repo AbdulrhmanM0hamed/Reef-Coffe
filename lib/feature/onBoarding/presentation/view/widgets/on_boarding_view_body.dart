@@ -9,7 +9,7 @@ import 'package:hyper_market/core/utils/animations/custom_animations.dart';
 import 'package:video_player/video_player.dart';
 
 class OnBoardingScreen extends StatefulWidget {
-  const OnBoardingScreen({Key? key}) : super(key: key);
+  const OnBoardingScreen({super.key});
 
   @override
   State<OnBoardingScreen> createState() => _OnBoardingScreenState();
@@ -90,7 +90,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
             ),
           // طبقة فوق الفيديو
           Container(
-            color: Colors.black.withOpacity(0.3), // طبقة شفافة فوق الفيديو
+            color: Colors.black.withValues(alpha:0.3), // طبقة شفافة فوق الفيديو
           ),
 
           // الزر فقط

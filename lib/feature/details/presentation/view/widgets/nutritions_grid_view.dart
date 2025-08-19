@@ -3,7 +3,7 @@ import 'package:hyper_market/core/utils/local_storage/items_of_detials_view.dart
 import 'package:hyper_market/feature/details/presentation/view/widgets/nutritions_cart.dart';
 
 class InfoSection extends StatelessWidget {
-  InfoSection();
+  const InfoSection({super.key});
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;

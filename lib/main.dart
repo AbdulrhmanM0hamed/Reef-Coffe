@@ -1,4 +1,3 @@
-
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -18,10 +17,7 @@ import 'package:hyper_market/feature/splash/view/splash_view.dart';
 import 'package:hyper_market/generated/l10n.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-
 void main() async {
- 
-
   try {
     WidgetsFlutterBinding.ensureInitialized();
     await dotenv.load(fileName: ".env");
@@ -45,7 +41,7 @@ void main() async {
 
     runApp(const MyApp());
   } catch (e) {
-    print(e);
+   // print(e);
   }
 }
 

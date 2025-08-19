@@ -77,8 +77,8 @@ class ProductsCubit extends Cubit<ProductsState> {
     
     final filteredProducts = _allProducts.where((product) {
       final normalizedName = _normalizeArabicText(product.name.toLowerCase());
-      final normalizedDescription = product.description != null 
-          ? _normalizeArabicText(product.description!.toLowerCase())
+      final normalizedDescription = product.description != null
+          ? _normalizeArabicText(product.description.toLowerCase())
           : '';
           
       // Check for exact word matches first

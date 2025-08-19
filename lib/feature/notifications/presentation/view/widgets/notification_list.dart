@@ -9,9 +9,9 @@ class NotificationList extends StatelessWidget {
   final List<NotificationModel> notifications;
 
   const NotificationList({
-    Key? key,
+    super.key,
     required this.notifications,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -54,9 +54,9 @@ class NotificationTile extends StatelessWidget {
   final NotificationModel notification;
 
   const NotificationTile({
-    Key? key,
+    super.key,
     required this.notification,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -65,24 +65,24 @@ class NotificationTile extends StatelessWidget {
       decoration: BoxDecoration(
         color: notification.isRead
             ? Theme.of(context).cardColor
-            : TColors.primary.withOpacity(0.1),
+            : TColors.primary.withValues(alpha:0.1),
         borderRadius: BorderRadius.circular(12),
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          if (notification.body != null) ...[
-            ClipRRect(
-              borderRadius: BorderRadius.circular(8),
-              child: Image.asset(
-                "assets/images/profile_image.png",
-                width: 60,
-                height: 60,
-                fit: BoxFit.cover,
-              ),
+          ...[
+          ClipRRect(
+            borderRadius: BorderRadius.circular(8),
+            child: Image.asset(
+              "assets/images/profile_image.png",
+              width: 60,
+              height: 60,
+              fit: BoxFit.cover,
             ),
-            const SizedBox(width: 12),
-          ],
+          ),
+          const SizedBox(width: 12),
+        ],
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,

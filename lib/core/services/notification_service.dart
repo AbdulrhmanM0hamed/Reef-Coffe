@@ -10,8 +10,7 @@ import 'dart:convert';
 class NotificationService {
   static final FlutterLocalNotificationsPlugin _notifications =
       FlutterLocalNotificationsPlugin();
-  static const String _notificationsKey = 'notifications';
-  static const String _lastStatusKey = 'last_status';
+
   
   static RealtimeChannel? _orderChannel;
 
@@ -50,7 +49,7 @@ class NotificationService {
         );
         await saveNotification(notification);
       } catch (e) {
-        print('Error in background handler: $e');
+   //     print('Error in background handler: $e');
       }
     }
   }
@@ -93,7 +92,7 @@ class NotificationService {
         payload: payload,
       );
     } catch (e) {
-      print('Error showing notification: $e');
+  //    print('Error showing notification: $e');
     }
   }
 
@@ -112,7 +111,7 @@ class NotificationService {
         });
       }
     } catch (e) {
-      print('Error saving notification: $e');
+    //  print('Error saving notification: $e');
     }
   }
 
@@ -129,15 +128,11 @@ class NotificationService {
           .eq('user_id', currentUserId)
           .order('created_at', ascending: false);
 
-      if (response == null) {
-        return [];
-      }
-
       return (response as List)
           .map((notification) => NotificationModel.fromJson(notification))
           .toList();
     } catch (e) {
-      print('Error getting notifications: $e');
+  //    print('Error getting notifications: $e');
       return [];
     }
   }
@@ -155,7 +150,7 @@ class NotificationService {
           .eq('id', notificationId)
           .eq('user_id', currentUserId);
     } catch (e) {
-      print('Error marking notification as read: $e');
+  //    print('Error marking notification as read: $e');
     }
   }
 
@@ -172,7 +167,7 @@ class NotificationService {
           .eq('user_id', currentUserId)
           .eq('is_read', false);
     } catch (e) {
-      print('Error marking all notifications as read: $e');
+  //    print('Error marking all notifications as read: $e');
     }
   }
 
@@ -188,7 +183,7 @@ class NotificationService {
           .delete()
           .eq('user_id', currentUserId);
     } catch (e) {
-      print('Error clearing notifications: $e');
+  //    print('Error clearing notifications: $e');
     }
   }
 
@@ -212,7 +207,7 @@ class NotificationService {
           .gte('created_at', lastOpenTime)
           .order('created_at', ascending: false);
 
-      if (response != null && (response as List).isNotEmpty) {
+      if ((response as List).isNotEmpty) {
         // إذا كان هناك إشعارات جديدة، نعرض إشعار محلي
         await showNotification(
           title: 'لديك إشعارات جديدة',
@@ -224,7 +219,7 @@ class NotificationService {
       // تحديث وقت آخر فتح للتطبيق
       await prefs.setString('last_open_time', DateTime.now().toIso8601String());
     } catch (e) {
-      print('Error checking new notifications: $e');
+  //    print('Error checking new notifications: $e');
     }
   }
 }

@@ -11,7 +11,7 @@ class TTextFormFieldTheme {
     labelStyle: const TextStyle(fontSize: 14, color: Colors.black),
     hintStyle:  getBoldStyle(fontSize: 14, color: Colors.grey , fontFamily: 'Cairo'),
     errorStyle: const TextStyle(fontStyle: FontStyle.normal),
-    floatingLabelStyle: TextStyle(color: Colors.black.withOpacity(0.8)),
+    floatingLabelStyle: TextStyle(color: Colors.black.withValues(alpha:0.8)),
     border: OutlineInputBorder(
       borderRadius: BorderRadius.circular(14),
       borderSide: const BorderSide(width: 1, color: Colors.grey),
@@ -41,7 +41,7 @@ class TTextFormFieldTheme {
     labelStyle: const TextStyle(fontSize: 14, color: Colors.white),
     hintStyle: getBoldStyle(fontSize: 14, color: Colors.white70 , fontFamily: 'Cairo'),
     errorStyle: const TextStyle(fontStyle: FontStyle.normal, color: Colors.red),
-    floatingLabelStyle: TextStyle(color: Colors.white.withOpacity(0.8)),
+    floatingLabelStyle: TextStyle(color: Colors.white.withValues(alpha:0.8)),
     border: OutlineInputBorder(
       borderRadius: BorderRadius.circular(14),
       borderSide:  BorderSide(width: 1, color: Colors.grey.shade500),

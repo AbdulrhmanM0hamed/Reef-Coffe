@@ -8,7 +8,7 @@ import 'package:hyper_market/feature/profile/presentation/cubit/profile_state.da
 import 'package:hyper_market/feature/profile/presentation/view/widgets/custom_text_filed.dart';
 
 class UpdateNameView extends StatefulWidget {
-  const UpdateNameView({Key? key}) : super(key: key);
+  const UpdateNameView({super.key});
 
   static const String routeName = '/update-name';
 

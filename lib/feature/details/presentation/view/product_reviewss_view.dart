@@ -17,9 +17,9 @@ class ProductReviewsView extends StatefulWidget {
   static const String routeName = 'productReviews';
 
   const ProductReviewsView({
-    Key? key,
+    super.key,
     required this.productId,
-  }) : super(key: key);
+  });
 
   @override
   State<ProductReviewsView> createState() => _ProductReviewsViewState();
@@ -109,7 +109,7 @@ class _ProductReviewsViewState extends State<ProductReviewsView> {
                 Row(
                   children: [
                     Text(
-                      '${state.rating.toStringAsFixed(1)}',
+                      state.rating.toStringAsFixed(1),
                       style: TextStyle(
                         fontSize: 48 * textScaleFactor,
                         fontWeight: FontWeight.bold,
@@ -159,7 +159,7 @@ class _ProductReviewsViewState extends State<ProductReviewsView> {
             ),
             child: Row(
               children: [
-                Container(
+                SizedBox(
                   width: size.width * 0.15,
                   child: Text(
                     '${5 - index}',
@@ -178,7 +178,7 @@ class _ProductReviewsViewState extends State<ProductReviewsView> {
                   ),
                 ),
                 SizedBox(width: size.width * 0.04),
-                Container(
+                SizedBox(
                   width: size.width * 0.1,
                   child: Text(
                     '0%',
@@ -640,8 +640,8 @@ class _ProductReviewsViewState extends State<ProductReviewsView> {
 
   void _showAddCommentDialog(BuildContext context) {
     final commentController = TextEditingController();
-    final size = MediaQuery.of(context).size;
-    final textScaleFactor = MediaQuery.of(context).textScaler;
+    // final size = MediaQuery.of(context).size;
+    // final textScaleFactor = MediaQuery.of(context).textScaler;
 
     showDialog(
       context: context,

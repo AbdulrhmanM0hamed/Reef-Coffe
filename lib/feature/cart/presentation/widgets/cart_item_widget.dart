@@ -10,9 +10,9 @@ class CartItemWidget extends StatelessWidget {
   final CartItem item;
 
   const CartItemWidget({
-    Key? key,
+    super.key,
     required this.item,
-  }) : super(key: key);
+  });
 
   double _getResponsiveSize(BuildContext context, double baseSize) {
     final width = MediaQuery.of(context).size.width;
@@ -58,7 +58,7 @@ class CartItemWidget extends StatelessWidget {
                 color: Theme.of(context).brightness == Brightness.dark ? Colors.grey[900] : Colors.white60,
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.grey.withOpacity(0.1),
+                    color: Colors.grey.withValues(alpha:0.1),
                     spreadRadius: 1,
                     blurRadius: 4,
                     offset: const Offset(0, 2),

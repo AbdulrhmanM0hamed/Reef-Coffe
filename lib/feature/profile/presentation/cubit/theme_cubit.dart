@@ -9,7 +9,7 @@ class ThemeCubit extends Cubit<ThemeState> {
   static const String _themeKey = 'isDark';
   late SharedPreferences _prefsInstance;
 
-  ThemeCubit({required this.prefs}) : super(ThemeState(isDark: false)) {
+  ThemeCubit({required this.prefs}) : super(const ThemeState(isDark: false)) {
     _initPrefs();
   }
 

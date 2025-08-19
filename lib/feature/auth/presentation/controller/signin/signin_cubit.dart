@@ -11,7 +11,7 @@ part 'signin_state.dart';
 class SignInCubit extends Cubit<SignInState> {
   final AuthRepository authRepository;
 
-  SignInCubit({required this.authRepository}) : super(SignInInitialState());
+  SignInCubit({required this.authRepository}) : super(const SignInInitialState());
 
   Future<void> signInWithEmail(String email, String password) async {
     emit(SignInLoadingState());

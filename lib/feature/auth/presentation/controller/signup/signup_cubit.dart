@@ -8,7 +8,7 @@ part 'signup_state.dart';
 class SignUpCubit extends Cubit<SignUpState> {
   final AuthRepository authRepository;
 
-  SignUpCubit({required this.authRepository}) : super(SignUpInitialState());
+  SignUpCubit({required this.authRepository}) : super(const SignUpInitialState());
 
   Future<void> signUpWithEmail(
     String email,
@@ -28,7 +28,7 @@ class SignUpCubit extends Cubit<SignUpState> {
       );
 
       if (exists) {
-        emit(SignUpErrorState('هذا البريد الإلكتروني مسجل بالفعل'));
+        emit(const SignUpErrorState('هذا البريد الإلكتروني مسجل بالفعل'));
         return;
       }
 

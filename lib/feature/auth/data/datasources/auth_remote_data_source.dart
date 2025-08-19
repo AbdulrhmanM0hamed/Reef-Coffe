@@ -87,7 +87,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
           'phone_number': phoneNumber,
         });
       } catch (e) {
-        throw e;
+        rethrow;
       }
 
       return response.user!;
@@ -416,10 +416,10 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   @override
   Future<void> sendResetCode(String email) async {
     try {
-      final response = await supabaseClient.auth.resetPasswordForEmail(
-        email,
-        redirectTo: null,
-      );
+    //  final response = await supabaseClient.auth.resetPasswordForEmail(
+    //     email,
+    //     redirectTo: null,
+    //   );
     } catch (e) {
       if (e is AuthException) {
         String message = e.message;
@@ -443,11 +443,11 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   @override
   Future<void> verifyResetCode(String email, String code) async {
     try {
-      final response = await supabaseClient.auth.verifyOTP(
-        email: email,
-        token: code,
-        type: OtpType.recovery,
-      );
+    //  final response = await supabaseClient.auth.verifyOTP(
+    //    email: email,
+    //    token: code,
+    //    type: OtpType.recovery,
+    //  );
     } catch (e) {
       if (e is AuthException) {
         String message = e.message;
@@ -467,9 +467,10 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   @override
   Future<void> resetPasswordWithCode(String email, String newPassword) async {
     try {
-      final response = await supabaseClient.auth.updateUser(
-        UserAttributes(password: newPassword),
-      );
+    //  final
+      // final response = await supabaseClient.auth.updateUser(
+      //   UserAttributes(password: newPassword),
+      // );
     } catch (e) {
       if (e is AuthException) {
         String message = e.message;

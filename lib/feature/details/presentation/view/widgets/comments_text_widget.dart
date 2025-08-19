@@ -78,7 +78,7 @@ void didUpdateWidget(CommentsTextWidget oldWidget) {
             ),
           );
         } else {
-          return Text('0');// الحالة الافتراضية
+          return const Text('0');// الحالة الافتراضية
         }
 
         return TextButton(

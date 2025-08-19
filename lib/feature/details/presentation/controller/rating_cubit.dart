@@ -29,7 +29,7 @@ class RatingCubit extends Cubit<RatingState> {
     if (isClosed) return;
 
     result.fold(
-      (failure) => emit(RatingError('حدث خطأ في تحميل التقييمات')),
+      (failure) => emit(const RatingError('حدث خطأ في تحميل التقييمات')),
       (ratingData) {
         final rating = (ratingData['rating'] as num?)?.toDouble() ?? 0.0;
         final count = (ratingData['count'] as num?)?.toInt() ?? 0;
@@ -91,7 +91,7 @@ class RatingCubit extends Cubit<RatingState> {
 
     if (isClosed) return;
     result.fold(
-      (failure) => emit(RatingError('حدث خطأ في عملية التقييم')),
+      (failure) => emit(const RatingError('حدث خطأ في عملية التقييم')),
       (rating) {
         emit(isUpdate ? RatingUpdated() : RatingAdded());
         loadProductRating(productId);

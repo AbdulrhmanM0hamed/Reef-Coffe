@@ -25,8 +25,7 @@ import 'package:hyper_market/feature/profile/presentation/view/widgets/profile_m
 
 class ProfileViewBody extends StatelessWidget {
   const ProfileViewBody(
-      {Key? key, required this.userName, required this.userEmail})
-      : super(key: key);
+      {super.key, required this.userName, required this.userEmail});
   final String userName;
   final String userEmail;
 
@@ -214,14 +213,14 @@ class ProfileViewBody extends StatelessWidget {
 
                     if (shouldLogout == true) {
                       // Get current user ID before clearing data
-                      final userDataJson = await Prefs.getString(KUserData);
+                      final userDataJson = Prefs.getString(KUserData);
                       if (userDataJson != null && userDataJson.isNotEmpty) {
                         try {
                           final userData = json.decode(userDataJson);
                           final user = UserEntity.fromJson(userData);
                           // Clear user specific favorites
                           await Prefs.setString(
-                              '${KUserFavorites}${user.id}', '[]');
+                              '$KUserFavorites${user.id}', '[]');
                         } catch (e) {
                           debugPrint('Error clearing favorites: $e');
                         }

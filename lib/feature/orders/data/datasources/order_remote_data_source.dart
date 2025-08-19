@@ -19,8 +19,9 @@ class OrderRemoteDataSourceImpl implements OrderRemoteDataSource {
   Future<List<OrderModel>> getOrders() async {
     try {
       final userId = supabaseClient.auth.currentUser?.id;
-      if (userId == null)
+      if (userId == null) {
         throw const CustomException(message: 'User ID is null');
+      }
 
       final response = await supabaseClient
           .from('orders')
@@ -42,8 +43,9 @@ class OrderRemoteDataSourceImpl implements OrderRemoteDataSource {
   Future<OrderModel> getOrderById(String orderId) async {
     try {
       final userId = supabaseClient.auth.currentUser?.id;
-      if (userId == null)
+      if (userId == null) {
         throw const CustomException(message: 'User ID is null');
+      }
 
       final response = await supabaseClient
           .from('orders')
@@ -62,8 +64,9 @@ class OrderRemoteDataSourceImpl implements OrderRemoteDataSource {
   Future<OrderModel> createOrder(OrderModel order) async {
     try {
       final userId = supabaseClient.auth.currentUser?.id;
-      if (userId == null)
+      if (userId == null) {
         throw const CustomException(message: 'User ID is null');
+      }
 
       final orderData = order.toJson();
       orderData['user_id'] = userId;
@@ -86,8 +89,9 @@ class OrderRemoteDataSourceImpl implements OrderRemoteDataSource {
   Future<OrderModel> updateOrderStatus(String orderId, String status) async {
     try {
       final userId = supabaseClient.auth.currentUser?.id;
-      if (userId == null)
+      if (userId == null) {
         throw const CustomException(message: 'User ID is null');
+      }
 
       final response = await supabaseClient
           .from('orders')
@@ -107,8 +111,9 @@ class OrderRemoteDataSourceImpl implements OrderRemoteDataSource {
   Future<void> cancelOrder(String orderId) async {
     try {
       final userId = supabaseClient.auth.currentUser?.id;
-      if (userId == null)
+      if (userId == null) {
         throw const CustomException(message: 'User ID is null');
+      }
 
       await supabaseClient
           .from('orders')

@@ -9,11 +9,11 @@ class ProfileMenuItem extends StatelessWidget {
   final VoidCallback onTap;
 
   const ProfileMenuItem({
-    Key? key,
+    super.key,
     required this.icon,
     required this.title,
     required this.onTap,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +27,7 @@ class ProfileMenuItem extends StatelessWidget {
       
         ),
       ),
-      trailing: Icon(
+      trailing: const Icon(
         Icons.arrow_forward_ios,
         size: 16,
         color: TColors.darkGrey,

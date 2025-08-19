@@ -9,7 +9,7 @@ import 'package:hyper_market/feature/orders/presentation/widgets/order_card.dart
 class OrdersView extends StatelessWidget {
   static const String routeName = 'orders';
 
-  const OrdersView({Key? key}) : super(key: key);
+  const OrdersView({super.key});
 
   @override
   Widget build(BuildContext context) {

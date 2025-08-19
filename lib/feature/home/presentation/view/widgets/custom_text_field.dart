@@ -199,7 +199,10 @@ class _CustomSearchTextFieldState extends State<CustomSearchTextField> {
                     child: SvgPicture.asset(
                       "assets/images/search_icon.svg",
                       width: 25,
-                      color: _isSearchActive ? TColors.primary : Colors.grey,
+                      colorFilter: ColorFilter.mode(
+                        _isSearchActive ? TColors.primary : Colors.grey,
+                        BlendMode.srcIn,
+                      ),
                     ),
                   ),
                 ),

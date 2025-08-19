@@ -5,7 +5,7 @@ import 'package:hyper_market/feature/products/presentation/cubit/products_state.
 import 'supplements_product_card.dart';
 
 class SupplementsSection extends StatelessWidget {
-  const SupplementsSection({Key? key}) : super(key: key);
+  const SupplementsSection({super.key});
 
   @override
   Widget build(BuildContext context) {

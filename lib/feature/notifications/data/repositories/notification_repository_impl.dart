@@ -29,7 +29,7 @@ class NotificationRepositoryImpl implements NotificationRepository {
         return 'الطلب جاهز وجاري التوصيل 🚚';
       case 'cancelled':
         return 'ملغي ❌';
-        case 'pending':
+      case 'pending':
         return 'قيد الانتظار ⏳ ';
       default:
         return status;
@@ -70,13 +70,12 @@ class NotificationRepositoryImpl implements NotificationRepository {
   void listenToOrderChanges() async {
     final currentUserId = _supabase.auth.currentUser?.id;
     if (currentUserId == null) {
-      print('No user logged in');
+      // print('No user logged in');
       return;
     }
 
     _unsubscribe();
     await _loadLastStatuses();
-    
 
     _channel = _supabase
         .channel('order_updates')
@@ -85,84 +84,78 @@ class NotificationRepositoryImpl implements NotificationRepository {
           schema: 'public',
           table: 'orders',
           callback: (payload) async {
-            print('Received order change payload: ${payload.toString()}');
-            
-            if (payload.newRecord != null) {
-              // استخدام newRow بدلاً من newRecord
-              final newRow = payload.newRecord!;
-              final orderId = newRow['id'] as String;
-              final newStatus = newRow['status'] as String;
-              final orderUserId = newRow['user_id'] as String;
+            //   print('Received order change payload: ${payload.toString()}');
 
-       
+            // استخدام newRow بدلاً من newRecord
+            final newRow = payload.newRecord;
+            final orderId = newRow['id'] as String;
+            final newStatus = newRow['status'] as String;
+            final orderUserId = newRow['user_id'] as String;
 
-              final updateKey = _generateUpdateKey(orderId, newStatus);
-              
-              if (updateKey == _lastUpdateKey) {
-                print('Ignoring duplicate update: $updateKey');
-                return;
-              }
+            final updateKey = _generateUpdateKey(orderId, newStatus);
 
-              if (currentUserId == orderUserId) {
-                print('Creating notification for order status change');
-                _lastUpdateKey = updateKey;
-                _lastOrderStatuses[orderId] = newStatus;
-                await _saveLastStatuses();
+            if (updateKey == _lastUpdateKey) {
+              //  print('Ignoring duplicate update: $updateKey');
+              return;
+            }
 
-                try {
-                  // إنشاء إشعار في Supabase
-                  final String title = 'تحديث حالة الطلب';
-                  final String body = 'تم تحديث حالة طلبك رقم #${_formatOrderId(orderId)} إلى: ${_getArabicStatus(newStatus)}';
-                  
-                  final notificationData = {
-                    'id': DateTime.now().millisecondsSinceEpoch.toString(),
-                    'user_id': currentUserId,
-                    'title': title,
-                    'body': body,
-                    'created_at': DateTime.now().toIso8601String(),
-                    'is_read': false,
-                    'order_id': orderId,
-                  };
-                  
-                  // التحقق من عدم وجود إشعار مكرر
-                  final existingNotifications = await _supabase
-                      .from('notifications')
-                      .select()
-                      .eq('user_id', currentUserId)
-                      .eq('order_id', orderId)
-                      .eq('body', body);
+            if (currentUserId == orderUserId) {
+              //  print('Creating notification for order status change');
+              _lastUpdateKey = updateKey;
+              _lastOrderStatuses[orderId] = newStatus;
+              await _saveLastStatuses();
 
-                  if ((existingNotifications as List).isEmpty) {
-                    final response = await _supabase
-                        .from('notifications')
-                        .insert(notificationData)
-                        .select()
-                        .single();
-                    
+              try {
+                // إنشاء إشعار في Supabase
+                const String title = 'تحديث حالة الطلب';
+                final String body =
+                    'تم تحديث حالة طلبك رقم #${_formatOrderId(orderId)} إلى: ${_getArabicStatus(newStatus)}';
 
-                    // عرض الإشعار
-                    await NotificationService.showNotification(
-                      title: title,
-                      body: body,
-                      payload: jsonEncode({'notification_id': notificationData['id']}),
-                    );
-                  } else {
-                    print('Duplicate notification found, skipping creation');
-                  }
-                } catch (e, stackTrace) {
-                  print('Error creating notification: $e');
-                  print('Stack trace: $stackTrace');
+                final notificationData = {
+                  'id': DateTime.now().millisecondsSinceEpoch.toString(),
+                  'user_id': currentUserId,
+                  'title': title,
+                  'body': body,
+                  'created_at': DateTime.now().toIso8601String(),
+                  'is_read': false,
+                  'order_id': orderId,
+                };
+
+                // التحقق من عدم وجود إشعار مكرر
+                final existingNotifications = await _supabase
+                    .from('notifications')
+                    .select()
+                    .eq('user_id', currentUserId)
+                    .eq('order_id', orderId)
+                    .eq('body', body);
+
+                if ((existingNotifications as List).isEmpty) {
+                  //    final response = await _supabase
+                  //         .from('notifications')
+                  //         .insert(notificationData)
+                  //         .select()
+                  //         .single();
+
+                  // عرض الإشعار
+                  await NotificationService.showNotification(
+                    title: title,
+                    body: body,
+                    payload: jsonEncode(
+                        {'notification_id': notificationData['id']}),
+                  );
+                } else {
+                  //       print('Duplicate notification found, skipping creation');
                 }
-              } else {
-                print('Order update is not for current user. Current: $currentUserId, Order: $orderUserId');
+              } catch (e) {
+                //     print('Error creating notification: $e');
+                //     print('Stack trace: $stackTrace');
               }
             } else {
-              print('New record is null in payload: $payload');
+              //   print('Order update is not for current user. Current: $currentUserId, Order: $orderUserId');
             }
-          },
+                    },
         )
         .subscribe();
-    
   }
 
   @override
@@ -170,7 +163,7 @@ class NotificationRepositoryImpl implements NotificationRepository {
     try {
       final currentUserId = _supabase.auth.currentUser?.id;
       if (currentUserId == null) {
-        return Left(ServerFailure(message: 'لم يتم تسجيل الدخول'));
+        return const Left(ServerFailure(message: 'لم يتم تسجيل الدخول'));
       }
 
       // جلب الإشعارات من Supabase
@@ -179,10 +172,6 @@ class NotificationRepositoryImpl implements NotificationRepository {
           .select()
           .eq('user_id', currentUserId)
           .order('created_at', ascending: false);
-
-      if (response == null) {
-        return const Right([]);
-      }
 
       final List<NotificationModel> notifications = (response as List)
           .map((notification) => NotificationModel.fromJson(notification))
@@ -195,8 +184,9 @@ class NotificationRepositoryImpl implements NotificationRepository {
 
       return Right(notifications);
     } catch (e) {
-      print('Error getting notifications: $e');
-      return Left(ServerFailure(message: 'حدث خطأ أثناء تحميل الإشعارات'));
+      //    print('Error getting notifications: $e');
+      return const Left(
+          ServerFailure(message: 'حدث خطأ أثناء تحميل الإشعارات'));
     }
   }
 
@@ -205,7 +195,7 @@ class NotificationRepositoryImpl implements NotificationRepository {
     try {
       final currentUserId = _supabase.auth.currentUser?.id;
       if (currentUserId == null) {
-        return Left(ServerFailure(message: 'لم يتم تسجيل الدخول'));
+        return const Left(ServerFailure(message: 'لم يتم تسجيل الدخول'));
       }
 
       await _supabase
@@ -216,17 +206,17 @@ class NotificationRepositoryImpl implements NotificationRepository {
 
       return const Right(unit);
     } catch (e) {
-      print('Error marking notification as read: $e');
-      return Left(ServerFailure(message: 'حدث خطأ أثناء تحديث حالة الإشعار'));
+      //    print('Error marking notification as read: $e');
+      return const Left(
+          ServerFailure(message: 'حدث خطأ أثناء تحديث حالة الإشعار'));
     }
   }
 
-  @override
   Future<Either<Failure, Unit>> markAllAsRead() async {
     try {
       final currentUserId = _supabase.auth.currentUser?.id;
       if (currentUserId == null) {
-        return Left(ServerFailure(message: 'لم يتم تسجيل الدخول'));
+        return const Left(ServerFailure(message: 'لم يتم تسجيل الدخول'));
       }
 
       await _supabase
@@ -237,19 +227,18 @@ class NotificationRepositoryImpl implements NotificationRepository {
 
       return const Right(unit);
     } catch (e) {
-      print('Error marking all notifications as read: $e');
-      return Left(ServerFailure(message: 'حدث خطأ أثناء تحديث حالة الإشعارات'));
+      //    print('Error marking all notifications as read: $e');
+      return const Left(
+          ServerFailure(message: 'حدث خطأ أثناء تحديث حالة الإشعارات'));
     }
   }
 
   @override
   Future<void> clearAllNotifications() async {
     try {
-      await _supabase
-          .from('notifications')
-          .delete();
+      await _supabase.from('notifications').delete();
     } catch (e) {
-      print('Error clearing notifications: $e');
+      //    print('Error clearing notifications: $e');
     }
   }
 }

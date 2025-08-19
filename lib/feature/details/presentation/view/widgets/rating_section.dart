@@ -39,7 +39,7 @@ class RatingSection extends StatelessWidget {
       builder: (context, state) {
         if (state is ProductRatingLoaded) {
           return Text(
-            '${state.rating.toStringAsFixed(1)}',
+            state.rating.toStringAsFixed(1),
             style: getBoldStyle(
               fontFamily: FontConstant.cairo,
               fontSize: isSmallScreen ? 16 : 18,

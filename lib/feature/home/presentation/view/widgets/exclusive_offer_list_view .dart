@@ -67,7 +67,7 @@ class ExclusiveOfferSection extends StatelessWidget {
                   padding: const EdgeInsets.only(left: 16),
                   child: SizedBox(
                     width: MediaQuery.of(context).size.width * 0.45,
-                    child: ProductCardShimmer(),
+                    child: const ProductCardShimmer(),
                   ),
                 );
               },

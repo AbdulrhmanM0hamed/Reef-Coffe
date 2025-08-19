@@ -24,7 +24,7 @@ class CommentRepositoryImpl implements CommentRepository {
           .order('created_at', ascending: false);
       
       
-      if (response == null || (response as List).isEmpty) {
+      if ((response as List).isEmpty) {
         return const Right([]);
       }
 
@@ -64,7 +64,7 @@ class CommentRepositoryImpl implements CommentRepository {
     try {
       final user = supabaseClient.auth.currentUser;
       if (user == null) {
-        return Left(ServerFailure(message: 'يجب تسجيل الدخول أولاً'));
+        return const Left(ServerFailure(message: 'يجب تسجيل الدخول أولاً'));
       }
 
 
@@ -79,7 +79,7 @@ class CommentRepositoryImpl implements CommentRepository {
 
       return Right(CommentModel.fromJson(response));
     } catch (e) {
-      return Left(ServerFailure(message: 'فشل في إضافة التعليق'));
+      return const Left(ServerFailure(message: 'فشل في إضافة التعليق'));
     }
   }
 
@@ -117,7 +117,7 @@ class CommentRepositoryImpl implements CommentRepository {
           .maybeSingle();
 
       if (currentComment == null) {
-        return Left(ServerFailure(message: 'لم يتم العثور على التعليق'));
+        return const Left(ServerFailure(message: 'لم يتم العثور على التعليق'));
       }
 
 
@@ -142,7 +142,7 @@ class CommentRepositoryImpl implements CommentRepository {
       if (e is PostgrestException) {
         return Left(ServerFailure(message: e.message));
       }
-      return Left(ServerFailure(message: 'فشل في تحديث التعليق'));
+      return const Left(ServerFailure(message: 'فشل في تحديث التعليق'));
     }
   }
 

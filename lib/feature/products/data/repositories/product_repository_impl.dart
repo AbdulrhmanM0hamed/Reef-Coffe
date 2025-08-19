@@ -20,7 +20,7 @@ class ProductRepositoryImpl implements ProductRepository {
       return Left(ServerFailure(message: e.message));
     } on PostgrestException catch (e) {
       if (e.message.contains('SocketException')) {
-        return Left(ServerFailure(message: 'تحقق من اتصالك بالانترنت'));
+        return const Left(ServerFailure(message: 'تحقق من اتصالك بالانترنت'));
       }
       return Left(ServerFailure(message: e.message));
     } catch (e) {
@@ -37,7 +37,7 @@ class ProductRepositoryImpl implements ProductRepository {
       return Left(ServerFailure(message: e.message));
     } on PostgrestException catch (e) {
       if (e.message.contains('SocketException')) {
-        return Left(ServerFailure(message: 'تحقق من اتصالك بالانترنت'));
+        return const Left(ServerFailure(message: 'تحقق من اتصالك بالانترنت'));
       }
       return Left(ServerFailure(message: e.message));
     } catch (e) {

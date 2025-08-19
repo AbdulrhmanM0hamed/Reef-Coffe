@@ -11,16 +11,16 @@ class AddAndDeleteItem extends StatelessWidget {
   static const int maxQuantity = 30;
 
   const AddAndDeleteItem({
-    Key? key,
+    super.key,
     required this.sizeWidth,
     required this.number,
     required this.onPressedAdd,
     required this.onPressedDel,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
-    final isSmallScreen = sizeWidth < 360;
+   // final isSmallScreen = sizeWidth < 360;
     final isMediumScreen = sizeWidth < 600;
     
     final buttonSize = _getButtonSize(sizeWidth);
@@ -30,7 +30,7 @@ class AddAndDeleteItem extends StatelessWidget {
 
     return Container(
       decoration: BoxDecoration(
-        color: TColors.primary.withOpacity(0.1),
+        color: TColors.primary.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(isMediumScreen ? 8 : 12),
       ),
       child: Row(

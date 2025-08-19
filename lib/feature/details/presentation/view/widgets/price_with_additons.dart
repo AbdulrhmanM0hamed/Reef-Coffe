@@ -4,21 +4,21 @@ import 'package:hyper_market/core/utils/constants/styles_manger.dart';
 import 'package:hyper_market/core/widgets/add_and_del.dart';
 import 'package:hyper_market/feature/products/domain/entities/product.dart';
 
-class PriceWithButton_add_min extends StatefulWidget {
+class PriceWithButtonAddMin extends StatefulWidget {
   final Product product;
   final Function(int quantity) onQuantityChanged;
 
-  const PriceWithButton_add_min({
-    Key? key,
+  const PriceWithButtonAddMin({
+    super.key,
     required this.product,
     required this.onQuantityChanged,
-  }) : super(key: key);
+  });
 
   @override
-  State<PriceWithButton_add_min> createState() => _PriceWithButton_add_minState();
+  State<PriceWithButtonAddMin> createState() => PriceWithButtonAddMinState();
 }
 
-class _PriceWithButton_add_minState extends State<PriceWithButton_add_min> {
+class PriceWithButtonAddMinState extends State<PriceWithButtonAddMin> {
   int quantity = 1;
 
   void _incrementQuantity() {

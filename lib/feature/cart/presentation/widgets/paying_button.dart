@@ -101,7 +101,7 @@ class PayingButton extends StatelessWidget {
                                       children: [
                                         Container(
                                           decoration: BoxDecoration(
-                                            color: TColors.primary.withOpacity(0.1),
+                                            color: TColors.primary.withValues(alpha:0.1),
                                             shape: BoxShape.circle,
                                           ),
                                           padding: EdgeInsets.all(size.width * 0.03),

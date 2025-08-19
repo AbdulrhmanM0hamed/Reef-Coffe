@@ -50,7 +50,7 @@ class LocalStorageService {
         }
       }
     } catch (e) {
-      print('Error retrieving data: $e');
+   //   print('Error retrieving data: $e');
     }
     return null;
   }

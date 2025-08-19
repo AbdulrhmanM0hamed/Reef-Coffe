@@ -5,7 +5,7 @@ import 'package:hyper_market/core/utils/constants/styles_manger.dart';
 import 'package:hyper_market/feature/notifications/presentation/cubit/notifications_cubit.dart';
 
 class NotificationsView extends StatefulWidget {
-  const NotificationsView({Key? key}) : super(key: key);
+  const NotificationsView({super.key});
 
   @override
   State<NotificationsView> createState() => _NotificationsViewState();
@@ -108,7 +108,7 @@ class _NotificationsViewState extends State<NotificationsView> {
                           width: 50,
                           height: 50,
                           decoration: BoxDecoration(
-                            color: Colors.green.withOpacity(0.1),
+                            color: Colors.green.withValues(alpha:0.1),
                             borderRadius: BorderRadius.circular(12),
                           ),
                           child: const Icon(
@@ -205,7 +205,7 @@ class _NotificationsViewState extends State<NotificationsView> {
         return '${dateTime.year}-${dateTime.month.toString().padLeft(2, '0')}-${dateTime.day.toString().padLeft(2, '0')}';
       }
     } catch (e) {
-      print('Error formatting date: $e');
+   //   print('Error formatting date: $e');
       return timestamp;
     }
   }
