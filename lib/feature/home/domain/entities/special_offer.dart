@@ -47,13 +47,13 @@ class SpecialOffer extends Equatable {
 
   factory SpecialOffer.fromJson(Map<String, dynamic> json) {
     return SpecialOffer(
-      id: json['id'] ?? '',
+      id: json['id']?.toString() ?? '',
       title: json['title'] ?? '',
       subtitle: json['subtitle'] ?? '',
       description: json['description'] ?? '',
-      image1: json['image1'] ?? '',
+      image1: json['image1']?.toString() ?? '',
       image2: json['image2']?.toString(),
-      offerPrice: json['offerPrice'] ?? 0.0,
+      offerPrice: (json['offerPrice'] as num?)?.toDouble() ?? 0.0,
       includedItems: json['includedItems']?.cast<String>() ?? [],
       validUntil: json['validUntil'] != null
           ? DateTime.parse(json['validUntil'].toString())

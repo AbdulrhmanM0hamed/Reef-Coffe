@@ -110,7 +110,7 @@ class _SignupViewBodyState extends State<SignupViewBody> {
               ),
               SizedBox(height: screenHeight * 0.02),
               PasswordField(
-                hintText: S.current!.password,
+                hintText: S.current.password,
                 onSaved: (value) => password = value!,
                
               ),
